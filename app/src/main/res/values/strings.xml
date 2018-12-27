@@ -1,10 +1,23 @@
 <resources>
+
+    <!-- Generales -->
     <string name="app_name">Seamos Mejores Maestros</string>
+    <string name="nameAddPublicador">Añadir Publicador</string>
     <string name="tab_text_1">Inicio</string>
     <string name="tab_text_2">Asignaciones</string>
     <string name="tab_text_3">Publicadores</string>
     <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- Add Publicador -->
+    <string name="NombrePub">*Nombres: </string>
+    <string name="editDatos">Escribir</string>
+    <string name="ApellidoPub">*Apellidos: </string>
+    <string name="TelefonoPub">Telefono: </string>
+    <string name="EmailPub">Correo: </string>
+    <string name="GenMasculino">*Hombre</string>
+    <string name="GenFemenino">*Mujer</string>
+    <string name="asterisco">* Campos obligatorios</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

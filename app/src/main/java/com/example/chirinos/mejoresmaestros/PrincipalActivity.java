@@ -42,8 +42,11 @@ public class PrincipalActivity extends AppCompatActivity implements Asignaciones
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
 
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
