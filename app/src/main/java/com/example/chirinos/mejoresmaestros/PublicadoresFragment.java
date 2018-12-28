@@ -11,6 +11,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 
 
 /**
@@ -21,7 +25,7 @@ import android.view.ViewGroup;
  * Use the {@link PublicadoresFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PublicadoresFragment extends Fragment {
+public class PublicadoresFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,6 +34,9 @@ public class PublicadoresFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    Spinner ordenarPublicadores;
+    Button botonver;
 
     private OnFragmentInteractionListener mListener;
 
@@ -73,6 +80,21 @@ public class PublicadoresFragment extends Fragment {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_publicadores, container, false);
 
+        ordenarPublicadores = (Spinner) vista.findViewById(R.id.spinnerOrdenarPublicadores);
+        String [] spOrdenar = {"Ordenar", "A-Z (Nombres)", "A-Z (Apellidos)", "Ultima Fecha"};
+        ArrayAdapter<String> adapterOrdenar = new ArrayAdapter<String>(getContext(), R.layout.spinner_personalizado, spOrdenar);
+        ordenarPublicadores.setAdapter(adapterOrdenar);
+        ordenarPublicadores.setOnItemSelectedListener(this);
+
+        botonver = (Button) vista.findViewById(R.id.button5);
+        botonver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), VerActivity.class);
+                startActivity(intent);
+            }
+        });
+
         fabPublicadores = (FloatingActionButton) vista.findViewById(R.id.fabPublicadores);
         fabPublicadores.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,6 +132,16 @@ public class PublicadoresFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
     /**
