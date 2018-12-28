@@ -32,7 +32,8 @@
         <activity
             android:name=".EditAsignacionesActivity"
             android:label="@string/nameEditar"
-            android:theme="@style/Theme.Dialog.Publicador"></activity>
+            android:theme="@style/Theme.Dialog.Publicador" />
+        <activity android:name=".VerActivity"></activity>
     </application>
 
 </manifest>
