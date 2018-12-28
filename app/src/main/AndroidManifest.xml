@@ -22,8 +22,12 @@
         <activity
             android:name=".AddPublicador"
             android:label="@string/nameAddPublicador"
-            android:theme="@style/Base.V14.Theme.MaterialComponents.Dialog">
-        </activity>
+            android:theme="@style/Theme.Dialog.Publicador" />
+        <activity
+            android:name=".Sala1Activity"
+            android:label="@string/nameSala1"></activity>
+        <activity android:name=".Sala2Activity"
+            android:label="@string/nameSala2"></activity>
     </application>
 
 </manifest>

@@ -3,6 +3,8 @@
     <!-- Generales -->
     <string name="app_name">Seamos Mejores Maestros</string>
     <string name="nameAddPublicador">Añadir Publicador</string>
+    <string name="nameSala1">Primera Sala</string>
+    <string name="nameSala2">Segunda Sala</string>
     <string name="tab_text_1">Inicio</string>
     <string name="tab_text_2">Asignaciones</string>
     <string name="tab_text_3">Publicadores</string>
@@ -17,6 +19,25 @@
     <string name="GenMasculino">*Hombre</string>
     <string name="GenFemenino">*Mujer</string>
     <string name="asterisco">* Campos obligatorios</string>
+    <string name="btnAgregar">Agregar</string>
+    <string name="btnCancelar">Cancelar</string>
+
+    <!-- AddSala1 -->
+    <string name="checkboxVisita">Visita Superintendente</string>
+    <string name="checkboxAsamblea">Asamblea</string>
+    <string name="tvLectura">Lectura Biblica: </string>
+    <string name="tvAsignacion1">Primera Asignacion: </string>
+    <string name="tvAsignacion2">Segunda Asignacion: </string>
+    <string name="tvAsignacion3">Tercera Asignacion: </string>
+    <string name="checkboxVideo">Video</string>
+    <string name="tvEncargado">Encargado: </string>
+    <string name="tvAyudante">Ayudante: </string>
+    <string name="btnGuardar">Guardar</string>
+
+
+    <!-- FloatingMenu-->
+    <string name="fabSala1">Primera Sala</string>
+    <string name="fabSala2">Segunda Sala</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

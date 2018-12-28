@@ -1,14 +1,17 @@
 package com.example.chirinos.mejoresmaestros;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 
 /**
@@ -31,7 +34,7 @@ public class AsignacionesFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    FloatingActionButton fabAsignaciones;
+    FloatingActionButton fabSala1, fabSala2;
     View vista;
 
     public AsignacionesFragment() {
@@ -73,12 +76,22 @@ public class AsignacionesFragment extends Fragment {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_asignaciones, container, false);
 
-        fabAsignaciones = (FloatingActionButton) vista.findViewById(R.id.fabAsignaciones);
-        fabAsignaciones.setOnClickListener(new View.OnClickListener() {
+        fabSala1 = (FloatingActionButton) vista.findViewById(R.id.fabSala1);
+        fabSala1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Añadir asignaciones", Snackbar.LENGTH_SHORT)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getContext(), Sala1Activity.class);
+                startActivity(intent);
+            }
+        });
+
+        fabSala2 = (FloatingActionButton) vista.findViewById(R.id.fabSala2);
+        fabSala2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), Sala2Activity.class);
+                startActivity(intent);
+                //Snackbar.make(v, "Segunda Sala", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
             }
         });
 

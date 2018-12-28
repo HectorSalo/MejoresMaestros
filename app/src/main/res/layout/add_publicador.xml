@@ -5,12 +5,14 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    tools:context=".AddPublicador">
+    tools:context=".AddPublicador"
+    >
 
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+     >
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,7 +40,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/editDatos"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColorLink="@color/colorAccent" />
         </TableRow>
 
         <TableRow
@@ -139,13 +142,17 @@
             android:id="@+id/bottomAgregar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="agregar"/>
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:text="@string/btnAgregar"
+            android:textSize="10sp" />
 
         <Button
             android:id="@+id/bottomCancelar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="cancelar"/>
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:text="@string/btnCancelar"
+            android:textSize="10sp" />
     </LinearLayout>
 
     <TextView
