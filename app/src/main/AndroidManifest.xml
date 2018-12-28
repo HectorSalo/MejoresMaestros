@@ -25,9 +25,14 @@
             android:theme="@style/Theme.Dialog.Publicador" />
         <activity
             android:name=".Sala1Activity"
-            android:label="@string/nameSala1"></activity>
-        <activity android:name=".Sala2Activity"
-            android:label="@string/nameSala2"></activity>
+            android:label="@string/nameSala1" />
+        <activity
+            android:name=".Sala2Activity"
+            android:label="@string/nameSala2" />
+        <activity
+            android:name=".EditAsignacionesActivity"
+            android:label="@string/nameEditar"
+            android:theme="@style/Theme.Dialog.Publicador"></activity>
     </application>
 
 </manifest>

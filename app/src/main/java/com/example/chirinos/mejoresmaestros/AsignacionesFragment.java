@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
@@ -33,6 +34,8 @@ public class AsignacionesFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    ImageButton imageButtonPrueba;
 
     FloatingActionButton fabSala1, fabSala2;
     View vista;
@@ -92,6 +95,15 @@ public class AsignacionesFragment extends Fragment {
                 Intent intent = new Intent(getContext(), Sala2Activity.class);
                 startActivity(intent);
                 //Snackbar.make(v, "Segunda Sala", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+            }
+        });
+
+        imageButtonPrueba = (ImageButton) vista.findViewById(R.id.imageButton);
+        imageButtonPrueba.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), EditAsignacionesActivity.class);
+                startActivity(intent);
             }
         });
 
