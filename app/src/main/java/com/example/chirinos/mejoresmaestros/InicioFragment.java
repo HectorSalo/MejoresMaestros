@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class InicioFragment extends Fragment {
 
@@ -27,8 +30,12 @@ public class InicioFragment extends Fragment {
     View vista;
 
     Chronometer temporizador;
-
-    FloatingActionButton fabStart, fabStop, fabRestart;
+    EditText editTextCrono;
+    FloatingActionButton fabStart, fabStop, fabPause;
+    boolean isPaused;
+    boolean isCenceled;
+    long TiempoRestante;
+    boolean isResume;
 
     private InicioFragment.OnFragmentInteractionListener mListener;
 
@@ -70,17 +77,56 @@ public class InicioFragment extends Fragment {
         vista = inflater.inflate(R.layout.fragment_inicio, container, false);
 
         temporizador = (Chronometer) vista.findViewById(R.id.Crono);
+        editTextCrono = (EditText) vista.findViewById(R.id.editTextCrono);
         fabStart = (FloatingActionButton) vista.findViewById(R.id.fabPlay);
         fabStop = (FloatingActionButton) vista.findViewById(R.id.fabStop);
-        fabRestart = (FloatingActionButton) vista.findViewById(R.id.fabPause);
+        fabPause = (FloatingActionButton) vista.findViewById(R.id.fabPause);
+
+        fabPause.setEnabled(false);
+        fabStop.setEnabled(false);
+
+        isPaused = false;
+        isResume = true;
+        isCenceled = false;
+        TiempoRestante = 0;
 
         fabStart.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                temporizador.setBase(SystemClock.elapsedRealtime());
-                temporizador.start();
 
+                long tiempoBase = 15000;
+                long intervaloDecrecer = 1000;
+
+                new CountDownTimer(tiempoBase, intervaloDecrecer) {
+
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+
+                             if (isPaused || isCenceled) {
+                                 cancel();
+                                 Toast.makeText(getContext(), "cancel()", Toast.LENGTH_SHORT).show();
+                             }   else {
+                                 fabStart.setEnabled(false);
+                                 fabPause.setEnabled(true);
+                                 fabStop.setEnabled(true);
+                                 //temporizador.setText(""+millisUntilFinished);
+                                 editTextCrono.setText("" + millisUntilFinished / 1000);
+                                 TiempoRestante = millisUntilFinished;
+
+                             }
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        editTextCrono.setText("Finalizado");
+                        fabStart.setEnabled(true);
+                        fabPause.setEnabled(false);
+                        fabStop.setEnabled(false);
+                        isPaused = false;
+                        isCenceled = false;
+                    }
+                }.start();
 
             }
         });
@@ -88,14 +134,59 @@ public class InicioFragment extends Fragment {
         fabStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                temporizador.stop();
+                isCenceled = true;
+                boolean prueba = true;
+                editTextCrono.setText("");
+                fabStart.setEnabled(true);
+                fabPause.setEnabled(false);
+                fabStop.setEnabled(false);
+
+
+
             }
         });
 
-        fabRestart.setOnClickListener(new View.OnClickListener() {
+        fabPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                temporizador.start();
+
+                if (isResume) {
+                    isPaused = true;
+                    isResume = false;
+                    fabStart.setEnabled(false);
+
+                } else  {
+
+                    isPaused = false;
+                    long tiempoBase = TiempoRestante;
+                    long intervaloDecrecer = 1000;
+
+                    new CountDownTimer(tiempoBase, intervaloDecrecer) {
+
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            if (isPaused || isCenceled) {
+                                cancel();
+                            } else {
+                                //temporizador.setText(""+millisUntilFinished);
+                                editTextCrono.setText("" + millisUntilFinished / 1000);
+                                TiempoRestante = millisUntilFinished;
+                            }
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            editTextCrono.setText("Finalizado");
+                            fabStart.setEnabled(true);
+                            fabPause.setEnabled(false);
+                            fabStop.setEnabled(false);
+                            isPaused = false;
+                            isCenceled = false;
+                        }
+                    }.start();
+                    isResume = true;
+                    fabStart.setEnabled(false);
+                }
             }
         });
 

@@ -235,19 +235,17 @@
             android:text="@string/tituloCronometro" />
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/editTextCrono"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="time" />
 
-        <EditText
-            android:id="@+id/editText2"
-            android:layout_width="match_parent"
+        <Chronometer
+            android:id="@+id/Crono"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="10:00" />
+            android:layout_gravity="center"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -271,7 +269,8 @@
                 android:layout_gravity="end|bottom"
                 android:layout_margin="@dimen/fab_margin"
                 app:backgroundTint="#ffff"
-                app:srcCompat="@drawable/ic_action_pause" />
+                app:srcCompat="@drawable/ic_action_pause"
+                />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fabStop"
