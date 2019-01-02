@@ -2,11 +2,16 @@ package com.example.chirinos.mejoresmaestros;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Chronometer;
 
 public class InicioFragment extends Fragment {
 
@@ -18,6 +23,12 @@ public class InicioFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    View vista;
+
+    Chronometer temporizador;
+
+    FloatingActionButton fabStart, fabStop, fabRestart;
 
     private InicioFragment.OnFragmentInteractionListener mListener;
 
@@ -56,7 +67,41 @@ public class InicioFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_inicio, container, false);
+        vista = inflater.inflate(R.layout.fragment_inicio, container, false);
+
+        temporizador = (Chronometer) vista.findViewById(R.id.Crono);
+        fabStart = (FloatingActionButton) vista.findViewById(R.id.fabPlay);
+        fabStop = (FloatingActionButton) vista.findViewById(R.id.fabStop);
+        fabRestart = (FloatingActionButton) vista.findViewById(R.id.fabPause);
+
+        fabStart.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View v) {
+                temporizador.setBase(SystemClock.elapsedRealtime());
+                temporizador.start();
+
+
+            }
+        });
+
+        fabStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                temporizador.stop();
+            }
+        });
+
+        fabRestart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                temporizador.start();
+            }
+        });
+
+        return vista;
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
