@@ -1,17 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingEnd="@dimen/fab_margin"
-    android:paddingRight="@android:dimen/app_icon_size"
-    android:paddingBottom="@android:dimen/app_icon_size"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".PublicadoresFragment">
 
 
-
     <!-- TODO: Update blank fragment layout -->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/editTextBuscar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/Buscar"
+            android:inputType="textPersonName"
+            android:textSize="24sp" />
+
+        <Spinner
+            android:id="@+id/spinnerOrdenarPublicadores"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerPublicadores"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
 
 
     <android.support.design.widget.FloatingActionButton
@@ -21,38 +45,7 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
         app:backgroundTint="@color/colorAccent"
+        app:fab_size="normal"
         app:srcCompat="@drawable/ic_action_publicador" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Buscar"
-            android:inputType="textPersonName" />
-
-        <Spinner
-        android:id="@+id/spinnerOrdenarPublicadores"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerPublicadores"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="VER" />
-
-    </LinearLayout>
-
 
 </FrameLayout>

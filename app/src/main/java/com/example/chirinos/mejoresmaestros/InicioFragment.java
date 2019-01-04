@@ -1,8 +1,11 @@
 package com.example.chirinos.mejoresmaestros;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import java.util.concurrent.TimeUnit;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
@@ -14,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class InicioFragment extends Fragment {
@@ -29,13 +33,16 @@ public class InicioFragment extends Fragment {
 
     View vista;
 
-    Chronometer temporizador;
-    EditText editTextCrono;
+    EditText editTextMinutos, editTextSegundos;
     FloatingActionButton fabStart, fabStop, fabPause;
+    TextView textViewTemp;
     boolean isPaused;
     boolean isCenceled;
     long TiempoRestante;
     boolean isResume;
+    String FORMAT = "%02d:%02d";
+    long resultadoMinuto, resultadoSegundo, tiempoBase, intervaloDecrecer;
+    Long minuto_ingresado, segundo_ingresado;
 
     private InicioFragment.OnFragmentInteractionListener mListener;
 
@@ -76,8 +83,9 @@ public class InicioFragment extends Fragment {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_inicio, container, false);
 
-        temporizador = (Chronometer) vista.findViewById(R.id.Crono);
-        editTextCrono = (EditText) vista.findViewById(R.id.editTextCrono);
+        textViewTemp = (TextView) vista.findViewById(R.id.visorTiempo);
+        editTextMinutos = (EditText) vista.findViewById(R.id.editTextMinutos);
+        editTextSegundos = (EditText) vista.findViewById(R.id.editTextSegundos);
         fabStart = (FloatingActionButton) vista.findViewById(R.id.fabPlay);
         fabStop = (FloatingActionButton) vista.findViewById(R.id.fabStop);
         fabPause = (FloatingActionButton) vista.findViewById(R.id.fabPause);
@@ -90,36 +98,73 @@ public class InicioFragment extends Fragment {
         isCenceled = false;
         TiempoRestante = 0;
 
+
+
+
         fabStart.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
 
-                long tiempoBase = 15000;
-                long intervaloDecrecer = 1000;
+                isPaused = false;
+                isCenceled = false;
+                isResume = true;
+
+
+                if (editTextSegundos.getText().length() > 0 && editTextMinutos.getText().length() > 0) {
+                    minuto_ingresado = Long.valueOf(String.valueOf(editTextMinutos.getText()));
+                    segundo_ingresado = Long.valueOf(String.valueOf(editTextSegundos.getText()));
+                    resultadoMinuto = minuto_ingresado * 60000;
+                    resultadoSegundo = segundo_ingresado * 1000;
+                    tiempoBase = resultadoMinuto + resultadoSegundo;
+                } else if (editTextMinutos.getText().length() > 0 && editTextSegundos.getText().length() == 0){
+                    minuto_ingresado = Long.valueOf(String.valueOf(editTextMinutos.getText()));
+                    resultadoMinuto = minuto_ingresado * 60000;
+                    resultadoSegundo = 0;
+                    tiempoBase = resultadoMinuto + resultadoSegundo;
+                } else if (editTextMinutos.getText().length() == 0 && editTextSegundos.getText().length() > 0) {
+                    segundo_ingresado = Long.valueOf(String.valueOf(editTextSegundos.getText()));
+                    resultadoMinuto = 0;
+                    resultadoSegundo = segundo_ingresado * 1000;
+                    tiempoBase = resultadoMinuto + resultadoSegundo;
+                } else if (editTextMinutos.getText().length() == 0 && editTextSegundos.getText().length() == 0) {
+                    tiempoBase = 0;
+                    Toast.makeText(getContext(), "Debe ingresar un valor para iniciar", Toast.LENGTH_SHORT).show();
+                }
+
+                intervaloDecrecer = 1000;
+
 
                 new CountDownTimer(tiempoBase, intervaloDecrecer) {
 
+                    @SuppressLint("RestrictedApi")
                     @Override
                     public void onTick(long millisUntilFinished) {
 
                              if (isPaused || isCenceled) {
                                  cancel();
-                                 Toast.makeText(getContext(), "cancel()", Toast.LENGTH_SHORT).show();
+
                              }   else {
-                                 fabStart.setEnabled(false);
+                                 fabStart.setVisibility(View.INVISIBLE);
                                  fabPause.setEnabled(true);
                                  fabStop.setEnabled(true);
-                                 //temporizador.setText(""+millisUntilFinished);
-                                 editTextCrono.setText("" + millisUntilFinished / 1000);
+                                 editTextMinutos.setEnabled(false);
+                                 editTextSegundos.setEnabled(false);
+
                                  TiempoRestante = millisUntilFinished;
+
+                                 textViewTemp.setText(""+ String.format(FORMAT,
+                                         TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
 
                              }
                     }
 
+                    @SuppressLint("RestrictedApi")
                     @Override
                     public void onFinish() {
-                        editTextCrono.setText("Finalizado");
+                        textViewTemp.setText("Finalizado");
+                        fabStart.setVisibility(View.VISIBLE);
                         fabStart.setEnabled(true);
                         fabPause.setEnabled(false);
                         fabStop.setEnabled(false);
@@ -132,14 +177,18 @@ public class InicioFragment extends Fragment {
         });
 
         fabStop.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onClick(View v) {
                 isCenceled = true;
-                boolean prueba = true;
-                editTextCrono.setText("");
+                textViewTemp.setText("00:00");
+                fabStart.setVisibility(View.VISIBLE);
                 fabStart.setEnabled(true);
                 fabPause.setEnabled(false);
                 fabStop.setEnabled(false);
+                editTextMinutos.setEnabled(true);
+                editTextSegundos.setEnabled(true);
+                fabPause.setImageResource(R.drawable.ic_action_pause);
 
 
 
@@ -154,9 +203,10 @@ public class InicioFragment extends Fragment {
                     isPaused = true;
                     isResume = false;
                     fabStart.setEnabled(false);
+                    fabPause.setImageResource(R.drawable.ic_action_play);
 
                 } else  {
-
+                    fabPause.setImageResource(R.drawable.ic_action_pause);
                     isPaused = false;
                     long tiempoBase = TiempoRestante;
                     long intervaloDecrecer = 1000;
@@ -168,15 +218,18 @@ public class InicioFragment extends Fragment {
                             if (isPaused || isCenceled) {
                                 cancel();
                             } else {
-                                //temporizador.setText(""+millisUntilFinished);
-                                editTextCrono.setText("" + millisUntilFinished / 1000);
+                                textViewTemp.setText(""+ String.format(FORMAT,
+                                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
                                 TiempoRestante = millisUntilFinished;
                             }
                         }
 
+                        @SuppressLint("RestrictedApi")
                         @Override
                         public void onFinish() {
-                            editTextCrono.setText("Finalizado");
+                            textViewTemp.setText("Finalizado");
+                            fabStart.setVisibility(View.VISIBLE);
                             fabStart.setEnabled(true);
                             fabPause.setEnabled(false);
                             fabStop.setEnabled(false);

@@ -2,6 +2,9 @@ package com.example.chirinos.mejoresmaestros;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,13 +14,17 @@ import android.widget.Toast;
 
 public class Sala1Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    Spinner spinnerFecha, spinnerLectura, spinnerEncargado1, spinnerAyudante1, spinnerEncargado2, spinnerAyudante2, spinnerEncargado3, spinnerAyudante3;
-    Button buttonGuardar, buttonCancelar;
+    Spinner spinnerFecha, spinnerPrimeraAsignacion, spinnerSegundaAsignacion, spinnerTerceraAsignacion;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sala1);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarSalas);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
         spinnerFecha = (Spinner)findViewById(R.id.spinnerFecha);
         String [] spFechas = {"Seleccionar Fecha", "Item 1", "Item 2"};
@@ -25,66 +32,52 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         spinnerFecha.setAdapter(adapterFechas);
         spinnerFecha.setOnItemSelectedListener(this);
 
-        spinnerLectura = (Spinner)findViewById(R.id.spinnerLectura);
-        String [] spLectura = {"Seleccionar Publicador", "Item 1", "Item 2"};
-        ArrayAdapter <String> adapterLectura = new ArrayAdapter<String>(this, R.layout.spinner_personalizado, spLectura);
-        spinnerLectura.setAdapter(adapterLectura);
-        spinnerLectura.setOnItemSelectedListener(this);
+        spinnerPrimeraAsignacion = (Spinner)findViewById(R.id.spinnerPrimeraAsignacion);
+        String [] spPrimeraAsignacion = {"Seleccionar Asignacion", "Lectores y Maestros", "Primera Conversacion", "Primera Revisita", "Segunda Revisita", "Curso Biblico", "Discurso"};
+        ArrayAdapter <String> adapterPrimeraAsignacion = new ArrayAdapter<String>(this, R.layout.spinner_personalizado, spPrimeraAsignacion);
+        spinnerPrimeraAsignacion.setAdapter(adapterPrimeraAsignacion);
+        spinnerPrimeraAsignacion.setOnItemSelectedListener(this);
 
-        spinnerEncargado1 = (Spinner)findViewById(R.id.spinnerEncargado1);
-        String [] spEncargado1 = {"Seleccionar Publicador", "Item 1", "Item 2"};
-        ArrayAdapter <String> adapterEncargado1 = new ArrayAdapter<String>(this, R.layout.spinner_personalizado, spEncargado1);
-        spinnerEncargado1.setAdapter(adapterEncargado1);
-        spinnerEncargado1.setOnItemSelectedListener(this);
+        spinnerSegundaAsignacion = (Spinner)findViewById(R.id.spinnerSegundaAsignacion);
+        String [] spSegundaAsignacion = {"Seleccionar Asignacion", "Lectores y Maestros", "Primera Conversacion", "Primera Revisita", "Segunda Revisita", "Curso Biblico", "Discurso"};
+        ArrayAdapter <String> adapterSegundaAsignacion = new ArrayAdapter<String>(this, R.layout.spinner_personalizado, spSegundaAsignacion);
+        spinnerSegundaAsignacion.setAdapter(adapterSegundaAsignacion);
+        spinnerSegundaAsignacion.setOnItemSelectedListener(this);
 
-        spinnerAyudante1 = (Spinner)findViewById(R.id.spinnerAyudante1);
-        String [] spAyudante1 = {"Seleccionar Publicador", "Item 1", "Item 2"};
-        ArrayAdapter <String> adapterAyudante1 = new ArrayAdapter<String>(this, R.layout.spinner_personalizado, spAyudante1);
-        spinnerAyudante1.setAdapter(adapterAyudante1);
-        spinnerAyudante1.setOnItemSelectedListener(this);
+        spinnerTerceraAsignacion = (Spinner)findViewById(R.id.spinnerTerceraAsignacion);
+        String [] spTerceraAsignacion = {"Seleccionar Asignacion", "Lectores y Maestros", "Primera Conversacion", "Primera Revisita", "Segunda Revisita", "Curso Biblico", "Discurso"};
+        ArrayAdapter <String> adapterTerceraAsignacion = new ArrayAdapter<String>(this, R.layout.spinner_personalizado, spTerceraAsignacion);
+        spinnerTerceraAsignacion.setAdapter(adapterTerceraAsignacion);
+        spinnerTerceraAsignacion.setOnItemSelectedListener(this);
 
-        spinnerEncargado2 = (Spinner)findViewById(R.id.spinnerEncargado2);
-        String [] spEncargado2 = {"Seleccionar Publicador", "Item 1", "Item 2"};
-        ArrayAdapter <String> adapterEncargado2 = new ArrayAdapter<String>(this, R.layout.spinner_personalizado, spEncargado2);
-        spinnerEncargado2.setAdapter(adapterEncargado2);
-        spinnerEncargado2.setOnItemSelectedListener(this);
 
-        spinnerAyudante2 = (Spinner)findViewById(R.id.spinnerAyudante2);
-        String [] spAyudante2 = {"Seleccionar Publicador", "Item 1", "Item 2"};
-        ArrayAdapter <String> adapterAyudante2 = new ArrayAdapter<String>(this, R.layout.spinner_personalizado, spAyudante2);
-        spinnerAyudante2.setAdapter(adapterAyudante2);
-        spinnerAyudante2.setOnItemSelectedListener(this);
+    }
 
-        spinnerEncargado3 = (Spinner)findViewById(R.id.spinnerEncargado3);
-        String [] spEncargado3 = {"Seleccionar Publicador", "Item 1", "Item 2"};
-        ArrayAdapter <String> adapterEncargado3 = new ArrayAdapter<String>(this, R.layout.spinner_personalizado, spEncargado3);
-        spinnerEncargado3.setAdapter(adapterEncargado3);
-        spinnerEncargado3.setOnItemSelectedListener(this);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_salas, menu);
+        return true;
+    }
 
-        spinnerAyudante3 = (Spinner)findViewById(R.id.spinnerAyudante3);
-        String [] spAyudante3 = {"Seleccionar Publicador", "Item 1", "Item 2"};
-        ArrayAdapter <String> adapterAyudante3 = new ArrayAdapter<String>(this, R.layout.spinner_personalizado, spAyudante3);
-        spinnerAyudante3.setAdapter(adapterAyudante3);
-        spinnerAyudante3.setOnItemSelectedListener(this);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-        buttonGuardar = (Button)findViewById(R.id.buttonGuardar);
-        buttonCancelar = (Button)findViewById(R.id.buttonCancelar);
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.menu_save) {
+            Toast.makeText(getApplicationContext(), "Informacion guardada", Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (id == R.id.menu_cancel) {
+            Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();
+            finish();
+            return true;
+        }
 
-        buttonGuardar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Guardado", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        });
-
-        buttonCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        });
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

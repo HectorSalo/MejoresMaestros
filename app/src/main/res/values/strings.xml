@@ -40,12 +40,18 @@
     <string name="fechaInicio">Fecha</string>
     <string name="sala1Inicio">Primera Sala: </string>
     <string name="tituloCronometro">Temporizador</string>
-    <string name="tiempo">0: 00</string>
-    <string name="btnParar">Detener</string>
-    <string name="btnIniciar">Iniciar</string>
+    <string name="tituloDuracion">Duracion: </string>
+    <string name="tiempoMM">00</string>
+    <string name="tiempo">:</string>
+    <string name="tiemposs">00</string>
+    <string name="visorTemp">00:00</string>
+
 
     <!-- Asignaciones Fragment -->
     <string name="tituloAsignaciones">Semana: </string>
+
+    <!-- Publicadores Fragmente -->
+    <string name="Buscar">Buscar: </string>
 
 
     <!-- FloatingMenu-->

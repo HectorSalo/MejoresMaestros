@@ -8,13 +8,23 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 /**
@@ -36,12 +46,15 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
     private String mParam2;
 
     Spinner ordenarPublicadores;
-    Button botonver;
 
     private OnFragmentInteractionListener mListener;
 
     FloatingActionButton fabPublicadores;
     View vista;
+    EditText textBuscar;
+    RecyclerView recyclerPublicadores;
+    ArrayList<ConstructorPublicadores> listPublicadores;
+    AdapterPublicadores adapterPublicadores;
 
     public PublicadoresFragment() {
         // Required empty public constructor
@@ -80,20 +93,34 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_publicadores, container, false);
 
+        textBuscar = (EditText) vista.findViewById(R.id.editTextBuscar);
+        textBuscar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                listafiltrada (s.toString());
+            }
+        });
+
+        recyclerPublicadores = (RecyclerView) vista.findViewById(R.id.recyclerPublicadores);
+        recyclerPublicadores.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        recyclerPublicadores.setHasFixedSize(true);
+        listPublicadores = new ArrayList<>();
+
         ordenarPublicadores = (Spinner) vista.findViewById(R.id.spinnerOrdenarPublicadores);
         String [] spOrdenar = {"Ordenar", "A-Z (Nombres)", "A-Z (Apellidos)", "Ultima Fecha"};
         ArrayAdapter<String> adapterOrdenar = new ArrayAdapter<String>(getContext(), R.layout.spinner_personalizado, spOrdenar);
         ordenarPublicadores.setAdapter(adapterOrdenar);
         ordenarPublicadores.setOnItemSelectedListener(this);
-
-        botonver = (Button) vista.findViewById(R.id.button5);
-        botonver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), VerActivity.class);
-                startActivity(intent);
-            }
-        });
 
         fabPublicadores = (FloatingActionButton) vista.findViewById(R.id.fabPublicadores);
         fabPublicadores.setOnClickListener(new View.OnClickListener() {
@@ -107,8 +134,47 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
                 //        .setAction("Action", null).show();
             }
         });
+
+
+        llenarlistPub ();
+        adapterPublicadores = new AdapterPublicadores(listPublicadores, this);
+        recyclerPublicadores.setAdapter(adapterPublicadores);
+        adapterPublicadores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), VerActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         return vista;
     }
+
+    private void llenarlistPub() {
+
+        listPublicadores.add(new ConstructorPublicadores(1, "Hector", "Chirinos", R.mipmap.ic_caballero));
+        listPublicadores.add(new ConstructorPublicadores(2, "Genesy", "Diaz", R.mipmap.ic_dama));
+
+           }
+
+
+    private void listafiltrada (String text) {
+
+        String userInput = text.toLowerCase();
+        ArrayList<ConstructorPublicadores> newList = new ArrayList<>();
+
+        for (ConstructorPublicadores name : listPublicadores) {
+
+            if (name.getNombrePublicador().toLowerCase().contains(userInput) || name.getApellidoPublicador().toLowerCase().contains(userInput)) {
+
+                newList.add(name);
+            }
+        }
+
+        adapterPublicadores.updateList(newList);
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -137,7 +203,43 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+        String seleccion = ordenarPublicadores.getSelectedItem().toString();
+
+        if (seleccion.equals("A-Z (Nombres)")) {
+            sortListNombres ();
+        } else if (seleccion.equals("A-Z (Apellidos)")) {
+            sortListApellido ();
+        } else if (seleccion.equals("Ultima Fecha")) {
+            sortListFecha ();
+        }
+
     }
+
+    private void sortListFecha() {
+    }
+
+    private void sortListApellido() {
+        Collections.sort(listPublicadores, new Comparator<ConstructorPublicadores>() {
+            @Override
+            public int compare(ConstructorPublicadores o1, ConstructorPublicadores o2) {
+                return o1.getApellidoPublicador().compareTo(o2.getApellidoPublicador());
+            }
+        });
+        adapterPublicadores.notifyDataSetChanged();
+        recyclerPublicadores.setAdapter(adapterPublicadores);
+    }
+
+    private void sortListNombres() {
+        Collections.sort(listPublicadores, new Comparator<ConstructorPublicadores>() {
+            @Override
+            public int compare(ConstructorPublicadores o1, ConstructorPublicadores o2) {
+                return o1.getNombrePublicador().compareTo(o2.getNombrePublicador());
+            }
+        });
+        adapterPublicadores.notifyDataSetChanged();
+        recyclerPublicadores.setAdapter(adapterPublicadores);
+    }
+
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {

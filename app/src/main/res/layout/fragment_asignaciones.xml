@@ -4,16 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingEnd="@dimen/fab_margin"
-    android:paddingRight="@android:dimen/app_icon_size"
-    android:paddingBottom="@android:dimen/app_icon_size"
-    tools:context=".PublicadoresFragment">
+    tools:context=".AsignacionesFragment">
 
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <LinearLayout
@@ -150,6 +147,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/tab_text_3" />
+
                 <ImageButton
                     android:id="@+id/imageButton3"
                     android:layout_width="wrap_content"
@@ -277,15 +275,14 @@
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/fabAsignaciones"
-        android:layout_width="133dp"
-        android:layout_height="wrap_content"
+        android:layout_width="225dp"
+        android:layout_height="268dp"
         android:layout_gravity="end|bottom"
-        android:layout_margin="5dp"
         app:fab_addButtonColorNormal="@color/colorAccent"
         app:fab_addButtonColorPressed="@color/colorPrimary"
-        app:fab_labelsPosition="left"
+        app:fab_addButtonSize="normal"
         app:fab_labelStyle="@style/etiqueta"
-        app:fab_addButtonSize="normal">
+        app:fab_labelsPosition="left">
 
 
         <com.getbase.floatingactionbutton.FloatingActionButton
@@ -293,11 +290,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_colorNormal="@color/colorAccent"
+            app:fab_colorPressed="@color/colorPrimary"
             app:fab_icon="@drawable/ic_action_asignacion"
             app:fab_size="mini"
-            app:fab_title="@string/fabSala1"
-            app:fab_colorPressed="@color/colorPrimary"
-            />
+            app:fab_title="@string/fabSala1" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabSala2"
