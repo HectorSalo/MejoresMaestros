@@ -164,6 +164,8 @@ public class InicioFragment extends Fragment {
                     @Override
                     public void onFinish() {
                         textViewTemp.setText("Finalizado");
+                        editTextMinutos.setEnabled(true);
+                        editTextSegundos.setEnabled(true);
                         fabStart.setVisibility(View.VISIBLE);
                         fabStart.setEnabled(true);
                         fabPause.setEnabled(false);
@@ -229,6 +231,8 @@ public class InicioFragment extends Fragment {
                         @Override
                         public void onFinish() {
                             textViewTemp.setText("Finalizado");
+                            editTextMinutos.setEnabled(true);
+                            editTextSegundos.setEnabled(true);
                             fabStart.setVisibility(View.VISIBLE);
                             fabStart.setEnabled(true);
                             fabPause.setEnabled(false);

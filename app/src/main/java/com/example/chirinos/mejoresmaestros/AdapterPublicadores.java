@@ -35,9 +35,12 @@ public class AdapterPublicadores extends RecyclerView.Adapter<AdapterPublicadore
 
         viewHolderPublicadores.nombrePub.setText(listPublicadores.get(i).getNombrePublicador());
         viewHolderPublicadores.apellidoPub.setText(listPublicadores.get(i).getApellidoPublicador());
-        viewHolderPublicadores.ultiDiscurso.setText((CharSequence) listPublicadores.get(i).getUltAsignacion());
-        viewHolderPublicadores.imagenPublicador.setImageResource(listPublicadores.get(i).getImagen());
 
+        if (listPublicadores.get(i).getGenero().equals("Hombre")) {
+            viewHolderPublicadores.imagenPublicador.setImageResource(R.mipmap.ic_caballero);
+        } else if (listPublicadores.get(i).getGenero().equals("Mujer")) {
+            viewHolderPublicadores.imagenPublicador.setImageResource(R.mipmap.ic_dama);
+        }
     }
 
     @Override

@@ -9,7 +9,7 @@
     <string name="tab_text_1">Inicio</string>
     <string name="tab_text_2">Asignaciones</string>
     <string name="tab_text_3">Publicadores</string>
-    <string name="action_settings">Ajsutes</string>
+    <string name="action_settings">Ajustes</string>
 
     <!-- Add Publicador -->
     <string name="NombrePub">*Nombres: </string>
@@ -52,6 +52,12 @@
 
     <!-- Publicadores Fragmente -->
     <string name="Buscar">Buscar: </string>
+
+    <!-- Ver Activity -->
+    <string name="nameVer">Detalles</string>
+    <string name="ultDiscurso">Ultimo Discurso: </string>
+    <string name="ultAyudante">Ultimo Ayudante: </string>
+    <string name="ultSustitucion">Ultima Sustitucion: </string>
 
 
     <!-- FloatingMenu-->

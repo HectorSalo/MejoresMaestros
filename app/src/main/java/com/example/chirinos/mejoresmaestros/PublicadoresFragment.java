@@ -1,8 +1,12 @@
 package com.example.chirinos.mejoresmaestros;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,6 +60,7 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
     RecyclerView recyclerPublicadores;
     ArrayList<ConstructorPublicadores> listPublicadores;
     AdapterPublicadores adapterPublicadores;
+    AdminSQLiteOpenHelper conect;
 
     public PublicadoresFragment() {
         // Required empty public constructor
@@ -93,6 +99,8 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_publicadores, container, false);
 
+        conect = new AdminSQLiteOpenHelper(getContext(), "VMC", null, 8);
+
         textBuscar = (EditText) vista.findViewById(R.id.editTextBuscar);
         textBuscar.addTextChangedListener(new TextWatcher() {
             @Override
@@ -130,19 +138,23 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
                Intent intent = new Intent(getContext(), AddPublicador.class);
                startActivity(intent);
 
-                //Snackbar.make(view, "Añadir publicador", Snackbar.LENGTH_SHORT)
+                //Snackbar.make(view, "lista " + listPublicadores.size(), Snackbar.LENGTH_SHORT)
                 //        .setAction("Action", null).show();
             }
         });
 
 
         llenarlistPub ();
-        adapterPublicadores = new AdapterPublicadores(listPublicadores, this);
-        recyclerPublicadores.setAdapter(adapterPublicadores);
+
+
+
         adapterPublicadores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), VerActivity.class);
+                Bundle miBundle = new Bundle();
+                miBundle.putInt("id", listPublicadores.get(recyclerPublicadores.getChildAdapterPosition(v)).getIdPublicador());
+                intent.putExtras(miBundle);
                 startActivity(intent);
             }
         });
@@ -151,12 +163,27 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
         return vista;
     }
 
-    private void llenarlistPub() {
+    public void llenarlistPub() {
 
-        listPublicadores.add(new ConstructorPublicadores(1, "Hector", "Chirinos", R.mipmap.ic_caballero));
-        listPublicadores.add(new ConstructorPublicadores(2, "Genesy", "Diaz", R.mipmap.ic_dama));
+        SQLiteDatabase db = conect.getReadableDatabase();
 
-           }
+            Cursor cursor =db.rawQuery("SELECT * FROM publicadores ORDER BY apellido", null);
+
+            while (cursor.moveToNext()) {
+                ConstructorPublicadores publi = new ConstructorPublicadores();
+                publi.setIdPublicador(cursor.getInt(0));
+                publi.setNombrePublicador(cursor.getString(1));
+                publi.setApellidoPublicador(cursor.getString(2));
+                publi.setGenero(cursor.getString(5));
+
+                listPublicadores.add(publi);
+            }
+        adapterPublicadores = new AdapterPublicadores(listPublicadores, this);
+        recyclerPublicadores.setAdapter(adapterPublicadores);
+        db.close();
+
+    }
+
 
 
     private void listafiltrada (String text) {
@@ -207,6 +234,7 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
 
         if (seleccion.equals("A-Z (Nombres)")) {
             sortListNombres ();
+            //llenarlistPub(2);
         } else if (seleccion.equals("A-Z (Apellidos)")) {
             sortListApellido ();
         } else if (seleccion.equals("Ultima Fecha")) {
@@ -238,6 +266,7 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
         });
         adapterPublicadores.notifyDataSetChanged();
         recyclerPublicadores.setAdapter(adapterPublicadores);
+
     }
 
 
@@ -260,4 +289,7 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
+
 }

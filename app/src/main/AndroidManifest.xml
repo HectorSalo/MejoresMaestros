@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.chirinos.mejoresmaestros">
 
+    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -38,7 +42,11 @@
             android:name=".EditAsignacionesActivity"
             android:label="@string/nameEditar"
             android:theme="@style/Theme.Dialog.Publicador" />
-        <activity android:name=".VerActivity"></activity>
+        <activity
+            android:name=".VerActivity"
+            android:label="@string/nameVer"
+            android:theme="@style/Base.Theme.MaterialComponents.Light.Dialog.FixedSize">
+        </activity>
     </application>
 
 </manifest>

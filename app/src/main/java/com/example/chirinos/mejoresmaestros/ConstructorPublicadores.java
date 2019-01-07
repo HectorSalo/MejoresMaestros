@@ -4,22 +4,29 @@ import java.util.Date;
 
 public class ConstructorPublicadores {
 
-    private int idPublicador, imagen;
-    private String NombrePublicador, ApellidoPublicador,  correo;
-
+    private Integer idPublicador, imagen;
+    private String NombrePublicador, ApellidoPublicador, telefono, correo, genero;
     private Date ultAsignacion, ultAyudante, ultSustitucion;
 
-    //public ConstructorPublicadores () {}
+    public ConstructorPublicadores () {}
 
 
-    public ConstructorPublicadores(int idPublicador, String nombrePublicador, String apellidoPublicador, int imagen) {
+    /*public ConstructorPublicadores(Integer idPublicador, String nombrePublicador, String apellidoPublicador, Integer imagen) {
         this.idPublicador = idPublicador;
         NombrePublicador = nombrePublicador;
         ApellidoPublicador = apellidoPublicador;
         this.imagen = imagen;
+    }*/
+
+    public String getGenero() {
+        return genero;
     }
 
-    public int getIdPublicador() {
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public Integer getIdPublicador() {
         return idPublicador;
     }
 
@@ -31,7 +38,7 @@ public class ConstructorPublicadores {
         return ApellidoPublicador;
     }
 
-    public int getImagen() {
+    public Integer getImagen() {
         return imagen;
     }
 
@@ -52,7 +59,7 @@ public class ConstructorPublicadores {
     }
 
 
-    public void setIdPublicador(int idPublicador) {
+    public void setIdPublicador(Integer idPublicador) {
         this.idPublicador = idPublicador;
     }
 
@@ -64,7 +71,7 @@ public class ConstructorPublicadores {
         ApellidoPublicador = apellidoPublicador;
     }
 
-    public void setImagen(int imagen) {
+    public void setImagen(Integer imagen) {
         this.imagen = imagen;
     }
 
@@ -82,5 +89,13 @@ public class ConstructorPublicadores {
 
     public void setUltSustitucion(Date ultSustitucion) {
         this.ultSustitucion = ultSustitucion;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
     }
 }

@@ -15,6 +15,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <Spinner
+            android:id="@+id/spinnerOrdenarPublicadores"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <EditText
             android:id="@+id/editTextBuscar"
             android:layout_width="match_parent"
@@ -24,10 +29,6 @@
             android:inputType="textPersonName"
             android:textSize="24sp" />
 
-        <Spinner
-            android:id="@+id/spinnerOrdenarPublicadores"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerPublicadores"
