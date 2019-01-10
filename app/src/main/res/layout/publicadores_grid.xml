@@ -16,7 +16,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/imagenPublicadores"
             android:layout_width="100dp"
@@ -25,6 +27,20 @@
             android:gravity="center"
             />
 
+        <TextView
+            android:id="@+id/menuPub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/imagenPublicadores"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="7dp"
+            android:paddingStart="60dp"
+            android:paddingEnd="1dp"
+            android:text="&#8942;"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+
+    </RelativeLayout>
 
         <TextView
             android:id="@+id/textViewNombre"

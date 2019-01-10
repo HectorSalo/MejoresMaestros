@@ -25,9 +25,9 @@ public class AddPublicador extends AppCompatActivity {
     RadioButton radioMasculino, radioFemenino;
     Button buttonAgregar, buttonCancelar;
     String NombrePub, ApellidoPub, Telefono, Correo;
-    Integer tamañolista, idPub;
-    ArrayList<ConstructorPublicadores> listPublicadores;
 
+    ArrayList<ConstructorPublicadores> listPublicadores;
+    AdapterPublicadores adapterPublicadores;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class AddPublicador extends AppCompatActivity {
 
     public void GuardarPublicador () {
 
-        AdminSQLiteOpenHelper conectDB = new AdminSQLiteOpenHelper(getApplicationContext(), "VMC", null, 8);
+        AdminSQLiteOpenHelper conectDB = new AdminSQLiteOpenHelper(getApplicationContext(), "VMC", null, AdminSQLiteOpenHelper.VERSION);
 
         SQLiteDatabase db = conectDB.getWritableDatabase();
 
@@ -84,6 +84,7 @@ public class AddPublicador extends AppCompatActivity {
                 registro.put("apellido", ApellidoPub);
                 registro.put("telefono", Telefono);
                 registro.put("correo", Correo);
+
 
                 if (radioMasculino.isChecked()) {
                     registro.put("genero", "Hombre");

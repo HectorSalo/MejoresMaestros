@@ -84,6 +84,9 @@ public class AsignacionesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), Sala1Activity.class);
+                Bundle myBundle = new Bundle();
+                myBundle.putInt("lectura", 0);
+                intent.putExtras(myBundle);
                 startActivity(intent);
             }
         });
@@ -93,8 +96,10 @@ public class AsignacionesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), Sala2Activity.class);
+                Bundle myBundle = new Bundle();
+                myBundle.putInt("lectura", 0);
+                intent.putExtras(myBundle);
                 startActivity(intent);
-                //Snackbar.make(v, "Segunda Sala", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
             }
         });
 

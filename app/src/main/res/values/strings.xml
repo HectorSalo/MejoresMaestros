@@ -31,9 +31,10 @@
     <string name="tvAsignacion2">Segunda Asignacion: </string>
     <string name="tvAsignacion3">Tercera Asignacion: </string>
     <string name="checkboxVideo">Video</string>
-    <string name="tvEncargado">Encargado: </string>
-    <string name="tvAyudante">Ayudante: </string>
+    <string name="tvEncargado">Seleccione Encargado</string>
+    <string name="tvAyudante">Seleccione Ayudante</string>
     <string name="btnGuardar">Guardar</string>
+    <string name="lector">Seleccione Publicador</string>
 
     <!-- Inicio Fragment -->
     <string name="tituloInicio">Asignaciones de la semana: </string>
@@ -50,8 +51,13 @@
     <!-- Asignaciones Fragment -->
     <string name="tituloAsignaciones">Semana: </string>
 
+    <!-- Activity Editar -->
+    <string name="tituloFecha">Fecha</string>
+
     <!-- Publicadores Fragmente -->
     <string name="Buscar">Buscar: </string>
+    <string name="menuEditar">Editar</string>
+    <string name="menuEliminar">Eliminar</string>
 
     <!-- Ver Activity -->
     <string name="nameVer">Detalles</string>

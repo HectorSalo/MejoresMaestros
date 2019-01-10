@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -99,7 +100,7 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_publicadores, container, false);
 
-        conect = new AdminSQLiteOpenHelper(getContext(), "VMC", null, 8);
+        conect = new AdminSQLiteOpenHelper(getContext(), "VMC", null, AdminSQLiteOpenHelper.VERSION);
 
         textBuscar = (EditText) vista.findViewById(R.id.editTextBuscar);
         textBuscar.addTextChangedListener(new TextWatcher() {
@@ -119,8 +120,9 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
             }
         });
 
+        GridLayoutManager gM = new GridLayoutManager(getContext(),3);
         recyclerPublicadores = (RecyclerView) vista.findViewById(R.id.recyclerPublicadores);
-        recyclerPublicadores.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        recyclerPublicadores.setLayoutManager(gM);
         recyclerPublicadores.setHasFixedSize(true);
         listPublicadores = new ArrayList<>();
 
@@ -138,15 +140,37 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
                Intent intent = new Intent(getContext(), AddPublicador.class);
                startActivity(intent);
 
-                //Snackbar.make(view, "lista " + listPublicadores.size(), Snackbar.LENGTH_SHORT)
-                //        .setAction("Action", null).show();
             }
         });
 
 
         llenarlistPub ();
 
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), gM.getOrientation());
+        recyclerPublicadores.addItemDecoration(dividerItemDecoration);
 
+
+        return vista;
+    }
+
+    public void llenarlistPub() {
+
+        SQLiteDatabase db = conect.getReadableDatabase();
+
+            Cursor cursor =db.rawQuery("SELECT * FROM publicadores ORDER BY anualasignacion ASC, mesasignacion ASC, diaasignacion ASC", null);
+
+            while (cursor.moveToNext()) {
+                ConstructorPublicadores publi = new ConstructorPublicadores();
+                publi.setIdPublicador(cursor.getInt(0));
+                publi.setNombrePublicador(cursor.getString(1));
+                publi.setApellidoPublicador(cursor.getString(2));
+                publi.setGenero(cursor.getString(5));
+                publi.setUltAsignacion(String.valueOf(cursor.getInt(7)) + "/" + String.valueOf(cursor.getInt(8)) + "/" + String.valueOf(cursor.getInt(9)));
+
+                listPublicadores.add(publi);
+            }
+        adapterPublicadores = new AdapterPublicadores(listPublicadores, getContext());
+        recyclerPublicadores.setAdapter(adapterPublicadores);
 
         adapterPublicadores.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,28 +182,6 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
                 startActivity(intent);
             }
         });
-
-
-        return vista;
-    }
-
-    public void llenarlistPub() {
-
-        SQLiteDatabase db = conect.getReadableDatabase();
-
-            Cursor cursor =db.rawQuery("SELECT * FROM publicadores ORDER BY apellido", null);
-
-            while (cursor.moveToNext()) {
-                ConstructorPublicadores publi = new ConstructorPublicadores();
-                publi.setIdPublicador(cursor.getInt(0));
-                publi.setNombrePublicador(cursor.getString(1));
-                publi.setApellidoPublicador(cursor.getString(2));
-                publi.setGenero(cursor.getString(5));
-
-                listPublicadores.add(publi);
-            }
-        adapterPublicadores = new AdapterPublicadores(listPublicadores, this);
-        recyclerPublicadores.setAdapter(adapterPublicadores);
         db.close();
 
     }

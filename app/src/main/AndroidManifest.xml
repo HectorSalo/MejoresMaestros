@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.chirinos.mejoresmaestros">
 
-    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -13,13 +13,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".PrincipalActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,11 +31,11 @@
         <activity
             android:name=".Sala1Activity"
             android:label="@string/nameSala1"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Sala2Activity"
             android:label="@string/nameSala2"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".EditAsignacionesActivity"
             android:label="@string/nameEditar"
@@ -45,7 +43,14 @@
         <activity
             android:name=".VerActivity"
             android:label="@string/nameVer"
-            android:theme="@style/Base.Theme.MaterialComponents.Light.Dialog.FixedSize">
+            android:theme="@style/Base.Theme.MaterialComponents.Light.Dialog.FixedSize" />
+        <activity
+            android:name=".EditarPub"
+            android:label="@string/nameEditar"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".SeleccionarPubAsig"
+            android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
     </application>
 

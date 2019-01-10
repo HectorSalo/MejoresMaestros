@@ -6,7 +6,7 @@ public class ConstructorPublicadores {
 
     private Integer idPublicador, imagen;
     private String NombrePublicador, ApellidoPublicador, telefono, correo, genero;
-    private Date ultAsignacion, ultAyudante, ultSustitucion;
+    private String ultAsignacion, ultAyudante, ultSustitucion;
 
     public ConstructorPublicadores () {}
 
@@ -46,15 +46,15 @@ public class ConstructorPublicadores {
         return correo;
     }
 
-    public Date getUltAsignacion() {
+    public String getUltAsignacion() {
         return ultAsignacion;
     }
 
-    public Date getUltAyudante() {
+    public String getUltAyudante() {
         return ultAyudante;
     }
 
-    public Date getUltSustitucion() {
+    public String getUltSustitucion() {
         return ultSustitucion;
     }
 
@@ -79,15 +79,15 @@ public class ConstructorPublicadores {
         this.correo = correo;
     }
 
-    public void setUltAsignacion(Date ultAsignacion) {
+    public void setUltAsignacion(String ultAsignacion) {
         this.ultAsignacion = ultAsignacion;
     }
 
-    public void setUltAyudante(Date ultAyudante) {
+    public void setUltAyudante(String ultAyudante) {
         this.ultAyudante = ultAyudante;
     }
 
-    public void setUltSustitucion(Date ultSustitucion) {
+    public void setUltSustitucion(String ultSustitucion) {
         this.ultSustitucion = ultSustitucion;
     }
 
