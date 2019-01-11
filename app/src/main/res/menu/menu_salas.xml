@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_edit"
+        android:orderInCategory="100"
+        android:title="@string/menuEditar"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_menu_edit"/>
+    <item
         android:id="@+id/menu_save"
         android:orderInCategory="100"
         android:title="@string/btnGuardar"

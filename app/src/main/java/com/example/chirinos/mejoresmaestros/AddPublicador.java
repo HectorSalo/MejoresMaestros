@@ -21,13 +21,11 @@ import java.util.ArrayList;
 
 public class AddPublicador extends AppCompatActivity {
 
-    EditText editNombrePub, editApellidoPub, editTelefonoPub, editCorreoPub;
-    RadioButton radioMasculino, radioFemenino;
-    Button buttonAgregar, buttonCancelar;
-    String NombrePub, ApellidoPub, Telefono, Correo;
+    private EditText editNombrePub, editApellidoPub, editTelefonoPub, editCorreoPub;
+    private RadioButton radioMasculino, radioFemenino;
+    private Button buttonAgregar, buttonCancelar;
+    private String NombrePub, ApellidoPub, Telefono, Correo;
 
-    ArrayList<ConstructorPublicadores> listPublicadores;
-    AdapterPublicadores adapterPublicadores;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

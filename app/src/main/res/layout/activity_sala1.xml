@@ -95,7 +95,7 @@
                         android:id="@+id/lecturaSala1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="@string/lector"
+                        android:text="@string/Publicador"
                         android:textSize="25sp"
                         android:textColor="#b64518"/>
 
@@ -110,12 +110,12 @@
                 android:layout_marginTop="15dp">
 
                 <TableRow
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="75dp">
 
                     <Spinner
                         android:id="@+id/spinnerPrimeraAsignacion"
-                        android:layout_width="match_parent"
+                        android:layout_width="300dp"
                         android:layout_height="50dp"
                         android:dropDownWidth="match_parent" />
 
@@ -166,7 +166,7 @@
 
                     <Spinner
                         android:id="@+id/spinnerSegundaAsignacion"
-                        android:layout_width="match_parent"
+                        android:layout_width="300dp"
                         android:layout_height="50dp"
                         android:dropDownWidth="match_parent" />
 
@@ -215,7 +215,7 @@
 
                     <Spinner
                         android:id="@+id/spinnerTerceraAsignacion"
-                        android:layout_width="match_parent"
+                        android:layout_width="300dp"
                         android:layout_height="50dp"
                         android:dropDownWidth="match_parent" />
 

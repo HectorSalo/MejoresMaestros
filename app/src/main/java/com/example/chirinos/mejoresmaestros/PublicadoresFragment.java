@@ -51,17 +51,18 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
     private String mParam1;
     private String mParam2;
 
-    Spinner ordenarPublicadores;
+    private Spinner ordenarPublicadores;
 
     private OnFragmentInteractionListener mListener;
 
-    FloatingActionButton fabPublicadores;
-    View vista;
-    EditText textBuscar;
-    RecyclerView recyclerPublicadores;
-    ArrayList<ConstructorPublicadores> listPublicadores;
-    AdapterPublicadores adapterPublicadores;
-    AdminSQLiteOpenHelper conect;
+    private FloatingActionButton fabPublicadores;
+    private View vista;
+    private EditText textBuscar;
+    private RecyclerView recyclerPublicadores;
+    private ArrayList<ConstructorPublicadores> listPublicadores, listNombres, listApellidos, listFecha;
+    private AdapterPublicadores adapterPublicadores;
+    private AdminSQLiteOpenHelper conect;
+    private String seleccionSpinner;
 
     public PublicadoresFragment() {
         // Required empty public constructor
@@ -125,6 +126,9 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
         recyclerPublicadores.setLayoutManager(gM);
         recyclerPublicadores.setHasFixedSize(true);
         listPublicadores = new ArrayList<>();
+        listNombres = new ArrayList<>();
+        listApellidos = new ArrayList<>();
+        listFecha = new ArrayList<>();
 
         ordenarPublicadores = (Spinner) vista.findViewById(R.id.spinnerOrdenarPublicadores);
         String [] spOrdenar = {"Ordenar", "A-Z (Nombres)", "A-Z (Apellidos)", "Ultima Fecha"};
@@ -186,6 +190,99 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
 
     }
 
+    private void llenarListNombres() {
+        SQLiteDatabase db = conect.getReadableDatabase();
+
+        Cursor cursor =db.rawQuery("SELECT * FROM publicadores ORDER BY nombre ASC", null);
+
+        while (cursor.moveToNext()) {
+            ConstructorPublicadores publi = new ConstructorPublicadores();
+            publi.setIdPublicador(cursor.getInt(0));
+            publi.setNombrePublicador(cursor.getString(1));
+            publi.setApellidoPublicador(cursor.getString(2));
+            publi.setGenero(cursor.getString(5));
+            publi.setUltAsignacion(String.valueOf(cursor.getInt(7)) + "/" + String.valueOf(cursor.getInt(8)) + "/" + String.valueOf(cursor.getInt(9)));
+
+            listNombres.add(publi);
+        }
+        adapterPublicadores.updateList(listNombres);
+
+
+        adapterPublicadores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), VerActivity.class);
+                Bundle miBundle = new Bundle();
+                miBundle.putInt("id", listNombres.get(recyclerPublicadores.getChildAdapterPosition(v)).getIdPublicador());
+                intent.putExtras(miBundle);
+                startActivity(intent);
+            }
+        });
+        db.close();
+    }
+
+    private void llenarListApellidos () {
+        SQLiteDatabase db = conect.getReadableDatabase();
+
+        Cursor cursor =db.rawQuery("SELECT * FROM publicadores ORDER BY apellido ASC", null);
+
+        while (cursor.moveToNext()) {
+            ConstructorPublicadores publi = new ConstructorPublicadores();
+            publi.setIdPublicador(cursor.getInt(0));
+            publi.setNombrePublicador(cursor.getString(1));
+            publi.setApellidoPublicador(cursor.getString(2));
+            publi.setGenero(cursor.getString(5));
+            publi.setUltAsignacion(String.valueOf(cursor.getInt(7)) + "/" + String.valueOf(cursor.getInt(8)) + "/" + String.valueOf(cursor.getInt(9)));
+
+            listApellidos.add(publi);
+        }
+        adapterPublicadores.updateList(listApellidos);
+
+
+        adapterPublicadores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), VerActivity.class);
+                Bundle miBundle = new Bundle();
+                miBundle.putInt("id", listApellidos.get(recyclerPublicadores.getChildAdapterPosition(v)).getIdPublicador());
+                intent.putExtras(miBundle);
+                startActivity(intent);
+            }
+        });
+        db.close();
+    }
+
+    private void llenarListFecha () {
+        SQLiteDatabase db = conect.getReadableDatabase();
+
+        Cursor cursor =db.rawQuery("SELECT * FROM publicadores ORDER BY anualasignacion ASC, mesasignacion ASC, diaasignacion ASC", null);
+
+        while (cursor.moveToNext()) {
+            ConstructorPublicadores publi = new ConstructorPublicadores();
+            publi.setIdPublicador(cursor.getInt(0));
+            publi.setNombrePublicador(cursor.getString(1));
+            publi.setApellidoPublicador(cursor.getString(2));
+            publi.setGenero(cursor.getString(5));
+            publi.setUltAsignacion(String.valueOf(cursor.getInt(7)) + "/" + String.valueOf(cursor.getInt(8)) + "/" + String.valueOf(cursor.getInt(9)));
+
+            listFecha.add(publi);
+        }
+        adapterPublicadores.updateList(listFecha);
+
+
+        adapterPublicadores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), VerActivity.class);
+                Bundle miBundle = new Bundle();
+                miBundle.putInt("id", listFecha.get(recyclerPublicadores.getChildAdapterPosition(v)).getIdPublicador());
+                intent.putExtras(miBundle);
+                startActivity(intent);
+            }
+        });
+        db.close();
+    }
+
 
 
     private void listafiltrada (String text) {
@@ -232,42 +329,15 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        String seleccion = ordenarPublicadores.getSelectedItem().toString();
+        seleccionSpinner = ordenarPublicadores.getSelectedItem().toString();
 
-        if (seleccion.equals("A-Z (Nombres)")) {
-            sortListNombres ();
-            //llenarlistPub(2);
-        } else if (seleccion.equals("A-Z (Apellidos)")) {
-            sortListApellido ();
-        } else if (seleccion.equals("Ultima Fecha")) {
-            sortListFecha ();
+        if (seleccionSpinner.equals("A-Z (Nombres)")) {
+            llenarListNombres();
+        } else if (seleccionSpinner.equals("A-Z (Apellidos)")) {
+            llenarListApellidos();
+        } else if (seleccionSpinner.equals("Ultima Fecha")) {
+            llenarListFecha();
         }
-
-    }
-
-    private void sortListFecha() {
-    }
-
-    private void sortListApellido() {
-        Collections.sort(listPublicadores, new Comparator<ConstructorPublicadores>() {
-            @Override
-            public int compare(ConstructorPublicadores o1, ConstructorPublicadores o2) {
-                return o1.getApellidoPublicador().compareTo(o2.getApellidoPublicador());
-            }
-        });
-        adapterPublicadores.notifyDataSetChanged();
-        recyclerPublicadores.setAdapter(adapterPublicadores);
-    }
-
-    private void sortListNombres() {
-        Collections.sort(listPublicadores, new Comparator<ConstructorPublicadores>() {
-            @Override
-            public int compare(ConstructorPublicadores o1, ConstructorPublicadores o2) {
-                return o1.getNombrePublicador().compareTo(o2.getNombrePublicador());
-            }
-        });
-        adapterPublicadores.notifyDataSetChanged();
-        recyclerPublicadores.setAdapter(adapterPublicadores);
 
     }
 

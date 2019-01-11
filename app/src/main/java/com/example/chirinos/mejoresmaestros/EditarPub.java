@@ -129,7 +129,7 @@ public class EditarPub extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.menu_salas, menu);
+        getMenuInflater().inflate(R.menu.menu_editar_pub, menu);
         return true;
     }
 
@@ -139,10 +139,10 @@ public class EditarPub extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.menu_save) {
+        if (id == R.id.menu_save_pub) {
             editarpublicador();
             return true;
-        } else if (id == R.id.menu_cancel) {
+        } else if (id == R.id.menu_cancel_pub) {
             Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();
             finish();
             return true;

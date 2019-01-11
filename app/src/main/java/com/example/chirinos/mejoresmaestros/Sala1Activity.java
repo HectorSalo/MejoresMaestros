@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -23,10 +24,11 @@ import java.util.Calendar;
 public class Sala1Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private Spinner spinnerPrimeraAsignacion, spinnerSegundaAsignacion, spinnerTerceraAsignacion;
-    private TextView tvLectura, tvFecha, tvEncargado1, tvAyudante1;
-    private Integer idLector, idEncargado1, lectura, eAsignacion1, dia, mes, anual, diaAsignacion, mesAsignacion, anualAsignacion;
+    private TextView tvLectura, tvFecha, tvEncargado1, tvAyudante1, tvEncargado2, tvAyudante2, tvEncargado3, tvAyudante3;
+    private Integer llenarSala1, idLector, idEncargado1, idAyudante1, idEncargado2, idAyudante2, idEncargado3, idAyudante3, dia, mes, anual, diaAsignacion, mesAsignacion, anualAsignacion;
     private Bundle bundleRecibir;
-
+    private CheckBox checkAsamblea, checkVisita;
+    private String seleccionSpinner1, seleccionSpinner2, seleccionSpinner3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +39,16 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         setSupportActionBar(toolbar);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
+        checkAsamblea = (CheckBox) findViewById(R.id.checkBoxAsamblea);
+        checkVisita = (CheckBox) findViewById(R.id.checkBoxVisita);
+
         tvLectura = (TextView)findViewById(R.id.lecturaSala1);
         tvEncargado1 = (TextView) findViewById(R.id.encargado1Sala1);
         tvAyudante1 = (TextView) findViewById(R.id.ayudante1Sala1);
+        tvEncargado2 = (TextView) findViewById(R.id.encargado2Sala1);
+        tvAyudante2 = (TextView) findViewById(R.id.ayudante2Sala1);
+        tvEncargado3 = (TextView) findViewById(R.id.encargado3Sala1);
+        tvAyudante3 = (TextView) findViewById(R.id.ayudante3Sala1);
         tvFecha = (TextView) findViewById(R.id.fechaSala1);
 
         spinnerPrimeraAsignacion = (Spinner)findViewById(R.id.spinnerPrimeraAsignacion);
@@ -61,19 +70,27 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         spinnerTerceraAsignacion.setOnItemSelectedListener(this);
 
         bundleRecibir = this.getIntent().getExtras();
-        lectura = bundleRecibir.getInt("lectura");
-        eAsignacion1 = bundleRecibir.getInt("eAsignacion1");
+        llenarSala1 = bundleRecibir.getInt("llenarSala1");
         idLector = bundleRecibir.getInt("idLector");
         idEncargado1 = bundleRecibir.getInt("idEncargado1");
+        idAyudante1 = bundleRecibir.getInt("idAyudante1");
+        idEncargado2 = bundleRecibir.getInt("idEncargado2");
+        idAyudante2 = bundleRecibir.getInt("idAyudante2");
+        idEncargado3 = bundleRecibir.getInt("idEncargado3");
+        idAyudante3 = bundleRecibir.getInt("idAyudante3");
 
-
-        if (lectura == 1) {
+        if (llenarSala1 == 1) {
             cargarLector();
+            cargarEncargado1();
+            cargarAyudante1();
+            cargarEncargado2();
+            cargarAyudante2();
+            cargarEncargado3();
+            cargarAyudante3();
+
         }
 
-        if (eAsignacion1 == 1) {
-            cargarEncargado1 ();
-        }
+
 
         tvFecha.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,17 +99,20 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
             }
         });
 
-        tvLectura.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myintent = new Intent(getApplicationContext(), SeleccionarPubAsig.class);
-                Bundle myBundle = new Bundle();
-                myBundle.putInt("abrirLectura", 1);
-                myintent.putExtras(myBundle);
-                startActivity(myintent);
-            }
-        });
+    }
 
+    private void editarAsignaciones () {
+        if (!checkAsamblea.isChecked()) {
+            if ((!seleccionSpinner1.equals("Seleccionar Asignacion")) && (!seleccionSpinner2.equals("Seleccionar Asignacion")) && (!seleccionSpinner3.equals("Seleccionar Asignacion")) ) {
+
+                Intent myintent = new Intent(getApplicationContext(), SeleccionarPubAsig.class);
+                startActivity(myintent);
+            } else {
+                Toast.makeText(getApplicationContext(), "Debe escoger los tipos de Asignacion primero", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(getApplicationContext(), "No hay asignaciones en Asamblea", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void selecFecha() {
@@ -115,11 +135,11 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     private void cargarLector () {
-        String sidLector = String.valueOf(idLector);
+        String sid = String.valueOf(idLector);
         AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
         SQLiteDatabase db = conect.getWritableDatabase();
 
-        Cursor fila = db.rawQuery("SELECT * FROM publicadores WHERE idPublicador =" + sidLector, null);
+        Cursor fila = db.rawQuery("SELECT * FROM publicadores WHERE idPublicador =" + sid, null);
 
         if(fila.moveToFirst()) {
             tvLectura.setText(fila.getString(1) + " " + fila.getString(2));
@@ -127,16 +147,78 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     private void cargarEncargado1 () {
-        String sidLector = String.valueOf(idEncargado1);
+        String sid = String.valueOf(idEncargado1);
         AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
         SQLiteDatabase db = conect.getWritableDatabase();
 
-        Cursor fila = db.rawQuery("SELECT * FROM publicadores WHERE idPublicador =" + sidLector, null);
+        Cursor fila = db.rawQuery("SELECT * FROM publicadores WHERE idPublicador =" + sid, null);
 
         if(fila.moveToFirst()) {
             tvEncargado1.setText(fila.getString(1) + " " + fila.getString(2));
         }
     }
+
+    private void cargarAyudante1 () {
+        String sid = String.valueOf(idAyudante1);
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        SQLiteDatabase db = conect.getWritableDatabase();
+
+        Cursor fila = db.rawQuery("SELECT * FROM publicadores WHERE idPublicador =" + sid, null);
+
+        if(fila.moveToFirst()) {
+            tvAyudante1.setText(fila.getString(1) + " " + fila.getString(2));
+        }
+    }
+
+    private void cargarEncargado2 () {
+        String sid = String.valueOf(idEncargado2);
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        SQLiteDatabase db = conect.getWritableDatabase();
+
+        Cursor fila = db.rawQuery("SELECT * FROM publicadores WHERE idPublicador =" + sid, null);
+
+        if(fila.moveToFirst()) {
+            tvEncargado2.setText(fila.getString(1) + " " + fila.getString(2));
+        }
+    }
+
+    private void cargarAyudante2 () {
+        String sid = String.valueOf(idAyudante2);
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        SQLiteDatabase db = conect.getWritableDatabase();
+
+        Cursor fila = db.rawQuery("SELECT * FROM publicadores WHERE idPublicador =" + sid, null);
+
+        if(fila.moveToFirst()) {
+            tvAyudante2.setText(fila.getString(1) + " " + fila.getString(2));
+        }
+    }
+
+    private void cargarEncargado3 () {
+        String sid = String.valueOf(idEncargado3);
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        SQLiteDatabase db = conect.getWritableDatabase();
+
+        Cursor fila = db.rawQuery("SELECT * FROM publicadores WHERE idPublicador =" + sid, null);
+
+        if(fila.moveToFirst()) {
+            tvEncargado3.setText(fila.getString(1) + " " + fila.getString(2));
+        }
+    }
+
+    private void cargarAyudante3 () {
+        String sid = String.valueOf(idAyudante3);
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        SQLiteDatabase db = conect.getWritableDatabase();
+
+        Cursor fila = db.rawQuery("SELECT * FROM publicadores WHERE idPublicador =" + sid, null);
+
+        if(fila.moveToFirst()) {
+            tvAyudante3.setText(fila.getString(1) + " " + fila.getString(2));
+        }
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -150,16 +232,38 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        if (checkAsamblea.isChecked()) {
+            int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.menu_save) {
-            Toast.makeText(getApplicationContext(), "Informacion guardada", Toast.LENGTH_SHORT).show();
-            return true;
-        } else if (id == R.id.menu_cancel) {
-            Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();
-            finish();
-            return true;
+            //noinspection SimplifiableIfStatement
+            if (id == R.id.menu_save) {
+                Toast.makeText(getApplicationContext(), "Semana sin asignaciones por Asamblea", Toast.LENGTH_LONG).show();
+                finish();
+                return true;
+            } else if (id == R.id.menu_cancel) {
+                Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();
+                finish();
+                return true;
+            } else if (id == R.id.menu_edit) {
+                Toast.makeText(getApplicationContext(), "No se puede editar en Asamblea", Toast.LENGTH_LONG).show();
+                return true;
+            }
+        } else {
+
+            int id = item.getItemId();
+
+            //noinspection SimplifiableIfStatement
+            if (id == R.id.menu_save) {
+                Toast.makeText(getApplicationContext(), "Informacion guardada", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (id == R.id.menu_cancel) {
+                Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();
+                finish();
+                return true;
+            } else if (id == R.id.menu_edit) {
+                editarAsignaciones ();
+            }
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -167,6 +271,26 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        seleccionSpinner1 = spinnerPrimeraAsignacion.getSelectedItem().toString();
+        if (seleccionSpinner1.equals("Discurso")) {
+            tvAyudante1.setVisibility(View.INVISIBLE);
+        } else {
+            tvAyudante1.setVisibility(View.VISIBLE);
+        }
+
+        seleccionSpinner2 = spinnerSegundaAsignacion.getSelectedItem().toString();
+        if (seleccionSpinner2.equals("Discurso")) {
+            tvAyudante2.setVisibility(View.INVISIBLE);
+        } else {
+            tvAyudante2.setVisibility(View.VISIBLE);
+        }
+
+        seleccionSpinner3 = spinnerTerceraAsignacion.getSelectedItem().toString();
+        if (seleccionSpinner3.equals("Discurso")) {
+            tvAyudante3.setVisibility(View.INVISIBLE);
+        } else {
+            tvAyudante3.setVisibility(View.VISIBLE);
+        }
 
     }
 

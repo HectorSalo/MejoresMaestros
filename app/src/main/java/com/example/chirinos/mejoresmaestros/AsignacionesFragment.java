@@ -97,7 +97,7 @@ public class AsignacionesFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), Sala2Activity.class);
                 Bundle myBundle = new Bundle();
-                myBundle.putInt("lectura", 0);
+                myBundle.putInt("llenarSala1", 0);
                 intent.putExtras(myBundle);
                 startActivity(intent);
             }

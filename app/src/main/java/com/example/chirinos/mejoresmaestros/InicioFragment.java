@@ -31,18 +31,18 @@ public class InicioFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    View vista;
+    private View vista;
 
-    EditText editTextMinutos, editTextSegundos;
-    FloatingActionButton fabStart, fabStop, fabPause;
-    TextView textViewTemp;
-    boolean isPaused;
-    boolean isCenceled;
-    long TiempoRestante;
-    boolean isResume;
-    String FORMAT = "%02d:%02d";
-    long resultadoMinuto, resultadoSegundo, tiempoBase, intervaloDecrecer;
-    Long minuto_ingresado, segundo_ingresado;
+    private EditText editTextMinutos, editTextSegundos;
+    private FloatingActionButton fabStart, fabStop, fabPause;
+    private TextView textViewTemp;
+    private boolean isPaused;
+    private boolean isCenceled;
+    private long TiempoRestante;
+    private boolean isResume;
+    private String FORMAT = "%02d:%02d";
+    private long resultadoMinuto, resultadoSegundo, tiempoBase, intervaloDecrecer;
+    private Long minuto_ingresado, segundo_ingresado;
 
     private InicioFragment.OnFragmentInteractionListener mListener;
 

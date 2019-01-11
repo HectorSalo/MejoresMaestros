@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 public class Sala2Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    Spinner spinnerFecha, spinnerPrimeraAsignacion, spinnerSegundaAsignacion, spinnerTerceraAsignacion;
+    private Spinner spinnerPrimeraAsignacion, spinnerSegundaAsignacion, spinnerTerceraAsignacion;
 
 
     @Override
@@ -25,12 +25,6 @@ public class Sala2Activity extends AppCompatActivity implements AdapterView.OnIt
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarSalas);
         setSupportActionBar(toolbar);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
-
-        spinnerFecha = (Spinner)findViewById(R.id.spinnerFecha);
-        String [] spFechas = {"Seleccionar Fecha", "Item 1", "Item 2"};
-        ArrayAdapter<String> adapterFechas = new ArrayAdapter<String>(this, R.layout.spinner_personalizado, spFechas);
-        spinnerFecha.setAdapter(adapterFechas);
-        spinnerFecha.setOnItemSelectedListener(this);
 
         spinnerPrimeraAsignacion = (Spinner)findViewById(R.id.spinnerPrimeraAsignacion);
         String [] spPrimeraAsignacion = {"Seleccionar Asignacion", "Lectores y Maestros", "Primera Conversacion", "Primera Revisita", "Segunda Revisita", "Curso Biblico", "Discurso"};
