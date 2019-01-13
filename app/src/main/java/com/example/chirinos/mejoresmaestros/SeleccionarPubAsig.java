@@ -18,25 +18,33 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class SeleccionarPubAsig extends AppCompatActivity {
+
+
+public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private RecyclerView recyclerSeleccionar;
+    private Spinner spinnerSeleccionar;
     private ArrayList<ConstructorPublicadores> listSeleccionarPub;
     private AdapterSelecPubAsignacion adapterSeleccionar;
     private FloatingActionButton fabClose;
     private Bundle bundleRecibir;
-    private String genero;
+    private String genero, seleccion1, seleccion2, seleccion3;
     private Integer idLector, idEncargado1, idAyudante1, idEncargado2, idAyudante2, idEncargado3, idAyudante3, abrirLecutra, abrirEncargado1;
+    private ArrayAdapter<String> adapterSpSeleccionar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seleccionar_pub_asig);
 
+        spinnerSeleccionar = (Spinner) findViewById(R.id.spinnerSelec);
         recyclerSeleccionar = (RecyclerView) findViewById(R.id.recyclerSeleccionar);
         LinearLayoutManager llM = new LinearLayoutManager(this);
         recyclerSeleccionar.setLayoutManager(llM);
@@ -45,6 +53,10 @@ public class SeleccionarPubAsig extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, llM.getOrientation());
         recyclerSeleccionar.addItemDecoration(dividerItemDecoration);
 
+        String [] spSelecccionar = {"Seleccionar Asignacion", "Primera Conversacion", "Primera Revisita", "Segunda Revisita", "Curso Biblico", "Discurso", "Sin asignacion"};
+        adapterSpSeleccionar = new ArrayAdapter<String>(this, R.layout.spinner_personalizado, spSelecccionar);
+        spinnerSeleccionar.setAdapter(adapterSpSeleccionar);
+        spinnerSeleccionar.setOnItemSelectedListener(this);
 
         llenarListaLectura();
 
@@ -60,6 +72,7 @@ public class SeleccionarPubAsig extends AppCompatActivity {
     }
 
     private void llenarListaLectura() {
+        spinnerSeleccionar.setVisibility(View.INVISIBLE);
         AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
         SQLiteDatabase db = conect.getReadableDatabase();
 
@@ -82,7 +95,7 @@ public class SeleccionarPubAsig extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 idLector = listSeleccionarPub.get(recyclerSeleccionar.getChildAdapterPosition(view)).getIdPublicador();
-                Snackbar.make(view, "Seleccione al Encargado de la Primera Asignacion", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Seleccione al Encargado de la Primera Asignacion", Snackbar.LENGTH_INDEFINITE)
                         .setAction("Action", null).show();
                 llenarListaEncargado1();
 
@@ -92,6 +105,8 @@ public class SeleccionarPubAsig extends AppCompatActivity {
     }
 
     private void llenarListaEncargado1 () {
+        spinnerSeleccionar.setVisibility(View.VISIBLE);
+
         AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
         SQLiteDatabase db = conect.getReadableDatabase();
         final ArrayList<ConstructorPublicadores> listAsignacion1 = new ArrayList<>();
@@ -111,20 +126,47 @@ public class SeleccionarPubAsig extends AppCompatActivity {
         adapterSeleccionar.updateListSelec(listAsignacion1);
 
 
-        adapterSeleccionar.setOnClickListener(new View.OnClickListener() {
+        spinnerSeleccionar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Seleccione al Ayudante de la Primera Asignacion", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                idEncargado1 = listAsignacion1.get(recyclerSeleccionar.getChildAdapterPosition(view)).getIdPublicador();
-                genero = listAsignacion1.get(recyclerSeleccionar.getChildAdapterPosition(view)).getGenero();
-                llenarListaAyudante1();
-           }
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                seleccion1 = spinnerSeleccionar.getSelectedItem().toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
         });
+
+        adapterSeleccionar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if (seleccion1.equals("Discurso")) {
+                        if (listAsignacion1.get(recyclerSeleccionar.getChildAdapterPosition(view)).getGenero().equals("Hombre")) {
+                            Snackbar.make(view, "Seleccione al Encargado de la Segunda Asignacion", Snackbar.LENGTH_INDEFINITE).show();
+                            idEncargado1 = listAsignacion1.get(recyclerSeleccionar.getChildAdapterPosition(view)).getIdPublicador();
+                            llenarListaEncargado2();
+                            idAyudante1 = 1000;
+                        } else if (listAsignacion1.get(recyclerSeleccionar.getChildAdapterPosition(view)).getGenero().equals("Mujer")) {
+                            Toast.makeText(getApplicationContext(), "Debe escoger publicador masculino", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Snackbar.make(view, "Seleccione al Ayudante de la Primera Asignacion", Snackbar.LENGTH_INDEFINITE)
+                                .setAction("Action", null).show();
+                        idEncargado1 = listAsignacion1.get(recyclerSeleccionar.getChildAdapterPosition(view)).getIdPublicador();
+                        genero = listAsignacion1.get(recyclerSeleccionar.getChildAdapterPosition(view)).getGenero();
+                        llenarListaAyudante1();
+                    }
+                }
+            });
+
         db.close();
     }
 
     private void llenarListaAyudante1 () {
+        spinnerSeleccionar.setVisibility(View.INVISIBLE);
         AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
         SQLiteDatabase db = conect.getReadableDatabase();
         final ArrayList<ConstructorPublicadores> listAyudante1 = new ArrayList<>();
@@ -153,7 +195,7 @@ public class SeleccionarPubAsig extends AppCompatActivity {
         adapterSeleccionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, "Seleccione al Encargado de la Segunda Asignacion", Snackbar.LENGTH_LONG)
+                Snackbar.make(v, "Seleccione al Encargado de la Segunda Asignacion", Snackbar.LENGTH_INDEFINITE)
                         .setAction("Action", null).show();
                 idAyudante1 = listAyudante1.get(recyclerSeleccionar.getChildAdapterPosition(v)).getIdPublicador();
                 llenarListaEncargado2();
@@ -163,6 +205,8 @@ public class SeleccionarPubAsig extends AppCompatActivity {
     }
 
     private void llenarListaEncargado2 () {
+        spinnerSeleccionar.setAdapter(adapterSpSeleccionar);
+        spinnerSeleccionar.setVisibility(View.VISIBLE);
         AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
         SQLiteDatabase db = conect.getReadableDatabase();
         final ArrayList<ConstructorPublicadores> listAsignacion2 = new ArrayList<>();
@@ -181,21 +225,44 @@ public class SeleccionarPubAsig extends AppCompatActivity {
         }
         adapterSeleccionar.updateListSelec(listAsignacion2);
 
+        spinnerSeleccionar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                seleccion2 = spinnerSeleccionar.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         adapterSeleccionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Seleccione al Ayudante de la Segunda Asignacion", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                idEncargado2 = listAsignacion2.get(recyclerSeleccionar.getChildAdapterPosition(view)).getIdPublicador();
-                genero = listAsignacion2.get(recyclerSeleccionar.getChildAdapterPosition(view)).getGenero();
-                llenarListaAyudante2();
+                if (seleccion2.equals("Discurso")) {
+                    if (listAsignacion2.get(recyclerSeleccionar.getChildAdapterPosition(view)).getGenero().equals("Hombre")) {
+                        Snackbar.make(view, "Seleccione al Encargado de la Tercera Asignacion", Snackbar.LENGTH_INDEFINITE).show();
+                        idEncargado2 = listAsignacion2.get(recyclerSeleccionar.getChildAdapterPosition(view)).getIdPublicador();
+                        llenarListaEncargado3();
+                        idAyudante2 = 1000;
+                    } else if (listAsignacion2.get(recyclerSeleccionar.getChildAdapterPosition(view)).getGenero().equals("Mujer")) {
+                        Toast.makeText(getApplicationContext(), "Debe escoger publicador masculino", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Snackbar.make(view, "Seleccione al Ayudante de la Segunda Asignacion", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("Action", null).show();
+                    idEncargado2 = listAsignacion2.get(recyclerSeleccionar.getChildAdapterPosition(view)).getIdPublicador();
+                    genero = listAsignacion2.get(recyclerSeleccionar.getChildAdapterPosition(view)).getGenero();
+                    llenarListaAyudante2();
+                }
             }
         });
         db.close();
     }
 
     private void llenarListaAyudante2 () {
+        spinnerSeleccionar.setVisibility(View.INVISIBLE);
         AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
         SQLiteDatabase db = conect.getReadableDatabase();
         final ArrayList<ConstructorPublicadores> listAyudante2 = new ArrayList<>();
@@ -234,6 +301,8 @@ public class SeleccionarPubAsig extends AppCompatActivity {
     }
 
     private void llenarListaEncargado3 () {
+        spinnerSeleccionar.setAdapter(adapterSpSeleccionar);
+        spinnerSeleccionar.setVisibility(View.VISIBLE);
         AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
         SQLiteDatabase db = conect.getReadableDatabase();
         final ArrayList<ConstructorPublicadores> listAsignacion3 = new ArrayList<>();
@@ -252,21 +321,43 @@ public class SeleccionarPubAsig extends AppCompatActivity {
         }
         adapterSeleccionar.updateListSelec(listAsignacion3);
 
+        spinnerSeleccionar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                seleccion3 = spinnerSeleccionar.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         adapterSeleccionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Seleccione al Ayudante de la Tercera Asignacion", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                idEncargado3 = listAsignacion3.get(recyclerSeleccionar.getChildAdapterPosition(view)).getIdPublicador();
-                genero = listAsignacion3.get(recyclerSeleccionar.getChildAdapterPosition(view)).getGenero();
-                llenarListaAyudante3();
+                if (seleccion3.equals("Discurso")) {
+                    if (listAsignacion3.get(recyclerSeleccionar.getChildAdapterPosition(view)).getGenero().equals("Hombre")) {
+                        idEncargado3 = listAsignacion3.get(recyclerSeleccionar.getChildAdapterPosition(view)).getIdPublicador();
+                        idAyudante3 = 1000;
+                        llenarSala1();
+                    } else if (listAsignacion3.get(recyclerSeleccionar.getChildAdapterPosition(view)).getGenero().equals("Mujer")) {
+                        Toast.makeText(getApplicationContext(), "Debe escoger publicador masculino", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Snackbar.make(view, "Seleccione al Ayudante de la Tercera Asignacion", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("Action", null).show();
+                    idEncargado3 = listAsignacion3.get(recyclerSeleccionar.getChildAdapterPosition(view)).getIdPublicador();
+                    genero = listAsignacion3.get(recyclerSeleccionar.getChildAdapterPosition(view)).getGenero();
+                    llenarListaAyudante3();
+                }
             }
         });
         db.close();
     }
 
     private void llenarListaAyudante3() {
+        spinnerSeleccionar.setVisibility(View.INVISIBLE);
         AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
         SQLiteDatabase db = conect.getReadableDatabase();
         final ArrayList<ConstructorPublicadores> listAyudante3 = new ArrayList<>();
@@ -312,9 +403,21 @@ public class SeleccionarPubAsig extends AppCompatActivity {
         myBundle.putInt("idAyudante2", idAyudante2);
         myBundle.putInt("idEncargado3", idEncargado3);
         myBundle.putInt("idAyudante3", idAyudante3);
+        myBundle.putString("asignacion1", seleccion1);
+        myBundle.putString("asignacion2", seleccion2);
+        myBundle.putString("asignacion3", seleccion3);
 
         myintent.putExtras(myBundle);
         startActivity(myintent);
 }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

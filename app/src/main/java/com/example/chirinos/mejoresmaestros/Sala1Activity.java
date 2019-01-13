@@ -23,12 +23,11 @@ import java.util.Calendar;
 
 public class Sala1Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private Spinner spinnerPrimeraAsignacion, spinnerSegundaAsignacion, spinnerTerceraAsignacion;
-    private TextView tvLectura, tvFecha, tvEncargado1, tvAyudante1, tvEncargado2, tvAyudante2, tvEncargado3, tvAyudante3;
+    private TextView tvLectura, tvFecha, tvEncargado1, tvAyudante1, tvEncargado2, tvAyudante2, tvEncargado3, tvAyudante3, tvAsignacion1, tvAsignacion2, tvAsignacion3;
     private Integer llenarSala1, idLector, idEncargado1, idAyudante1, idEncargado2, idAyudante2, idEncargado3, idAyudante3, dia, mes, anual, diaAsignacion, mesAsignacion, anualAsignacion;
     private Bundle bundleRecibir;
     private CheckBox checkAsamblea, checkVisita;
-    private String seleccionSpinner1, seleccionSpinner2, seleccionSpinner3;
+    private String asignacion1, asignacion2, asignacion3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,24 +49,10 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         tvEncargado3 = (TextView) findViewById(R.id.encargado3Sala1);
         tvAyudante3 = (TextView) findViewById(R.id.ayudante3Sala1);
         tvFecha = (TextView) findViewById(R.id.fechaSala1);
+        tvAsignacion1 = (TextView) findViewById(R.id.asignacion1);
+        tvAsignacion2 = (TextView) findViewById(R.id.asignacion2);
+        tvAsignacion3 = (TextView) findViewById(R.id.asignacion3);
 
-        spinnerPrimeraAsignacion = (Spinner)findViewById(R.id.spinnerPrimeraAsignacion);
-        String [] spPrimeraAsignacion = {"Seleccionar Asignacion", "Primera Conversacion", "Primera Revisita", "Segunda Revisita", "Curso Biblico", "Discurso"};
-        ArrayAdapter <String> adapterPrimeraAsignacion = new ArrayAdapter<String>(this, R.layout.spinner_personalizado, spPrimeraAsignacion);
-        spinnerPrimeraAsignacion.setAdapter(adapterPrimeraAsignacion);
-        spinnerPrimeraAsignacion.setOnItemSelectedListener(this);
-
-        spinnerSegundaAsignacion = (Spinner)findViewById(R.id.spinnerSegundaAsignacion);
-        String [] spSegundaAsignacion = {"Seleccionar Asignacion", "Primera Conversacion", "Primera Revisita", "Segunda Revisita", "Curso Biblico", "Discurso"};
-        ArrayAdapter <String> adapterSegundaAsignacion = new ArrayAdapter<String>(this, R.layout.spinner_personalizado, spSegundaAsignacion);
-        spinnerSegundaAsignacion.setAdapter(adapterSegundaAsignacion);
-        spinnerSegundaAsignacion.setOnItemSelectedListener(this);
-
-        spinnerTerceraAsignacion = (Spinner)findViewById(R.id.spinnerTerceraAsignacion);
-        String [] spTerceraAsignacion = {"Seleccionar Asignacion", "Primera Conversacion", "Primera Revisita", "Segunda Revisita", "Curso Biblico", "Discurso"};
-        ArrayAdapter <String> adapterTerceraAsignacion = new ArrayAdapter<String>(this, R.layout.spinner_personalizado, spTerceraAsignacion);
-        spinnerTerceraAsignacion.setAdapter(adapterTerceraAsignacion);
-        spinnerTerceraAsignacion.setOnItemSelectedListener(this);
 
         bundleRecibir = this.getIntent().getExtras();
         llenarSala1 = bundleRecibir.getInt("llenarSala1");
@@ -78,16 +63,33 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         idAyudante2 = bundleRecibir.getInt("idAyudante2");
         idEncargado3 = bundleRecibir.getInt("idEncargado3");
         idAyudante3 = bundleRecibir.getInt("idAyudante3");
+        asignacion1 = bundleRecibir.getString("asignacion1");
+        asignacion2 = bundleRecibir.getString("asignacion2");
+        asignacion3 = bundleRecibir.getString("asignacion3");
 
         if (llenarSala1 == 1) {
             cargarLector();
             cargarEncargado1();
-            cargarAyudante1();
+            if (idAyudante1 == 1000) {
+                tvAyudante1.setVisibility(View.INVISIBLE);
+            } else {
+                cargarAyudante1();
+            }
             cargarEncargado2();
-            cargarAyudante2();
+            if (idAyudante2 == 1000) {
+                tvAyudante2.setVisibility(View.INVISIBLE);
+            } else {
+                cargarAyudante2();
+            }
             cargarEncargado3();
-            cargarAyudante3();
-
+            if (idAyudante3 == 1000) {
+                tvAyudante3.setVisibility(View.INVISIBLE);
+            } else {
+                cargarAyudante3();
+            }
+            tvAsignacion1.setText(asignacion1);
+            tvAsignacion2.setText(asignacion2);
+            tvAsignacion3.setText(asignacion3);
         }
 
 
@@ -101,19 +103,7 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
 
     }
 
-    private void editarAsignaciones () {
-        if (!checkAsamblea.isChecked()) {
-            if ((!seleccionSpinner1.equals("Seleccionar Asignacion")) && (!seleccionSpinner2.equals("Seleccionar Asignacion")) && (!seleccionSpinner3.equals("Seleccionar Asignacion")) ) {
 
-                Intent myintent = new Intent(getApplicationContext(), SeleccionarPubAsig.class);
-                startActivity(myintent);
-            } else {
-                Toast.makeText(getApplicationContext(), "Debe escoger los tipos de Asignacion primero", Toast.LENGTH_LONG).show();
-            }
-        } else {
-            Toast.makeText(getApplicationContext(), "No hay asignaciones en Asamblea", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     private void selecFecha() {
         final Calendar calendario = Calendar.getInstance();
@@ -244,9 +234,6 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
                 Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();
                 finish();
                 return true;
-            } else if (id == R.id.menu_edit) {
-                Toast.makeText(getApplicationContext(), "No se puede editar en Asamblea", Toast.LENGTH_LONG).show();
-                return true;
             }
         } else {
 
@@ -260,8 +247,6 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
                 Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();
                 finish();
                 return true;
-            } else if (id == R.id.menu_edit) {
-                editarAsignaciones ();
             }
 
         }
@@ -271,26 +256,7 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        seleccionSpinner1 = spinnerPrimeraAsignacion.getSelectedItem().toString();
-        if (seleccionSpinner1.equals("Discurso")) {
-            tvAyudante1.setVisibility(View.INVISIBLE);
-        } else {
-            tvAyudante1.setVisibility(View.VISIBLE);
-        }
 
-        seleccionSpinner2 = spinnerSegundaAsignacion.getSelectedItem().toString();
-        if (seleccionSpinner2.equals("Discurso")) {
-            tvAyudante2.setVisibility(View.INVISIBLE);
-        } else {
-            tvAyudante2.setVisibility(View.VISIBLE);
-        }
-
-        seleccionSpinner3 = spinnerTerceraAsignacion.getSelectedItem().toString();
-        if (seleccionSpinner3.equals("Discurso")) {
-            tvAyudante3.setVisibility(View.INVISIBLE);
-        } else {
-            tvAyudante3.setVisibility(View.VISIBLE);
-        }
 
     }
 

@@ -19,7 +19,7 @@
     <string name="EmailPub">Correo: </string>
     <string name="GenMasculino">*Hombre</string>
     <string name="GenFemenino">*Mujer</string>
-    <string name="asterisco">* Campos obligatorios</string>
+    <string name="asterisco">*Campos obligatorios</string>
     <string name="btnAgregar">Agregar</string>
     <string name="btnCancelar">Cancelar</string>
 
@@ -37,9 +37,9 @@
     <string name="Publicador">Publicador</string>
 
     <!-- Inicio Fragment -->
-    <string name="tituloInicio">Asignaciones de la semana: </string>
+    <string name="tituloInicio">Ultima fecha programada: </string>
     <string name="fechaInicio">Fecha</string>
-    <string name="sala1Inicio">Primera Sala: </string>
+    <string name="eventos">No hay eventos esta semana</string>
     <string name="tituloCronometro">Temporizador</string>
     <string name="tituloDuracion">Duracion: </string>
     <string name="tiempoMM">00</string>
@@ -49,7 +49,7 @@
 
 
     <!-- Asignaciones Fragment -->
-    <string name="tituloAsignaciones">Semana: </string>
+    <string name="tituloAsignaciones">Fecha: </string>
 
     <!-- Activity Editar -->
     <string name="tituloFecha">Fecha</string>
@@ -67,8 +67,8 @@
 
 
     <!-- FloatingMenu-->
-    <string name="fabSala1">Primera Sala</string>
-    <string name="fabSala2">Segunda Sala</string>
+    <string name="fabSala1">Editar Sala 1</string>
+    <string name="fabSala2">Editar Sala 2</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

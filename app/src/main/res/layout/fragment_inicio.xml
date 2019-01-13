@@ -6,16 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".InicioFragment">
 
-<!--<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"> -->
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,219 +23,62 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/tituloInicio" />
+            android:text="@string/tituloInicio"
+            android:textSize="20sp"/>
 
         <TextView
             android:id="@+id/textView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/fechaInicio" />
+            android:text="@string/fechaInicio"
+            android:textSize="20sp"/>
     </LinearLayout>
 
-    <TableLayout
-        android:id="@+id/tableLayout2"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="8dp">
+        android:layout_marginTop="75dp"
+        android:orientation="vertical">
 
-        <TableRow
+        <TextView
+            android:id="@+id/textView7"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/nameSala1" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tvLectura" />
-
-            <TextView
-                android:id="@+id/textViewPubsInicioLectura"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_text_3" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView29"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tvAsignacion1" />
-
-            <TextView
-                android:id="@+id/textViewPubsInicioAsignacion1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_text_3" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView30"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tvAsignacion2" />
-
-            <TextView
-                android:id="@+id/textViewPubsInicioAsignacion2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_text_3" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView31"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tvAsignacion3" />
-
-            <TextView
-                android:id="@+id/textViewPubsInicioAsignacion3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_text_3" />
-        </TableRow>
-    </TableLayout>
-
-    <TableLayout
-        android:id="@+id/tableLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="8dp"
-        >
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/nameSala2" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView19"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tvLectura" />
-
-            <TextView
-                android:id="@+id/textViewPubsInicioLecturaSala2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_text_3" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView21"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tvAsignacion1" />
-
-            <TextView
-                android:id="@+id/textViewPubsInicioAsignacion1Sala2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_text_3" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView23"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tvAsignacion2" />
-
-            <TextView
-                android:id="@+id/textViewPubsInicioAsignacion2Sala2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_text_3" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView25"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tvAsignacion3" />
-
-            <TextView
-                android:id="@+id/textViewPubsInicioAsignacion3Sala2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_text_3" />
-        </TableRow>
-    </TableLayout>
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/eventos"
+            android:textSize="24sp"
+            android:textColor="#d81b60"/>
+    </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="135dp"
         android:layout_marginEnd="8dp"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textView27"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/tituloCronometro" />
+            android:text="@string/tituloCronometro"
+            android:textSize="22sp" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/tituloDuracion" />
+                android:text="@string/tituloDuracion"
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/editTextMinutos"
@@ -247,7 +86,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:hint="@string/tiempoMM"
-                android:inputType="number" />
+                android:inputType="number"
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -261,7 +101,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:hint="@string/tiemposs"
-                android:inputType="number" />
+                android:inputType="number"
+                android:textSize="16sp" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fabPlay"
@@ -281,7 +122,8 @@
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:text="@string/visorTemp"
-            android:textSize="35dp" />
+            android:textSize="35dp"
+            android:textColor="#000000"/>
 
 
         <LinearLayout

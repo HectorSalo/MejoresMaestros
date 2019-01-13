@@ -37,8 +37,8 @@ public class AsignacionesFragment extends Fragment {
 
     ImageButton imageButtonPrueba;
 
-    FloatingActionButton fabSala1, fabSala2;
-    View vista;
+    private FloatingActionButton fabSala1, fabSala2;
+    private View vista;
 
     public AsignacionesFragment() {
         // Required empty public constructor
@@ -83,11 +83,9 @@ public class AsignacionesFragment extends Fragment {
         fabSala1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), Sala1Activity.class);
-                Bundle myBundle = new Bundle();
-                myBundle.putInt("lectura", 0);
-                intent.putExtras(myBundle);
+                Intent intent = new Intent(getContext(), SeleccionarPubAsig.class);
                 startActivity(intent);
+
             }
         });
 
@@ -103,14 +101,7 @@ public class AsignacionesFragment extends Fragment {
             }
         });
 
-        imageButtonPrueba = (ImageButton) vista.findViewById(R.id.imageButton);
-        imageButtonPrueba.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), EditAsignacionesActivity.class);
-                startActivity(intent);
-            }
-        });
+
 
 
         return vista;

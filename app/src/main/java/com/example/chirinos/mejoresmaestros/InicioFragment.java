@@ -90,6 +90,11 @@ public class InicioFragment extends Fragment {
         fabStop = (FloatingActionButton) vista.findViewById(R.id.fabStop);
         fabPause = (FloatingActionButton) vista.findViewById(R.id.fabPause);
 
+        editTextMinutos.setEnabled(false);
+        editTextMinutos.setVisibility(View.INVISIBLE);
+        editTextSegundos.setVisibility(View.INVISIBLE);
+        editTextSegundos.setEnabled(false);
+
         fabPause.setEnabled(false);
         fabStop.setEnabled(false);
 

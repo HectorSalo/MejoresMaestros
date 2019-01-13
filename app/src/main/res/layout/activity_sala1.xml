@@ -88,7 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/tvLectura"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                     <TextView
@@ -113,11 +113,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="75dp">
 
-                    <Spinner
-                        android:id="@+id/spinnerPrimeraAsignacion"
-                        android:layout_width="300dp"
-                        android:layout_height="50dp"
-                        android:dropDownWidth="match_parent" />
+                    <TextView
+                        android:id="@+id/asignacion1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tvEncargado"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
 
 
                 </TableRow>
@@ -164,11 +166,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="75dp">
 
-                    <Spinner
-                        android:id="@+id/spinnerSegundaAsignacion"
-                        android:layout_width="300dp"
-                        android:layout_height="50dp"
-                        android:dropDownWidth="match_parent" />
+                    <TextView
+                        android:id="@+id/asignacion2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tvEncargado"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
 
 
                 </TableRow>
@@ -213,11 +217,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="75dp">
 
-                    <Spinner
-                        android:id="@+id/spinnerTerceraAsignacion"
-                        android:layout_width="300dp"
-                        android:layout_height="50dp"
-                        android:dropDownWidth="match_parent" />
+                    <TextView
+                        android:id="@+id/asignacion3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tvEncargado"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
 
 
 
