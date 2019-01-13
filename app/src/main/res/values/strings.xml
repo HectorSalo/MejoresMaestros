@@ -54,6 +54,10 @@
     <!-- Activity Editar -->
     <string name="tituloFecha">Fecha</string>
 
+    <!-- Activity Seleccionar -->
+    <string name="selecFecha">Seleccione el dia de las Asignaciones</string>
+    <string name="btnAsignar">Asignar</string>
+
     <!-- Publicadores Fragmente -->
     <string name="Buscar">Buscar: </string>
     <string name="menuEditar">Editar</string>

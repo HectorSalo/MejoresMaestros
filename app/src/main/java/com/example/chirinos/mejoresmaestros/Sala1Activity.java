@@ -63,6 +63,9 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         idAyudante2 = bundleRecibir.getInt("idAyudante2");
         idEncargado3 = bundleRecibir.getInt("idEncargado3");
         idAyudante3 = bundleRecibir.getInt("idAyudante3");
+        diaAsignacion = bundleRecibir.getInt("dia");
+        mesAsignacion = bundleRecibir.getInt("mes");
+        anualAsignacion = bundleRecibir.getInt("anual");
         asignacion1 = bundleRecibir.getString("asignacion1");
         asignacion2 = bundleRecibir.getString("asignacion2");
         asignacion3 = bundleRecibir.getString("asignacion3");
@@ -90,6 +93,7 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
             tvAsignacion1.setText(asignacion1);
             tvAsignacion2.setText(asignacion2);
             tvAsignacion3.setText(asignacion3);
+            tvFecha.setText(diaAsignacion + "/" + mesAsignacion + "/" + anualAsignacion);
         }
 
 
