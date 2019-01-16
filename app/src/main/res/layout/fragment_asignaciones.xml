@@ -308,7 +308,7 @@
         android:layout_width="225dp"
         android:layout_height="268dp"
         android:layout_gravity="end|bottom"
-        app:fab_addButtonColorNormal="@color/colorPrimary"
+        app:fab_addButtonColorNormal="@color/colorAccent"
         app:fab_addButtonColorPressed="#ffff"
         app:fab_addButtonSize="normal"
         app:fab_labelStyle="@style/etiqueta"

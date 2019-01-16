@@ -40,7 +40,11 @@
     <!-- Inicio Fragment -->
     <string name="tituloInicio">Última fecha programada: </string>
     <string name="fechaInicio">Fecha</string>
-    <string name="eventos">No hay eventos esta semana</string>
+    <string name="titleSala1">Sala 1: </string>
+    <string name="titleSala2">Sala 2: </string>
+    <string name="titleAsamblea">Fecha de próxima Asamblea: </string>
+    <string name="titleVisita">Fecha de próxima Visita: </string>
+    <string name="eventos">Evento</string>
     <string name="tituloCronometro">Temporizador</string>
     <string name="tituloDuracion">Duración: </string>
     <string name="tiempoMM">00</string>
