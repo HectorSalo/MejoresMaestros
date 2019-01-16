@@ -59,6 +59,7 @@
 
     <!-- Activity Editar -->
     <string name="tituloFecha">Fecha</string>
+    <string name="cbHabilitar">Inhabilitar</string>
 
     <!-- Activity Seleccionar -->
     <string name="selecFecha">Seleccione el día de las Asignaciones</string>

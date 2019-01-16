@@ -31,6 +31,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -57,6 +58,7 @@ public class EditarPub extends AppCompatActivity {
     private EditText nombrePub, apellidoPub, telefono, correo;
     private TextView fdiscurso, fayudante, fsustitucion;
     private RadioButton radioHombre, radioMujer;
+    private CheckBox cbHabilitar;
     private String sidPub;
     private Integer idPb, dia, mes, anual, diaAsignacion, mesAsignacion, anualAsignacion, diaAyudante, mesAyudante, anualAyudante, diaSust, mesSust, anualSust;
     private FloatingActionButton fab_EditImage;
