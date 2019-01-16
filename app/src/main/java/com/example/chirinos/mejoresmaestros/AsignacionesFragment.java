@@ -183,21 +183,30 @@ public class AsignacionesFragment extends Fragment {
         Cursor fila = db.rawQuery("SELECT * FROM sala1 WHERE semana =" + strSemana, null);
 
         if (fila.moveToFirst()) {
-            tvAviso.setVisibility(View.INVISIBLE);
-            layoutSala1.setVisibility(View.VISIBLE);
-            layoutSala2.setVisibility(View.VISIBLE);
-            tvLectura.setText(fila.getString(1));
-            tvEncargado1.setText(fila.getString(2));
-            tvAyudante1.setText(fila.getString(3));
-            tvEncargado2.setText(fila.getString(4));
-            tvAyudante2.setText(fila.getString(5));
-            tvEncargado3.setText(fila.getString(6));
-            tvAyudante3.setText(fila.getString(7));
-            tvAsignacion1.setText(fila.getString(12) + ": ");
-            tvAsignacion2.setText(fila.getString(13) + ": ");
-            tvAsignacion3.setText(fila.getString(14) + ": ");
-            tvFecha.setText(fila.getString(9) + "/" + fila.getString(10) + "/" + fila.getString(11));
-            db.close();
+            if (fila.getString(8).equals("Asamblea")) {
+                tvFecha.setText(fila.getString(9) + "/" + fila.getString(10) + "/" + fila.getString(11));
+                tvAviso.setVisibility(View.VISIBLE);
+                tvAviso.setText("Sin Asignaciones por Asamblea");
+                layoutSala1.setVisibility(View.INVISIBLE);
+                layoutSala2.setVisibility(View.INVISIBLE);
+                db.close();
+            } else {
+                tvAviso.setVisibility(View.INVISIBLE);
+                layoutSala1.setVisibility(View.VISIBLE);
+                layoutSala2.setVisibility(View.VISIBLE);
+                tvLectura.setText(fila.getString(1));
+                tvEncargado1.setText(fila.getString(2));
+                tvAyudante1.setText(fila.getString(3));
+                tvEncargado2.setText(fila.getString(4));
+                tvAyudante2.setText(fila.getString(5));
+                tvEncargado3.setText(fila.getString(6));
+                tvAyudante3.setText(fila.getString(7));
+                tvAsignacion1.setText(fila.getString(12) + ": ");
+                tvAsignacion2.setText(fila.getString(13) + ": ");
+                tvAsignacion3.setText(fila.getString(14) + ": ");
+                tvFecha.setText(fila.getString(9) + "/" + fila.getString(10) + "/" + fila.getString(11));
+                db.close();
+            }
 
         } else {
             tvFecha.setText("Seleccione una fecha");

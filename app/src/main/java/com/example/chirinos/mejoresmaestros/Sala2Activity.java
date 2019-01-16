@@ -1,5 +1,6 @@
 package com.example.chirinos.mejoresmaestros;
 
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
+import static com.example.chirinos.mejoresmaestros.PrincipalActivity.NOTIFICACION_ID;
 
 public class Sala2Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -25,6 +27,9 @@ public class Sala2Activity extends AppCompatActivity implements AdapterView.OnIt
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarSalas);
         setSupportActionBar(toolbar);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
+        notificationManagerCompat.cancel(NOTIFICACION_ID);
 
         spinnerPrimeraAsignacion = (Spinner)findViewById(R.id.spinnerPrimeraAsignacion);
         String [] spPrimeraAsignacion = {"Seleccionar Asignacion", "Lectores y Maestros", "Primera Conversacion", "Primera Revisita", "Segunda Revisita", "Curso Biblico", "Discurso"};

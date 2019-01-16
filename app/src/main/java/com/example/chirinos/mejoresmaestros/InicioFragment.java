@@ -2,9 +2,13 @@ package com.example.chirinos.mejoresmaestros;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -35,7 +39,9 @@ public class InicioFragment extends Fragment {
 
     private EditText editTextMinutos, editTextSegundos;
     private FloatingActionButton fabStart, fabStop, fabPause;
-    private TextView textViewTemp, ultFecha;
+    private TextView textViewTemp, ultFechaSala1, ultFechaSala2, tvAsamblea, tvVisita;
+    private Calendar calendar;
+    private Integer diaActual, mesActual, anualActual, semanaActual;
     private boolean isPaused;
     private boolean isCenceled;
     private long TiempoRestante;
@@ -84,12 +90,16 @@ public class InicioFragment extends Fragment {
         vista = inflater.inflate(R.layout.fragment_inicio, container, false);
 
         textViewTemp = (TextView) vista.findViewById(R.id.visorTiempo);
-        ultFecha = (TextView) vista.findViewById(R.id.ultFecha);
+        ultFechaSala1 = (TextView) vista.findViewById(R.id.tvultFechaSala1);
+        ultFechaSala2 = (TextView) vista.findViewById(R.id.tvultFechaSala2);
+        tvVisita = (TextView) vista.findViewById(R.id.tvInicioVisita);
+        tvAsamblea = (TextView) vista.findViewById(R.id.tvInicioAsamblea);
         editTextMinutos = (EditText) vista.findViewById(R.id.editTextMinutos);
         editTextSegundos = (EditText) vista.findViewById(R.id.editTextSegundos);
         fabStart = (FloatingActionButton) vista.findViewById(R.id.fabPlay);
         fabStop = (FloatingActionButton) vista.findViewById(R.id.fabStop);
         fabPause = (FloatingActionButton) vista.findViewById(R.id.fabPause);
+        calendar = Calendar.getInstance();
 
         editTextMinutos.setEnabled(false);
         editTextMinutos.setVisibility(View.INVISIBLE);
@@ -253,9 +263,66 @@ public class InicioFragment extends Fragment {
             }
         });
 
+        cargarInformacion();
+        cargarDataSala1();
+
         return vista;
 
 
+    }
+
+    private void cargarInformacion() {
+        diaActual = calendar.get(Calendar.DAY_OF_MONTH);
+        mesActual = calendar.get(Calendar.MONTH);
+        anualActual = calendar.get(Calendar.YEAR);
+        semanaActual = calendar.get(Calendar.WEEK_OF_YEAR);
+        cargarAsamblea(semanaActual);
+        cargarVisita (semanaActual);
+    }
+
+    private void cargarAsamblea(int i) {
+        String strSemana = String.valueOf(i);
+
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(getContext(), "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        SQLiteDatabase db = conect.getWritableDatabase();
+
+        Cursor fila = db.rawQuery("SELECT * FROM sala1 WHERE evento= 'Asamblea' AND semana >=" + strSemana+ " ORDER BY anual ASC, mes ASC, dia ASC ", null);
+
+        if (fila.moveToFirst()) {
+            tvAsamblea.setText(fila.getString(9) + "/" + fila.getString(10)+ "/" + fila.getString(11));
+        } else {
+            tvAsamblea.setText("Sin programar");
+        }
+
+
+    }
+
+    private void cargarDataSala1 () {
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(getContext(), "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        SQLiteDatabase db = conect.getWritableDatabase();
+
+        Cursor fila = db.rawQuery("SELECT * FROM sala1", null);
+
+        if (fila.moveToLast()) {
+            ultFechaSala1.setText(fila.getString(9) + "/" + fila.getString(10)+ "/" + fila.getString(11));
+        } else {
+            ultFechaSala1.setText("Sin programar");
+        }
+    }
+
+    private void cargarVisita(int i) {
+        String strSemana = String.valueOf(i);
+
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(getContext(), "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        SQLiteDatabase db = conect.getWritableDatabase();
+
+        Cursor fila = db.rawQuery("SELECT * FROM sala1 WHERE evento= 'Visita' AND semana >=" + strSemana+ " ORDER BY anual ASC, mes ASC, dia ASC ", null);
+
+        if (fila.moveToFirst()) {
+            tvVisita.setText(fila.getString(9) + "/" + fila.getString(10)+ "/" + fila.getString(11));
+        } else {
+            tvVisita.setText("Sin programar");
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

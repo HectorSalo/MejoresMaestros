@@ -1,9 +1,18 @@
 package com.example.chirinos.mejoresmaestros;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -37,6 +46,12 @@ public class PrincipalActivity extends AppCompatActivity implements Asignaciones
      */
     private ViewPager mViewPager;
 
+
+    private PendingIntent pendingIntent;
+    private PendingIntent pendingIntentProgramar;
+    private final static String CHANNEL_ID = "NOTIFICACION";
+    public final static int NOTIFICACION_ID = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +76,7 @@ public class PrincipalActivity extends AppCompatActivity implements Asignaciones
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
 
+
     }
 
 
@@ -82,10 +98,53 @@ public class PrincipalActivity extends AppCompatActivity implements Asignaciones
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_share) {
+            setPendingIntent();
+            pendingIntentProgramar();
+            createNotfChannel();
+            enviarNotf();
+
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void enviarNotf() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID);
+        builder.setSmallIcon(R.drawable.ic_action_asignacion);
+        builder.setContentTitle("¡Recordatorio!");
+        builder.setContentText("Debes programar las Asignaciones de esta semana");
+        builder.setColor(Color.GREEN);
+        builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        builder.setContentIntent(pendingIntent);
+        builder.addAction(R.drawable.ic_action_publicador, "Programar", pendingIntentProgramar);
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
+        notificationManagerCompat.notify(NOTIFICACION_ID, builder.build());
+    }
+
+    private void createNotfChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Notificacion";
+            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+    }
+
+    private void setPendingIntent() {
+        Intent intent = new Intent(this, PrincipalActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntent(intent);
+        pendingIntent = stackBuilder.getPendingIntent(1, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private void pendingIntentProgramar () {
+        Intent intent = new Intent(this, Sala2Activity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntent(intent);
+        pendingIntentProgramar = stackBuilder.getPendingIntent(1, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override

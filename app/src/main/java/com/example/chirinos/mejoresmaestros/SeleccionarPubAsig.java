@@ -1,6 +1,7 @@
 package com.example.chirinos.mejoresmaestros;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -55,6 +56,7 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
     private String genero, seleccion1, seleccion2, seleccion3, evento;
     private Integer idLector, idEncargado1, idAyudante1, idEncargado2, idAyudante2, idEncargado3, idAyudante3, dia, mes, anual, diaActual, mesActual, anualActual;
     private ArrayAdapter<String> adapterSpSeleccionar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +134,7 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
             @Override
             public void onClick(View v) {
                 if ((dia != null) && (mes != null) && (anual != null)) {
-                    if ((dia >= diaActual) && ((mes-1) >= mesActual) && (anual >= anualActual)) {
+                    if (((mes-1) >= mesActual) && (anual >= anualActual)) {
                         if (cbAsamblea.isChecked() && cbVisita.isChecked()) {
                             Toast.makeText(getApplicationContext(), "No puede haber Visita y Asamblea el mismo día", Toast.LENGTH_LONG).show();
                         } else {
