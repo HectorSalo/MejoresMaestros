@@ -81,6 +81,8 @@ public class PrincipalActivity extends AppCompatActivity implements Asignaciones
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_share) {
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

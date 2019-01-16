@@ -11,12 +11,6 @@ public class ConstructorPublicadores {
     public ConstructorPublicadores () {}
 
 
-    /*public ConstructorPublicadores(Integer idPublicador, String nombrePublicador, String apellidoPublicador, Integer imagen) {
-        this.idPublicador = idPublicador;
-        NombrePublicador = nombrePublicador;
-        ApellidoPublicador = apellidoPublicador;
-        this.imagen = imagen;
-    }*/
 
     public String getGenero() {
         return genero;

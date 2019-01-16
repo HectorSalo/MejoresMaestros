@@ -131,7 +131,7 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
         listFecha = new ArrayList<>();
 
         ordenarPublicadores = (Spinner) vista.findViewById(R.id.spinnerOrdenarPublicadores);
-        String [] spOrdenar = {"Ordenar", "A-Z (Nombres)", "A-Z (Apellidos)", "Ultima Fecha"};
+        String [] spOrdenar = {"Ordenar", "A-Z (Nombres)", "A-Z (Apellidos)", "Última Fecha"};
         ArrayAdapter<String> adapterOrdenar = new ArrayAdapter<String>(getContext(), R.layout.spinner_personalizado, spOrdenar);
         ordenarPublicadores.setAdapter(adapterOrdenar);
         ordenarPublicadores.setOnItemSelectedListener(this);
@@ -335,7 +335,7 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
             llenarListNombres();
         } else if (seleccionSpinner.equals("A-Z (Apellidos)")) {
             llenarListApellidos();
-        } else if (seleccionSpinner.equals("Ultima Fecha")) {
+        } else if (seleccionSpinner.equals("Última Fecha")) {
             llenarListFecha();
         }
 

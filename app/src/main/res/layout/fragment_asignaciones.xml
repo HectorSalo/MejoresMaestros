@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".AsignacionesFragment">
 
+    <TextView
+        android:id="@+id/tvAviso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:gravity="center"
+        android:text="@string/aviso"
+        android:textSize="32sp" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -30,19 +39,21 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textView16"
+                android:id="@+id/tvFechaAsig"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/tituloAsignaciones"
                 android:gravity="center"
-                android:textSize="22sp"/>
+                android:textSize="22sp"
+                android:background="@color/colorPrimary"
+                android:textColor="#ffff"/>
 
 
         </LinearLayout>
 
-        <TableLayout
-            android:id="@+id/tableLayout2"
+        <LinearLayout
+            android:id="@+id/layoutSala1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -50,7 +61,8 @@
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,12 +74,10 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="@string/nameSala1"
-                    android:textSize="22sp"/>
+                    android:textSize="22sp"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/textView1"
@@ -76,99 +86,95 @@
                     android:text="@string/tvLectura"
                     android:textSize="16sp"/>
 
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
                 <TextView
                     android:id="@+id/textViewPubsInicioLectura"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/tab_text_3"
-                    android:textSize="26sp"/>
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                    android:textSize="26sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <TextView
-                    android:id="@+id/textView29"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/inicioAsignacion1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:text="@string/tvAsignacion1"
-                    android:textSize="16sp"/>
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                    android:textSize="16sp"
+                    android:layout_marginTop="10dp"/>
 
                 <TextView
                     android:id="@+id/textViewPubsInicioAsignacion1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:text="@string/tab_text_3"
-                    android:textSize="26sp"/>
-            </TableRow>
+                    android:textSize="26sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
-            <TableRow
+            <TextView
+                android:id="@+id/textViewPubsInicioAsignacionAyu1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:text="@string/tab_text_3"
+                android:textSize="26sp"
+                android:textColor="@color/colorPrimaryDark"/>
+
 
                 <TextView
-                    android:id="@+id/textView30"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/inicioAsignacion2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:text="@string/tvAsignacion2"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    android:layout_marginTop="10dp"/>
 
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
 
                 <TextView
                     android:id="@+id/textViewPubsInicioAsignacion2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/tab_text_3"
-                    android:textSize="26sp"/>
-            </TableRow>
+                    android:textSize="26sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
-            <TableRow
+            <TextView
+                android:id="@+id/textViewPubsInicioAsignacionAyu2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:text="@string/tab_text_3"
+                android:textSize="26sp"
+                android:textColor="@color/colorPrimaryDark"/>
+
 
                 <TextView
-                    android:id="@+id/textView31"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/inicioAsignacion3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:text="@string/tvAsignacion3"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    android:layout_marginTop="10dp"/>
 
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
 
                 <TextView
                     android:id="@+id/textViewPubsInicioAsignacion3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/tab_text_3"
-                    android:textSize="26sp"/>
-            </TableRow>
-        </TableLayout>
+                    android:textSize="26sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
-        <TableLayout
-            android:id="@+id/tableLayout3"
+
+            <TextView
+                android:id="@+id/textViewPubsInicioAsignacionAyu3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab_text_3"
+                android:textSize="26sp"
+                android:textColor="@color/colorPrimaryDark"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutSala2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -176,7 +182,8 @@
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tableLayout2">
+            app:layout_constraintTop_toBottomOf="@+id/layoutSala1"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -188,109 +195,110 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="@string/nameSala2"
-                    android:textSize="22sp"/>
+                    android:textSize="22sp"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
-            <TableRow
+            <TextView
+                android:id="@+id/textViewlectura"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:text="@string/tvLectura"
+                android:textSize="16sp"/>
 
-                <TextView
-                    android:id="@+id/textView19"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tvLectura"
-                    android:textSize="16sp"/>
-
-            </TableRow>
-
-            <TableRow
+            <TextView
+                android:id="@+id/textViewPubsInicioLecturaSala2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimaryDark"
+                android:text="@string/tab_text_3"
+                android:textColor="#fff"
+                android:textSize="26sp" />
 
-                <TextView
-                    android:id="@+id/textViewPubsInicioLecturaSala2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tab_text_3"
-                    android:textSize="26sp"/>
-            </TableRow>
-
-            <TableRow
+            <TextView
+                android:id="@+id/inicioAsignacion1Sala2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:text="@string/tvAsignacion1"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"/>
 
-                <TextView
-                    android:id="@+id/textView21"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tvAsignacion1"
-                    android:textSize="16sp"/>
-
-            </TableRow>
-
-            <TableRow
+            <TextView
+                android:id="@+id/textViewPubsInicioAsignacion1Sala2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent"
+                android:text="@string/tab_text_3"
+                android:textSize="26sp"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="#fff"/>
 
-                <TextView
-                    android:id="@+id/textViewPubsInicioAsignacion1Sala2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tab_text_3"
-                    android:textSize="26sp"/>
-            </TableRow>
-
-            <TableRow
+            <TextView
+                android:id="@+id/textViewPubsInicioAsignacionAyu1Sala2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:text="@string/tab_text_3"
+                android:textSize="26sp"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="#fff"/>
 
-                <TextView
-                    android:id="@+id/textView23"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tvAsignacion2"
-                    android:textSize="16sp"/>
 
-            </TableRow>
-
-            <TableRow
+            <TextView
+                android:id="@+id/inicioAsignacion2Sala"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent"
+                android:text="@string/tvAsignacion2"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                />
 
-                <TextView
-                    android:id="@+id/textViewPubsInicioAsignacion2Sala2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tab_text_3"
-                    android:textSize="26sp"/>
-            </TableRow>
 
-            <TableRow
+            <TextView
+                android:id="@+id/textViewPubsInicioAsignacion2Sala2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:text="@string/tab_text_3"
+                android:textSize="26sp"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="#fff"/>
 
-                <TextView
-                    android:id="@+id/textView25"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tvAsignacion3"
-                    android:textSize="16sp"/>
-
-            </TableRow>
-
-            <TableRow
+            <TextView
+                android:id="@+id/textViewPubsInicioAsignacionAyu2Sala2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent"
+                android:text="@string/tab_text_3"
+                android:textSize="26sp"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="#fff"/>
 
-                <TextView
-                    android:id="@+id/textViewPubsInicioAsignacion3Sala2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tab_text_3"
-                    android:textSize="26sp"/>
-            </TableRow>
-        </TableLayout>
+
+            <TextView
+                android:id="@+id/inicioAsignacion3Sala2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/tvAsignacion3"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"/>
+
+
+            <TextView
+                android:id="@+id/textViewPubsInicioAsignacion3Sala2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/tab_text_3"
+                android:textSize="26sp"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="#fff"/>
+
+
+            <TextView
+                android:id="@+id/textViewPubsInicioAsignacionAyu3Sala2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/tab_text_3"
+                android:textSize="26sp"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="#fff"/>
+        </LinearLayout>
     </LinearLayout>
     </ScrollView>
 
@@ -300,8 +308,8 @@
         android:layout_width="225dp"
         android:layout_height="268dp"
         android:layout_gravity="end|bottom"
-        app:fab_addButtonColorNormal="@color/colorAccent"
-        app:fab_addButtonColorPressed="@color/colorPrimary"
+        app:fab_addButtonColorNormal="@color/colorPrimary"
+        app:fab_addButtonColorPressed="#ffff"
         app:fab_addButtonSize="normal"
         app:fab_labelStyle="@style/etiqueta"
         app:fab_labelsPosition="left"
@@ -312,9 +320,9 @@
             android:id="@+id/fabSala1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/colorAccent"
+            app:fab_colorNormal="#ffff"
             app:fab_colorPressed="@color/colorPrimary"
-            app:fab_icon="@drawable/ic_action_asignacion"
+            app:fab_icon="@drawable/ic_action_asignacion1"
             app:fab_size="mini"
             app:fab_title="@string/fabSala1" />
 
@@ -323,7 +331,7 @@
             style="@style/etiqueta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/colorAccent"
+            app:fab_colorNormal="@color/colorPrimaryDark"
             app:fab_colorPressed="@color/colorPrimary"
             app:fab_icon="@drawable/ic_action_asignacion"
             app:fab_size="mini"

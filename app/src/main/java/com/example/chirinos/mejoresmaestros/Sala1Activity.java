@@ -1,6 +1,7 @@
 package com.example.chirinos.mejoresmaestros;
 
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,11 +24,11 @@ import java.util.Calendar;
 
 public class Sala1Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private TextView tvLectura, tvFecha, tvEncargado1, tvAyudante1, tvEncargado2, tvAyudante2, tvEncargado3, tvAyudante3, tvAsignacion1, tvAsignacion2, tvAsignacion3;
-    private Integer llenarSala1, idLector, idEncargado1, idAyudante1, idEncargado2, idAyudante2, idEncargado3, idAyudante3, dia, mes, anual, diaAsignacion, mesAsignacion, anualAsignacion;
+    private TextView tvLectura, tvFecha, tvEncargado1, tvAyudante1, tvEncargado2, tvAyudante2, tvEncargado3, tvAyudante3, tvAsigLectura, tvAsignacion1, tvAsignacion2, tvAsignacion3;
+    private Integer llenarSala1, idLector, idEncargado1, idAyudante1, idEncargado2, idAyudante2, idEncargado3, idAyudante3, diaAsignacion, mesAsignacion, anualAsignacion, numSemana;
     private Bundle bundleRecibir;
-    private CheckBox checkAsamblea, checkVisita;
-    private String asignacion1, asignacion2, asignacion3;
+    private String lector, encargado1, ayudante1, encargado2, ayudante2, encargado3, ayudante3, asignacion1, asignacion2, asignacion3, tipoEvento;
+    private Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +39,6 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         setSupportActionBar(toolbar);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
-        checkAsamblea = (CheckBox) findViewById(R.id.checkBoxAsamblea);
-        checkVisita = (CheckBox) findViewById(R.id.checkBoxVisita);
-
         tvLectura = (TextView)findViewById(R.id.lecturaSala1);
         tvEncargado1 = (TextView) findViewById(R.id.encargado1Sala1);
         tvAyudante1 = (TextView) findViewById(R.id.ayudante1Sala1);
@@ -49,9 +47,11 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         tvEncargado3 = (TextView) findViewById(R.id.encargado3Sala1);
         tvAyudante3 = (TextView) findViewById(R.id.ayudante3Sala1);
         tvFecha = (TextView) findViewById(R.id.fechaSala1);
+        tvAsigLectura = (TextView) findViewById(R.id.tvAsigLectura);
         tvAsignacion1 = (TextView) findViewById(R.id.asignacion1);
         tvAsignacion2 = (TextView) findViewById(R.id.asignacion2);
         tvAsignacion3 = (TextView) findViewById(R.id.asignacion3);
+        calendar = Calendar.getInstance();
 
 
         bundleRecibir = this.getIntent().getExtras();
@@ -69,64 +69,64 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         asignacion1 = bundleRecibir.getString("asignacion1");
         asignacion2 = bundleRecibir.getString("asignacion2");
         asignacion3 = bundleRecibir.getString("asignacion3");
+        tipoEvento = bundleRecibir.getString("evento");
 
         if (llenarSala1 == 1) {
-            cargarLector();
-            cargarEncargado1();
-            if (idAyudante1 == 1000) {
-                tvAyudante1.setVisibility(View.INVISIBLE);
-            } else {
-                cargarAyudante1();
-            }
-            cargarEncargado2();
-            if (idAyudante2 == 1000) {
-                tvAyudante2.setVisibility(View.INVISIBLE);
-            } else {
-                cargarAyudante2();
-            }
-            cargarEncargado3();
-            if (idAyudante3 == 1000) {
-                tvAyudante3.setVisibility(View.INVISIBLE);
-            } else {
-                cargarAyudante3();
-            }
-            tvAsignacion1.setText(asignacion1);
-            tvAsignacion2.setText(asignacion2);
-            tvAsignacion3.setText(asignacion3);
-            tvFecha.setText(diaAsignacion + "/" + mesAsignacion + "/" + anualAsignacion);
+            cargarInformacion();
         }
 
+    }
 
+    private void cargarInformacion () {
+        if (idLector == 1000) {
+            tvLectura.setVisibility(View.INVISIBLE);
+        } else {
+            cargarLector();
+        }
+        if (idEncargado1 == 1000) {
+            tvEncargado1.setVisibility(View.INVISIBLE);
+        } else {
+            cargarEncargado1();
+        }
 
-        tvFecha.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selecFecha();
-            }
-        });
+        if (idAyudante1 == 1000) {
+            tvAyudante1.setVisibility(View.INVISIBLE);
+        } else {
+            cargarAyudante1();
+        }
 
+        if (idEncargado2 == 1000) {
+            tvEncargado2.setVisibility(View.INVISIBLE);
+        } else {
+            cargarEncargado2();
+        }
+
+        if (idAyudante2 == 1000) {
+            tvAyudante2.setVisibility(View.INVISIBLE);
+        } else {
+            cargarAyudante2();
+        }
+
+        if (idEncargado3 == 1000) {
+            tvEncargado3.setVisibility(View.INVISIBLE);
+        } else {
+            cargarEncargado3();
+        }
+
+        if (idAyudante3 == 1000) {
+            tvAyudante3.setVisibility(View.INVISIBLE);
+        } else {
+            cargarAyudante3();
+        }
+        tvAsigLectura.setText("Sin asignación");
+        tvAsignacion1.setText(asignacion1);
+        tvAsignacion2.setText(asignacion2);
+        tvAsignacion3.setText(asignacion3);
+        tvFecha.setText(diaAsignacion + "/" + mesAsignacion + "/" + anualAsignacion);
     }
 
 
 
-    private void selecFecha() {
-        final Calendar calendario = Calendar.getInstance();
-
-        dia = calendario.get(Calendar.DAY_OF_MONTH);
-        mes = calendario.get(Calendar.MONTH);
-        anual = calendario.get(Calendar.YEAR);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                tvFecha.setText(dayOfMonth + "/" + (month+1) + "/" + year);
-                diaAsignacion = dayOfMonth;
-                mesAsignacion = month + 1;
-                anualAsignacion = year;
-            }
-        }, anual, mes , dia);
-        datePickerDialog.show();
-    }
 
     private void cargarLector () {
         String sid = String.valueOf(idLector);
@@ -136,7 +136,8 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         Cursor fila = db.rawQuery("SELECT * FROM publicadores WHERE idPublicador =" + sid, null);
 
         if(fila.moveToFirst()) {
-            tvLectura.setText(fila.getString(1) + " " + fila.getString(2));
+            lector = fila.getString(1) + " " + fila.getString(2);
+            tvLectura.setText(lector);
         }
     }
 
@@ -148,7 +149,8 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         Cursor fila = db.rawQuery("SELECT * FROM publicadores WHERE idPublicador =" + sid, null);
 
         if(fila.moveToFirst()) {
-            tvEncargado1.setText(fila.getString(1) + " " + fila.getString(2));
+            encargado1 = fila.getString(1) + " " + fila.getString(2);
+            tvEncargado1.setText(encargado1);
         }
     }
 
@@ -160,7 +162,8 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         Cursor fila = db.rawQuery("SELECT * FROM publicadores WHERE idPublicador =" + sid, null);
 
         if(fila.moveToFirst()) {
-            tvAyudante1.setText(fila.getString(1) + " " + fila.getString(2));
+            ayudante1 = fila.getString(1) + " " + fila.getString(2);
+            tvAyudante1.setText(ayudante1);
         }
     }
 
@@ -172,7 +175,8 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         Cursor fila = db.rawQuery("SELECT * FROM publicadores WHERE idPublicador =" + sid, null);
 
         if(fila.moveToFirst()) {
-            tvEncargado2.setText(fila.getString(1) + " " + fila.getString(2));
+            encargado2 = fila.getString(1) + " " + fila.getString(2);
+            tvEncargado2.setText(encargado2);
         }
     }
 
@@ -184,7 +188,8 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         Cursor fila = db.rawQuery("SELECT * FROM publicadores WHERE idPublicador =" + sid, null);
 
         if(fila.moveToFirst()) {
-            tvAyudante2.setText(fila.getString(1) + " " + fila.getString(2));
+            ayudante2 = fila.getString(1) + " " + fila.getString(2);
+            tvAyudante2.setText(ayudante2);
         }
     }
 
@@ -196,7 +201,8 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         Cursor fila = db.rawQuery("SELECT * FROM publicadores WHERE idPublicador =" + sid, null);
 
         if(fila.moveToFirst()) {
-            tvEncargado3.setText(fila.getString(1) + " " + fila.getString(2));
+            encargado3 = fila.getString(1) + " " + fila.getString(2);
+            tvEncargado3.setText(encargado3);
         }
     }
 
@@ -208,7 +214,8 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         Cursor fila = db.rawQuery("SELECT * FROM publicadores WHERE idPublicador =" + sid, null);
 
         if(fila.moveToFirst()) {
-            tvAyudante3.setText(fila.getString(1) + " " + fila.getString(2));
+            ayudante3 = fila.getString(1) + " " + fila.getString(2);
+            tvAyudante3.setText(ayudante3);
         }
     }
 
@@ -226,34 +233,21 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        if (checkAsamblea.isChecked()) {
-            int id = item.getItemId();
+        int id = item.getItemId();
 
             //noinspection SimplifiableIfStatement
             if (id == R.id.menu_save) {
-                Toast.makeText(getApplicationContext(), "Semana sin asignaciones por Asamblea", Toast.LENGTH_LONG).show();
-                finish();
+                guardarInformacion ();
+                guradarSala1();
+                Toast.makeText(getApplicationContext(), "Información guardada", Toast.LENGTH_SHORT).show();
+                Intent myIntent = new Intent(this, PrincipalActivity.class);
+                startActivity(myIntent);
                 return true;
             } else if (id == R.id.menu_cancel) {
                 Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();
                 finish();
                 return true;
             }
-        } else {
-
-            int id = item.getItemId();
-
-            //noinspection SimplifiableIfStatement
-            if (id == R.id.menu_save) {
-                Toast.makeText(getApplicationContext(), "Informacion guardada", Toast.LENGTH_SHORT).show();
-                return true;
-            } else if (id == R.id.menu_cancel) {
-                Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();
-                finish();
-                return true;
-            }
-
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -267,5 +261,205 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    private void guardarInformacion() {
+        if (idLector != 1000) {
+            guardarLector();
+        }
+        if (idEncargado1 != 1000) {
+            guardarEncargado1();
+        }
+
+        if (idAyudante1 != 1000) {
+          guardarAyudante1();
+        }
+
+        if (idEncargado2 != 1000) {
+           guardarEncargado2();
+        }
+
+        if (idAyudante2 != 1000) {
+          guardarAyudante2();
+        }
+
+        if (idEncargado3 != 1000) {
+          guardarEncargado3();
+        }
+
+        if (idAyudante3 != 1000) {
+          guardarAyudante3();
+        }
+    }
+
+    private void guardarLector() {
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        SQLiteDatabase dbGuardar = conect.getWritableDatabase();
+
+        String diaDiscurso = String.valueOf(diaAsignacion);
+        String mesDiscurso = String.valueOf(mesAsignacion);
+        String anualDiscurso = String.valueOf(anualAsignacion);
+
+
+                ContentValues registro = new ContentValues();
+                registro.put("diaasignacion", diaDiscurso);
+                registro.put("mesasignacion", mesDiscurso);
+                registro.put("anualasignacion", anualDiscurso);
+
+                dbGuardar.update("publicadores", registro, "idPublicador=" + idLector, null);
+                dbGuardar.close();
+
+    }
+
+    private void guardarEncargado1 () {
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        SQLiteDatabase dbGuardar = conect.getWritableDatabase();
+
+        String diaDiscurso = String.valueOf(diaAsignacion);
+        String mesDiscurso = String.valueOf(mesAsignacion);
+        String anualDiscurso = String.valueOf(anualAsignacion);
+
+
+        ContentValues registro = new ContentValues();
+        registro.put("diaasignacion", diaDiscurso);
+        registro.put("mesasignacion", mesDiscurso);
+        registro.put("anualasignacion", anualDiscurso);
+
+        dbGuardar.update("publicadores", registro, "idPublicador=" + idEncargado1, null);
+        dbGuardar.close();
+    }
+
+    private void guardarAyudante1 () {
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        SQLiteDatabase dbGuardar = conect.getWritableDatabase();
+
+        String diaAyuda = String.valueOf(diaAsignacion);
+        String mesAyuda = String.valueOf(mesAsignacion);
+        String anualAyuda = String.valueOf(anualAsignacion);
+
+
+        ContentValues registro = new ContentValues();
+        registro.put("diaayudante", diaAyuda);
+        registro.put("mesayudante", mesAyuda);
+        registro.put("anualayudante", anualAyuda);
+
+        dbGuardar.update("publicadores", registro, "idPublicador=" + idAyudante1, null);
+        dbGuardar.close();
+    }
+
+    private void guardarEncargado2 () {
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        SQLiteDatabase dbGuardar = conect.getWritableDatabase();
+
+        String diaDiscurso = String.valueOf(diaAsignacion);
+        String mesDiscurso = String.valueOf(mesAsignacion);
+        String anualDiscurso = String.valueOf(anualAsignacion);
+
+
+        ContentValues registro = new ContentValues();
+        registro.put("diaasignacion", diaDiscurso);
+        registro.put("mesasignacion", mesDiscurso);
+        registro.put("anualasignacion", anualDiscurso);
+
+        dbGuardar.update("publicadores", registro, "idPublicador=" + idEncargado2, null);
+        dbGuardar.close();
+    }
+
+    private void guardarAyudante2 () {
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        SQLiteDatabase dbGuardar = conect.getWritableDatabase();
+
+        String diaAyuda = String.valueOf(diaAsignacion);
+        String mesAyuda = String.valueOf(mesAsignacion);
+        String anualAyuda = String.valueOf(anualAsignacion);
+
+
+        ContentValues registro = new ContentValues();
+        registro.put("diaayudante", diaAyuda);
+        registro.put("mesayudante", mesAyuda);
+        registro.put("anualayudante", anualAyuda);
+
+        dbGuardar.update("publicadores", registro, "idPublicador=" + idAyudante2, null);
+        dbGuardar.close();
+    }
+
+    private void guardarEncargado3 () {
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        SQLiteDatabase dbGuardar = conect.getWritableDatabase();
+
+        String diaDiscurso = String.valueOf(diaAsignacion);
+        String mesDiscurso = String.valueOf(mesAsignacion);
+        String anualDiscurso = String.valueOf(anualAsignacion);
+
+
+        ContentValues registro = new ContentValues();
+        registro.put("diaasignacion", diaDiscurso);
+        registro.put("mesasignacion", mesDiscurso);
+        registro.put("anualasignacion", anualDiscurso);
+
+        dbGuardar.update("publicadores", registro, "idPublicador=" + idEncargado3, null);
+        dbGuardar.close();
+    }
+
+    private void guardarAyudante3 () {
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        SQLiteDatabase dbGuardar = conect.getWritableDatabase();
+
+        String diaAyuda = String.valueOf(diaAsignacion);
+        String mesAyuda = String.valueOf(mesAsignacion);
+        String anualAyuda = String.valueOf(anualAsignacion);
+
+
+        ContentValues registro = new ContentValues();
+        registro.put("diaayudante", diaAyuda);
+        registro.put("mesayudante", mesAyuda);
+        registro.put("anualayudante", anualAyuda);
+
+        dbGuardar.update("publicadores", registro, "idPublicador=" + idAyudante3, null);
+        dbGuardar.close();
+    }
+
+    public void guradarSala1() {
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        SQLiteDatabase dbGuardar = conect.getWritableDatabase();
+
+        calendar.set(anualAsignacion, (mesAsignacion-1), diaAsignacion);
+        numSemana = calendar.get(Calendar.WEEK_OF_YEAR);
+
+        String semana = String.valueOf(numSemana);
+        String lectura = lector;
+        String enc1 = encargado1;
+        String ayu1 = ayudante1;
+        String enc2 = encargado2;
+        String ayu2 = ayudante2;
+        String enc3 = encargado3;
+        String ayu3 = ayudante3;
+        String evento = tipoEvento;
+        String dia = String.valueOf(diaAsignacion);
+        String mes = String.valueOf(mesAsignacion);
+        String anual = String.valueOf(anualAsignacion);
+        String tipo1 = asignacion1;
+        String tipo2 = asignacion2;
+        String tipo3 = asignacion3;
+
+        ContentValues registro = new ContentValues();
+        registro.put("semana", semana);
+        registro.put("lector", lectura);
+        registro.put("encargado1", enc1);
+        registro.put("ayudante1", ayu1);
+        registro.put("encargado2", enc2);
+        registro.put("ayudante2", ayu2);
+        registro.put("encargado3", enc3);
+        registro.put("ayudante3", ayu3);
+        registro.put("evento", evento);
+        registro.put("dia", dia);
+        registro.put("mes", mes);
+        registro.put("anual", anual);
+        registro.put("tipo1",tipo1);
+        registro.put("tipo2", tipo2);
+        registro.put("tipo3", tipo3);
+
+        dbGuardar.insert("sala1", null, registro);
+        dbGuardar.close();
     }
 }

@@ -10,6 +10,7 @@
     <string name="tab_text_2">Asignaciones</string>
     <string name="tab_text_3">Publicadores</string>
     <string name="action_settings">Ajustes</string>
+    <string name="action_share">Enviar recordatorios</string>
 
     <!-- Add Publicador -->
     <string name="NombrePub">*Nombres: </string>
@@ -26,10 +27,10 @@
     <!-- Add Salas -->
     <string name="checkboxVisita">Visita Superintendente</string>
     <string name="checkboxAsamblea">Asamblea</string>
-    <string name="tvLectura">Lectura Biblica: </string>
-    <string name="tvAsignacion1">Primera Asignacion: </string>
-    <string name="tvAsignacion2">Segunda Asignacion: </string>
-    <string name="tvAsignacion3">Tercera Asignacion: </string>
+    <string name="tvLectura">Lectura Bíblica: </string>
+    <string name="tvAsignacion1">Primera Asignación: </string>
+    <string name="tvAsignacion2">Segunda Asignación: </string>
+    <string name="tvAsignacion3">Tercera Asignación: </string>
     <string name="checkboxVideo">Video</string>
     <string name="tvEncargado">Encargado</string>
     <string name="tvAyudante">Ayudante</string>
@@ -37,11 +38,11 @@
     <string name="Publicador">Publicador</string>
 
     <!-- Inicio Fragment -->
-    <string name="tituloInicio">Ultima fecha programada: </string>
+    <string name="tituloInicio">Última fecha programada: </string>
     <string name="fechaInicio">Fecha</string>
     <string name="eventos">No hay eventos esta semana</string>
     <string name="tituloCronometro">Temporizador</string>
-    <string name="tituloDuracion">Duracion: </string>
+    <string name="tituloDuracion">Duración: </string>
     <string name="tiempoMM">00</string>
     <string name="tiempo">:</string>
     <string name="tiemposs">00</string>
@@ -50,13 +51,14 @@
 
     <!-- Asignaciones Fragment -->
     <string name="tituloAsignaciones">Fecha: </string>
+    <string name="aviso">Sin asignaciones programadas en esta semana</string>
 
     <!-- Activity Editar -->
     <string name="tituloFecha">Fecha</string>
 
     <!-- Activity Seleccionar -->
-    <string name="selecFecha">Seleccione el dia de las Asignaciones</string>
-    <string name="btnAsignar">Asignar</string>
+    <string name="selecFecha">Seleccione el día de las Asignaciones</string>
+    <string name="btnAsignar">IR</string>
 
     <!-- Publicadores Fragmente -->
     <string name="Buscar">Buscar: </string>
@@ -65,14 +67,14 @@
 
     <!-- Ver Activity -->
     <string name="nameVer">Detalles</string>
-    <string name="ultDiscurso">Ultimo Discurso: </string>
-    <string name="ultAyudante">Ultimo Ayudante: </string>
-    <string name="ultSustitucion">Ultima Sustitucion: </string>
+    <string name="ultDiscurso">Último Discurso: </string>
+    <string name="ultAyudante">Último Ayudante: </string>
+    <string name="ultSustitucion">Última Sustitución: </string>
 
 
     <!-- FloatingMenu-->
-    <string name="fabSala1">Editar Sala 1</string>
-    <string name="fabSala2">Editar Sala 2</string>
+    <string name="fabSala1">Programar Sala 1</string>
+    <string name="fabSala2">Programar Sala 2</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

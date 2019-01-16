@@ -268,10 +268,10 @@ public class EditarPub extends AppCompatActivity {
                 startActivity(myintent);
                 finish();
     } else {
-                Toast.makeText(getApplicationContext(), "Hay campos obligatorios vacios", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Hay campos obligatorios vacíos", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(getApplicationContext(), "Hay campos obligatorios vacios", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Hay campos obligatorios vacíos", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -323,7 +323,7 @@ public class EditarPub extends AppCompatActivity {
 
         Intent myintent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         myintent.setType("image/");
-        startActivityForResult(myintent.createChooser(myintent, "Seleccione ubicacion"), 10);
+        startActivityForResult(myintent.createChooser(myintent, "Seleccione ubicación"), 10);
 
     }
 

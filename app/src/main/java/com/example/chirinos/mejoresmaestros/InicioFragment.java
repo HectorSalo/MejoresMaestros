@@ -35,7 +35,7 @@ public class InicioFragment extends Fragment {
 
     private EditText editTextMinutos, editTextSegundos;
     private FloatingActionButton fabStart, fabStop, fabPause;
-    private TextView textViewTemp;
+    private TextView textViewTemp, ultFecha;
     private boolean isPaused;
     private boolean isCenceled;
     private long TiempoRestante;
@@ -84,6 +84,7 @@ public class InicioFragment extends Fragment {
         vista = inflater.inflate(R.layout.fragment_inicio, container, false);
 
         textViewTemp = (TextView) vista.findViewById(R.id.visorTiempo);
+        ultFecha = (TextView) vista.findViewById(R.id.ultFecha);
         editTextMinutos = (EditText) vista.findViewById(R.id.editTextMinutos);
         editTextSegundos = (EditText) vista.findViewById(R.id.editTextSegundos);
         fabStart = (FloatingActionButton) vista.findViewById(R.id.fabPlay);
