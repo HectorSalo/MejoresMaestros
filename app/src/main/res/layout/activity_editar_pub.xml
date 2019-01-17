@@ -12,6 +12,9 @@
         android:layout_height="?attr/actionBarSize"
         android:layout_weight="1"
         android:background="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/AppTheme.PopupOverlay"
         app:title="@string/nameEditar">
@@ -85,7 +88,8 @@
             android:layout_height="match_parent"
             android:hint="@string/EmailPub"
             android:inputType="textEmailAddress"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:autofillHints="" />
     </LinearLayout>
 
 

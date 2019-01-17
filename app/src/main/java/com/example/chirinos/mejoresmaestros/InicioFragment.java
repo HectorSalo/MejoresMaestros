@@ -101,10 +101,16 @@ public class InicioFragment extends Fragment {
         fabPause = (FloatingActionButton) vista.findViewById(R.id.fabPause);
         calendar = Calendar.getInstance();
 
-        editTextMinutos.setEnabled(false);
-        editTextMinutos.setVisibility(View.INVISIBLE);
         editTextSegundos.setVisibility(View.INVISIBLE);
-        editTextSegundos.setEnabled(false);
+        editTextMinutos.setVisibility(View.INVISIBLE);
+        textViewTemp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextMinutos.setVisibility(View.VISIBLE);
+                editTextSegundos.setVisibility(View.VISIBLE);
+            }
+        });
+
 
         fabPause.setEnabled(false);
         fabStop.setEnabled(false);
