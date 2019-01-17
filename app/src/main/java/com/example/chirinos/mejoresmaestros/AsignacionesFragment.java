@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import android.provider.ContactsContract;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -54,6 +55,8 @@ public class AsignacionesFragment extends Fragment {
     private String strSemana;
     private Integer dia, mes, anual, semanaActual, diaSelec, mesSelec, anualSelec, semanaSelec;
     private TextView tvFecha, tvLectura, tvAsignacion1, tvAsignacion2, tvAsignacion3, tvEncargado1, tvAyudante1, tvEncargado2, tvAyudante2, tvEncargado3, tvAyudante3, tvAviso;
+    private TextView tvLecturaSala2, tvAsignacion1Sala2, tvAsignacion2Sala2, tvAsignacion3Sala2, tvEncargado1Sala2, tvAyudante1Sala2, tvEncargado2Sala2, tvAyudante2Sala2, tvEncargado3Sala2, tvAyudante3Sala2;
+    private ImageButton imDate, imbEditSala1, imbEditSala2;
     private FloatingActionButton fabSala1, fabSala2;
     private LinearLayout layoutSala1, layoutSala2;
     private View vista;
@@ -99,6 +102,7 @@ public class AsignacionesFragment extends Fragment {
         layoutSala1 = (LinearLayout) vista.findViewById(R.id.layoutSala1);
         layoutSala2 = (LinearLayout) vista.findViewById(R.id.layoutSala2);
         tvFecha = (TextView) vista.findViewById(R.id.tvFechaAsig);
+
         tvLectura = (TextView) vista.findViewById(R.id.textViewPubsInicioLectura);
         tvAsignacion1 = (TextView) vista.findViewById(R.id.inicioAsignacion1);
         tvAsignacion2 = (TextView) vista.findViewById(R.id.inicioAsignacion2);
@@ -109,7 +113,22 @@ public class AsignacionesFragment extends Fragment {
         tvAyudante2 = (TextView) vista.findViewById(R.id.textViewPubsInicioAsignacionAyu2);
         tvEncargado3 = (TextView) vista.findViewById(R.id.textViewPubsInicioAsignacion3);
         tvAyudante3 = (TextView) vista.findViewById(R.id.textViewPubsInicioAsignacionAyu3);
+
+        tvLecturaSala2 = (TextView) vista.findViewById(R.id.textViewPubsInicioLecturaSala2);
+        tvAsignacion1Sala2 = (TextView) vista.findViewById(R.id.inicioAsignacion1Sala2);
+        tvAsignacion2Sala2 = (TextView) vista.findViewById(R.id.inicioAsignacion2Sala2);
+        tvAsignacion3Sala2 = (TextView) vista.findViewById(R.id.inicioAsignacion3Sala2);
+        tvEncargado1Sala2 = (TextView) vista.findViewById(R.id.textViewPubsInicioAsignacion1Sala2);
+        tvAyudante1Sala2 = (TextView) vista.findViewById(R.id.textViewPubsInicioAsignacionAyu1Sala2);
+        tvEncargado2Sala2 = (TextView) vista.findViewById(R.id.textViewPubsInicioAsignacion2Sala2);
+        tvAyudante2Sala2 = (TextView) vista.findViewById(R.id.textViewPubsInicioAsignacionAyu2Sala2);
+        tvEncargado3Sala2 = (TextView) vista.findViewById(R.id.textViewPubsInicioAsignacion3Sala2);
+        tvAyudante3Sala2 = (TextView) vista.findViewById(R.id.textViewPubsInicioAsignacionAyu3Sala2);
+
         tvAviso = (TextView) vista.findViewById(R.id.tvAviso);
+        imDate = (ImageButton) vista.findViewById(R.id.iBDateSelec);
+        imbEditSala1 = (ImageButton) vista.findViewById(R.id.imageSala1);
+        imbEditSala2 = (ImageButton) vista.findViewById(R.id.imageSala2);
         calendar = Calendar.getInstance();
 
 
@@ -118,6 +137,9 @@ public class AsignacionesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), SeleccionarPubAsig.class);
+                Bundle myBundle = new Bundle();
+                myBundle.putInt("Sala", 1);
+                intent.putExtras(myBundle);
                 startActivity(intent);
 
             }
@@ -127,18 +149,31 @@ public class AsignacionesFragment extends Fragment {
         fabSala2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), Sala2Activity.class);
+                Intent intent = new Intent(getContext(), SeleccionarPubAsig.class);
                 Bundle myBundle = new Bundle();
-                myBundle.putInt("llenarSala1", 0);
+                myBundle.putInt("Sala", 2);
                 intent.putExtras(myBundle);
                 startActivity(intent);
             }
         });
 
-        tvFecha.setOnClickListener(new View.OnClickListener() {
+        imDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cargarFechaSelec ();
+            }
+        });
+
+        imbEditSala1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editSala1();
+            }
+        });
+        imbEditSala2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editSala2();
             }
         });
 
@@ -152,6 +187,7 @@ public class AsignacionesFragment extends Fragment {
         anual = calendar.get(Calendar.YEAR);
         semanaActual = calendar.get(Calendar.WEEK_OF_YEAR);
         cargarSala1(semanaActual);
+        cargarSala2(semanaActual);
     }
 
     private void cargarFechaSelec () {
@@ -168,6 +204,7 @@ public class AsignacionesFragment extends Fragment {
                 calendar.set(anualSelec, mesSelec, diaSelec);
                 semanaSelec = calendar.get(Calendar.WEEK_OF_YEAR);
                 cargarSala1(semanaSelec);
+                cargarSala2(semanaSelec);
 
             }
         }, anual, mes , dia);
@@ -210,11 +247,58 @@ public class AsignacionesFragment extends Fragment {
 
         } else {
             tvFecha.setText("Seleccione una fecha");
+            tvAviso.setText("Sin asignaciones programadas en esta semana");
             tvAviso.setVisibility(View.VISIBLE);
             layoutSala1.setVisibility(View.INVISIBLE);
             layoutSala2.setVisibility(View.INVISIBLE);
             db.close();
         }
+    }
+
+    private void cargarSala2 (int i) {
+        strSemana = String.valueOf(i);
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(getContext(), "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        SQLiteDatabase db = conect.getWritableDatabase();
+
+        Cursor fila = db.rawQuery("SELECT * FROM sala2 WHERE semana =" + strSemana, null);
+
+        if (fila.moveToFirst()) {
+                layoutSala2.setVisibility(View.VISIBLE);
+                tvLecturaSala2.setText(fila.getString(1));
+                tvEncargado1Sala2.setText(fila.getString(2));
+                tvAyudante1Sala2.setText(fila.getString(3));
+                tvEncargado2Sala2.setText(fila.getString(4));
+                tvAyudante2Sala2.setText(fila.getString(5));
+                tvEncargado3Sala2.setText(fila.getString(6));
+                tvAyudante3Sala2.setText(fila.getString(7));
+                tvAsignacion1Sala2.setText(fila.getString(12) + ": ");
+                tvAsignacion2Sala2.setText(fila.getString(13) + ": ");
+                tvAsignacion3Sala2.setText(fila.getString(14) + ": ");
+
+                db.close();
+
+        } else {
+
+            db.close();
+        }
+    }
+
+    private void editSala1() {
+        Intent myIntent = new Intent(getContext(), EditAsignacionesActivity.class);
+        Bundle myBundle = new Bundle();
+        myBundle.putInt("sala", 1);
+        myBundle.putInt("semana", semanaSelec);
+        myIntent.putExtras(myBundle);
+        startActivity(myIntent);
+    }
+
+    private void editSala2 () {
+        Intent myIntent = new Intent(getContext(), EditAsignacionesActivity.class);
+        Bundle myBundle = new Bundle();
+        myBundle.putInt("sala", 2);
+        myBundle.putInt("semana", semanaSelec);
+        myIntent.putExtras(myBundle);
+        startActivity(myIntent);
     }
 
 

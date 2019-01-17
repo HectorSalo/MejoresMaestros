@@ -129,6 +129,22 @@
                 android:text="TextView"
                 android:textSize="18sp" />
         </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvHabilitar"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="35dp"
+                android:gravity="center_vertical"
+                android:text="@string/titleSala1"
+                android:textSize="15sp" />
+
+
+        </TableRow>
     </TableLayout>
 
     <android.support.design.widget.FloatingActionButton

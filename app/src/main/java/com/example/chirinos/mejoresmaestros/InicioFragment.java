@@ -16,11 +16,13 @@ import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +51,7 @@ public class InicioFragment extends Fragment {
     private String FORMAT = "%02d:%02d";
     private long resultadoMinuto, resultadoSegundo, tiempoBase, intervaloDecrecer;
     private Long minuto_ingresado, segundo_ingresado;
-
+    private LinearLayout layDuracion;
     private InicioFragment.OnFragmentInteractionListener mListener;
 
     public InicioFragment() {
@@ -96,21 +98,11 @@ public class InicioFragment extends Fragment {
         tvAsamblea = (TextView) vista.findViewById(R.id.tvInicioAsamblea);
         editTextMinutos = (EditText) vista.findViewById(R.id.editTextMinutos);
         editTextSegundos = (EditText) vista.findViewById(R.id.editTextSegundos);
+        layDuracion = (LinearLayout) vista.findViewById(R.id.layoutDuracion);
         fabStart = (FloatingActionButton) vista.findViewById(R.id.fabPlay);
         fabStop = (FloatingActionButton) vista.findViewById(R.id.fabStop);
         fabPause = (FloatingActionButton) vista.findViewById(R.id.fabPause);
         calendar = Calendar.getInstance();
-
-        editTextSegundos.setVisibility(View.INVISIBLE);
-        editTextMinutos.setVisibility(View.INVISIBLE);
-        textViewTemp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editTextMinutos.setVisibility(View.VISIBLE);
-                editTextSegundos.setVisibility(View.VISIBLE);
-            }
-        });
-
 
         fabPause.setEnabled(false);
         fabStop.setEnabled(false);
@@ -120,7 +112,7 @@ public class InicioFragment extends Fragment {
         isCenceled = false;
         TiempoRestante = 0;
 
-
+        presentTemp();
 
 
         fabStart.setOnClickListener(new View.OnClickListener() {
@@ -271,10 +263,27 @@ public class InicioFragment extends Fragment {
 
         cargarInformacion();
         cargarDataSala1();
+        cargarDataSala2();
 
         return vista;
 
 
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void presentTemp() {
+        editTextSegundos.setVisibility(View.INVISIBLE);
+        editTextMinutos.setVisibility(View.INVISIBLE);
+        fabStart.setVisibility(View.INVISIBLE);
+
+        layDuracion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextMinutos.setVisibility(View.VISIBLE);
+                editTextSegundos.setVisibility(View.VISIBLE);
+                fabStart.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private void cargarInformacion() {
@@ -313,6 +322,19 @@ public class InicioFragment extends Fragment {
             ultFechaSala1.setText(fila.getString(9) + "/" + fila.getString(10)+ "/" + fila.getString(11));
         } else {
             ultFechaSala1.setText("Sin programar");
+        }
+    }
+
+    private void cargarDataSala2 () {
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(getContext(), "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        SQLiteDatabase db = conect.getWritableDatabase();
+
+        Cursor fila = db.rawQuery("SELECT * FROM sala2", null);
+
+        if (fila.moveToLast()) {
+            ultFechaSala2.setText(fila.getString(9) + "/" + fila.getString(10)+ "/" + fila.getString(11));
+        } else {
+            ultFechaSala2.setText("Sin programar");
         }
     }
 

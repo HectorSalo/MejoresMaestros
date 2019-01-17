@@ -82,6 +82,7 @@ public class AddPublicador extends AppCompatActivity {
                 registro.put("apellido", ApellidoPub);
                 registro.put("telefono", Telefono);
                 registro.put("correo", Correo);
+                registro.put("inhabilitar", 0);
 
 
                 if (radioMasculino.isChecked()) {

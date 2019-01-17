@@ -78,47 +78,47 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     private void cargarInformacion () {
-        if (idLector == 1000) {
+        if (idLector == UtilidadesStatic.ID_VACIOS) {
             tvLectura.setVisibility(View.INVISIBLE);
         } else {
             cargarLector();
         }
-        if (idEncargado1 == 1000) {
+        if (idEncargado1 == UtilidadesStatic.ID_VACIOS) {
             tvEncargado1.setVisibility(View.INVISIBLE);
         } else {
             cargarEncargado1();
         }
 
-        if (idAyudante1 == 1000) {
+        if (idAyudante1 == UtilidadesStatic.ID_VACIOS) {
             tvAyudante1.setVisibility(View.INVISIBLE);
         } else {
             cargarAyudante1();
         }
 
-        if (idEncargado2 == 1000) {
+        if (idEncargado2 == UtilidadesStatic.ID_VACIOS) {
             tvEncargado2.setVisibility(View.INVISIBLE);
         } else {
             cargarEncargado2();
         }
 
-        if (idAyudante2 == 1000) {
+        if (idAyudante2 == UtilidadesStatic.ID_VACIOS) {
             tvAyudante2.setVisibility(View.INVISIBLE);
         } else {
             cargarAyudante2();
         }
 
-        if (idEncargado3 == 1000) {
+        if (idEncargado3 == UtilidadesStatic.ID_VACIOS) {
             tvEncargado3.setVisibility(View.INVISIBLE);
         } else {
             cargarEncargado3();
         }
 
-        if (idAyudante3 == 1000) {
+        if (idAyudante3 == UtilidadesStatic.ID_VACIOS) {
             tvAyudante3.setVisibility(View.INVISIBLE);
         } else {
             cargarAyudante3();
         }
-        tvAsigLectura.setText("Sin asignación");
+
         tvAsignacion1.setText(asignacion1);
         tvAsignacion2.setText(asignacion2);
         tvAsignacion3.setText(asignacion3);
@@ -264,30 +264,30 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     private void guardarInformacion() {
-        if (idLector != 1000) {
+        if (idLector != UtilidadesStatic.ID_VACIOS) {
             guardarLector();
         }
-        if (idEncargado1 != 1000) {
+        if (idEncargado1 != UtilidadesStatic.ID_VACIOS) {
             guardarEncargado1();
         }
 
-        if (idAyudante1 != 1000) {
+        if (idAyudante1 != UtilidadesStatic.ID_VACIOS) {
           guardarAyudante1();
         }
 
-        if (idEncargado2 != 1000) {
+        if (idEncargado2 != UtilidadesStatic.ID_VACIOS) {
            guardarEncargado2();
         }
 
-        if (idAyudante2 != 1000) {
+        if (idAyudante2 != UtilidadesStatic.ID_VACIOS) {
           guardarAyudante2();
         }
 
-        if (idEncargado3 != 1000) {
+        if (idEncargado3 != UtilidadesStatic.ID_VACIOS) {
           guardarEncargado3();
         }
 
-        if (idAyudante3 != 1000) {
+        if (idAyudante3 != UtilidadesStatic.ID_VACIOS) {
           guardarAyudante3();
         }
     }

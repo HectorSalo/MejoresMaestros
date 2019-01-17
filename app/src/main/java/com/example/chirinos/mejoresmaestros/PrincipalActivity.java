@@ -50,7 +50,7 @@ public class PrincipalActivity extends AppCompatActivity implements Asignaciones
     private PendingIntent pendingIntent;
     private PendingIntent pendingIntentProgramar;
     private final static String CHANNEL_ID = "NOTIFICACION";
-    public final static int NOTIFICACION_ID = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +121,7 @@ public class PrincipalActivity extends AppCompatActivity implements Asignaciones
         builder.addAction(R.drawable.ic_action_publicador, "Programar", pendingIntentProgramar);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
-        notificationManagerCompat.notify(NOTIFICACION_ID, builder.build());
+        notificationManagerCompat.notify(UtilidadesStatic.NOTIFICACION_ID, builder.build());
     }
 
     private void createNotfChannel() {

@@ -57,9 +57,13 @@
     <string name="tituloAsignaciones">Fecha: </string>
     <string name="aviso">Sin asignaciones programadas en esta semana</string>
 
-    <!-- Activity Editar -->
+    <!-- Activity Editar Pub -->
     <string name="tituloFecha">Fecha</string>
     <string name="cbHabilitar">Inhabilitar</string>
+
+    <!-- Activity Sustitucion -->
+    <string name="nameSust">Sustitución</string>
+    <string name="sustituir">Sustituir por: </string>
 
     <!-- Activity Seleccionar -->
     <string name="selecFecha">Seleccione el día de las Asignaciones</string>

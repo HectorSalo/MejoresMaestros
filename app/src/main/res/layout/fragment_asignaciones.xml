@@ -23,7 +23,7 @@
         <!-- TODO: Update blank fragment layout -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
@@ -40,7 +40,7 @@
 
                 <TextView
                     android:id="@+id/tvFechaAsig"
-                    android:layout_width="match_parent"
+                    android:layout_width="300dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@color/colorPrimary"
@@ -48,6 +48,15 @@
                     android:text="@string/tituloAsignaciones"
                     android:textColor="#ffff"
                     android:textSize="22sp" />
+
+                <ImageButton
+                    android:id="@+id/iBDateSelec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="#ffffff"
+                    android:contentDescription="@string/tituloFecha"
+                    android:src="@drawable/ic_date_selec" />
 
 
             </LinearLayout>
@@ -70,14 +79,23 @@
 
                     <TextView
                         android:id="@+id/textView"
-                        android:layout_width="match_parent"
+                        android:layout_width="325dp"
                         android:layout_height="match_parent"
+                        android:background="@color/colorPrimaryDark"
                         android:gravity="center"
                         android:text="@string/nameSala1"
-                        android:textSize="22sp"
-                        android:background="@color/colorPrimaryDark"
                         android:textColor="#fff"
+                        android:textSize="22sp"
                         android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/imageSala1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#ffffff"
+                        android:contentDescription="@string/tituloFecha"
+                        android:src="@drawable/ic_edit_salas" />
                 </LinearLayout>
 
 
@@ -86,7 +104,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/tvLectura"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:gravity="center"/>
 
                 <TextView
                     android:id="@+id/textViewPubsInicioLectura"
@@ -102,7 +121,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:text="@string/tvAsignacion1"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:gravity="center"/>
 
                 <TextView
                     android:id="@+id/textViewPubsInicioAsignacion1"
@@ -127,7 +147,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:text="@string/tvAsignacion2"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:gravity="center"/>
 
 
                 <TextView
@@ -153,7 +174,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:text="@string/tvAsignacion3"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:gravity="center"/>
 
 
                 <TextView
@@ -193,14 +215,23 @@
 
                     <TextView
                         android:id="@+id/textView18"
-                        android:layout_width="match_parent"
+                        android:layout_width="325dp"
                         android:layout_height="match_parent"
+                        android:background="@color/colorPrimaryDark"
                         android:gravity="center"
                         android:text="@string/nameSala2"
-                        android:textSize="22sp"
-                        android:background="@color/colorPrimaryDark"
                         android:textColor="#fff"
+                        android:textSize="22sp"
                         android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/imageSala2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#ffffff"
+                        android:contentDescription="@string/tituloFecha"
+                        android:src="@drawable/ic_edit_salas" />
                 </LinearLayout>
 
                 <TextView
@@ -208,7 +239,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/tvLectura"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:gravity="center"/>
 
                 <TextView
                     android:id="@+id/textViewPubsInicioLecturaSala2"
@@ -224,7 +256,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:text="@string/tvAsignacion1"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:gravity="center"/>
 
                 <TextView
                     android:id="@+id/textViewPubsInicioAsignacion1Sala2"
@@ -244,12 +277,13 @@
 
 
                 <TextView
-                    android:id="@+id/inicioAsignacion2Sala"
+                    android:id="@+id/inicioAsignacion2Sala2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:text="@string/tvAsignacion2"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:gravity="center"/>
 
 
                 <TextView
@@ -275,7 +309,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:text="@string/tvAsignacion3"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:gravity="center"/>
 
 
                 <TextView

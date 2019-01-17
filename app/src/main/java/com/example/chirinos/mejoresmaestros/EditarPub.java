@@ -80,6 +80,7 @@ public class EditarPub extends AppCompatActivity {
         correo = (EditText) findViewById(R.id.etCorreo);
         radioHombre = (RadioButton) findViewById(R.id.radioHombre);
         radioMujer = (RadioButton) findViewById(R.id.radioMujer);
+        cbHabilitar = (CheckBox) findViewById(R.id.cbHabilitar);
         fdiscurso = (TextView) findViewById(R.id.etfdiscurso);
         fayudante = (TextView) findViewById(R.id.etfayudante);
         fsustitucion = (TextView) findViewById(R.id.etfsustitucion);
@@ -255,6 +256,11 @@ public class EditarPub extends AppCompatActivity {
                 registro.put("messust", mesSustitucion);
                 registro.put("anualsust", anualSustitucion);
 
+                if (cbHabilitar.isChecked()) {
+                    registro.put("inhabilitar", 1);
+                } else {
+                    registro.put("inhabilitar", 0);
+                }
 
                 if (radioHombre.isChecked()) {
                     registro.put("genero", "Hombre");
@@ -312,8 +318,14 @@ public class EditarPub extends AppCompatActivity {
 
             if (fila.getString(5).equals("Hombre")) {
                 imagePub.setImageResource(R.mipmap.ic_caballero);
+                radioHombre.setChecked(true);
             } else if (fila.getString(5).equals("Mujer")) {
                 imagePub.setImageResource(R.mipmap.ic_dama);
+                radioMujer.setChecked(true);
+            }
+
+            if (fila.getInt(16) == 1) {
+                cbHabilitar.setChecked(true);
             }
 
             db.close();

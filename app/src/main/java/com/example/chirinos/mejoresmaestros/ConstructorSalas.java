@@ -1,10 +1,10 @@
 package com.example.chirinos.mejoresmaestros;
 
-public class ConstructorSala1 {
+public class ConstructorSalas {
     private String lectura, encargado1, ayudante1, encargado2, ayudante2, encargado3, ayudante3, evento, tipo1, tipo2, tipo3;
     private Integer semana, diaDiscurso, mesDiscurso, anualDiscurso;
 
-    public ConstructorSala1() {}
+    public ConstructorSalas() {}
 
     public String getLectura() {
         return lectura;

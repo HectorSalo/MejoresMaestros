@@ -54,8 +54,9 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
     private Button btAsignar;
     private RadioGroup grupocb;
     private String genero, seleccion1, seleccion2, seleccion3, evento;
-    private Integer idLector, idEncargado1, idAyudante1, idEncargado2, idAyudante2, idEncargado3, idAyudante3, dia, mes, anual, diaActual, mesActual, anualActual;
+    private Integer idLector, idEncargado1, idAyudante1, idEncargado2, idAyudante2, idEncargado3, idAyudante3, dia, mes, anual, diaActual, mesActual, anualActual, salaRecibir;
     private ArrayAdapter<String> adapterSpSeleccionar;
+    private Bundle bundleRecibir;
 
 
     @Override
@@ -79,6 +80,9 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
         listSeleccionarPub = new ArrayList<>();
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, llM.getOrientation());
         recyclerSeleccionar.addItemDecoration(dividerItemDecoration);
+
+        bundleRecibir = this.getIntent().getExtras();
+        salaRecibir = bundleRecibir.getInt("Sala");
 
         String [] spSelecccionar = {"Seleccionar Asignación", "Primera Conversación", "Primera Revisita", "Segunda Revisita", "Curso Bíblico", "Discurso", "Sin asignación"};
         adapterSpSeleccionar = new ArrayAdapter<String>(this, R.layout.spinner_personalizado, spSelecccionar);
@@ -132,7 +136,7 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
 
         btAsignar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 if ((dia != null) && (mes != null) && (anual != null)) {
                     if (((mes-1) >= mesActual) && (anual >= anualActual)) {
                         if (cbAsamblea.isChecked() && cbVisita.isChecked()) {
@@ -140,18 +144,51 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
                         } else {
                             if (cbAsamblea.isChecked()) {
                                 evento = "Asamblea";
-                                llenarSala1Asamblea();
+                                llenarSalaAsamblea();
                                 Toast.makeText(getApplicationContext(), "Sin Asignaciones por Asamblea", Toast.LENGTH_SHORT).show();
 
                             } else {
                                 if (cbVisita.isChecked()) {
-                                    if (f == 1) {
-                                        llenarListaLectura(1);
-                                    } else if (f == 0) {
-                                        llenarListaLectura(0);
+                                    if (salaRecibir == 2) {
+                                        AlertDialog.Builder dialog = new AlertDialog.Builder(SeleccionarPubAsig.this, R.style.Theme_Dialog_Publicador);
+                                        dialog.setTitle("Aviso");
+                                        dialog.setMessage("¿Desea programar la Sala 2 durante la Visita?");
+
+                                        dialog.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                                if (f == 1) {
+                                                    llenarListaLectura(1);
+                                                } else if (f == 0) {
+                                                    llenarListaLectura(0);
+                                                }
+                                                evento = "Visita";
+                                                Snackbar.make(v, "Seleccione al Lector", Snackbar.LENGTH_INDEFINITE).show();
+                                            }
+                                        });
+
+                                        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                                evento = "Visita";
+                                                llenarSalaAsamblea();
+                                                Toast.makeText(getApplicationContext(), "Sin Asignaciones en Sala 2 por Visita", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                        dialog.show();
+
+
+                                    } else {
+                                        if (f == 1) {
+                                            llenarListaLectura(1);
+                                        } else if (f == 0) {
+                                            llenarListaLectura(0);
+                                        }
+                                        evento = "Visita";
+                                        Snackbar.make(v, "Seleccione al Lector", Snackbar.LENGTH_INDEFINITE).show();
                                     }
-                                    evento = "Visita";
-                                    Snackbar.make(v, "Seleccione al Lector", Snackbar.LENGTH_INDEFINITE).show();
                                 } else {
                                     if (f == 1) {
                                         llenarListaLectura(1);
@@ -174,6 +211,8 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
         });
     }
 
+
+
     @SuppressLint("RestrictedApi")
     private void llenarListaLectura(final int l) {
         etBuscar.setVisibility(View.VISIBLE);
@@ -188,7 +227,7 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
         SQLiteDatabase db = conect.getReadableDatabase();
         if (l == 1) {
 
-            Cursor cursor = db.rawQuery("SELECT * FROM publicadores WHERE genero='Hombre' ORDER BY anualasignacion ASC, mesasignacion ASC, diaasignacion ASC", null);
+            Cursor cursor = db.rawQuery("SELECT * FROM publicadores WHERE genero='Hombre' AND inhabilitar = 0 ORDER BY anualasignacion ASC, mesasignacion ASC, diaasignacion ASC", null);
 
             while (cursor.moveToNext()) {
                 ConstructorPublicadores publi = new ConstructorPublicadores();
@@ -257,7 +296,7 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
         SQLiteDatabase db = conect.getReadableDatabase();
         listAsignacion1 = new ArrayList<>();
 
-            Cursor cursor = db.rawQuery("SELECT * FROM publicadores ORDER BY anualasignacion ASC, mesasignacion ASC, diaasignacion ASC", null);
+            Cursor cursor = db.rawQuery("SELECT * FROM publicadores WHERE inhabilitar = 0 ORDER BY anualasignacion ASC, mesasignacion ASC, diaasignacion ASC", null);
 
             while (cursor.moveToNext()) {
                 ConstructorPublicadores publi = new ConstructorPublicadores();
@@ -313,8 +352,8 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
                         public void onClick(DialogInterface dialog, int which) {
                             Snackbar.make(view, "Seleccione al Encargado de la Segunda Asignación", Snackbar.LENGTH_INDEFINITE).show();
                             llenarListaEncargado2();
-                            idEncargado1 = 1000;
-                            idAyudante1 = 1000;
+                            idEncargado1 = UtilidadesStatic.ID_VACIOS;
+                            idAyudante1 = UtilidadesStatic.ID_VACIOS;
                             dialog.dismiss();
 
                         }
@@ -353,7 +392,7 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
                                     Snackbar.make(view, "Seleccione al Encargado de la Segunda Asignación", Snackbar.LENGTH_INDEFINITE).show();
                                     idEncargado1 = listAsignacion1.get(recyclerSeleccionar.getChildAdapterPosition(view)).getIdPublicador();
                                     llenarListaEncargado2();
-                                    idAyudante1 = 1000;
+                                    idAyudante1 = UtilidadesStatic.ID_VACIOS;
                                 } else if (listAsignacion1.get(recyclerSeleccionar.getChildAdapterPosition(view)).getGenero().equals("Mujer")) {
                                     Toast.makeText(getApplicationContext(), "Debe escoger publicador masculino", Toast.LENGTH_SHORT).show();
                                 }
@@ -386,9 +425,9 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
         String elegirGenero = "";
 
         if (genero.equals("Hombre")) {
-            elegirGenero = "SELECT * FROM publicadores WHERE genero='Hombre' ORDER BY anualayudante ASC, mesayudante ASC, diaayudante ASC";
+            elegirGenero = "SELECT * FROM publicadores WHERE genero='Hombre' AND inhabilitar = 0 ORDER BY anualayudante ASC, mesayudante ASC, diaayudante ASC";
         } else if (genero.equals("Mujer")) {
-            elegirGenero = "SELECT * FROM publicadores WHERE genero='Mujer' ORDER BY anualayudante ASC, mesayudante ASC, diaayudante ASC";
+            elegirGenero = "SELECT * FROM publicadores WHERE genero='Mujer' AND inhabilitar = 0 ORDER BY anualayudante ASC, mesayudante ASC, diaayudante ASC";
         }
 
         Cursor cursor = db.rawQuery(elegirGenero, null);
@@ -460,7 +499,7 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
         SQLiteDatabase db = conect.getReadableDatabase();
         listAsignacion2 = new ArrayList<>();
 
-        Cursor cursor =db.rawQuery("SELECT * FROM publicadores ORDER BY anualasignacion ASC, mesasignacion ASC, diaasignacion ASC", null);
+        Cursor cursor =db.rawQuery("SELECT * FROM publicadores WHERE inhabilitar = 0 ORDER BY anualasignacion ASC, mesasignacion ASC, diaasignacion ASC", null);
 
         while (cursor.moveToNext()) {
             ConstructorPublicadores publi = new ConstructorPublicadores();
@@ -515,8 +554,8 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
                         public void onClick(DialogInterface dialog, int which) {
                             Snackbar.make(view, "Seleccione al Encargado de la Tercera Asignación", Snackbar.LENGTH_INDEFINITE).show();
                             llenarListaEncargado3();
-                            idEncargado2 = 1000;
-                            idAyudante2 = 1000;
+                            idEncargado2 = UtilidadesStatic.ID_VACIOS;
+                            idAyudante2 = UtilidadesStatic.ID_VACIOS;
                             dialog.dismiss();
 
                         }
@@ -555,7 +594,7 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
                                 Snackbar.make(view, "Seleccione al Encargado de la Tercera Asignación", Snackbar.LENGTH_INDEFINITE).show();
                                 idEncargado2 = listAsignacion2.get(recyclerSeleccionar.getChildAdapterPosition(view)).getIdPublicador();
                                 llenarListaEncargado3();
-                                idAyudante2 = 1000;
+                                idAyudante2 = UtilidadesStatic.ID_VACIOS;
                             } else if (listAsignacion2.get(recyclerSeleccionar.getChildAdapterPosition(view)).getGenero().equals("Mujer")) {
                                 Toast.makeText(getApplicationContext(), "Debe escoger publicador masculino", Toast.LENGTH_SHORT).show();
                             }
@@ -587,9 +626,9 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
         String elegirGenero = "";
 
         if (genero.equals("Hombre")) {
-            elegirGenero = "SELECT * FROM publicadores WHERE genero='Hombre' ORDER BY anualayudante ASC, mesayudante ASC, diaayudante ASC";
+            elegirGenero = "SELECT * FROM publicadores WHERE genero='Hombre' AND inhabilitar = 0 ORDER BY anualayudante ASC, mesayudante ASC, diaayudante ASC";
         } else if (genero.equals("Mujer")) {
-            elegirGenero = "SELECT * FROM publicadores WHERE genero='Mujer' ORDER BY anualayudante ASC, mesayudante ASC, diaayudante ASC";
+            elegirGenero = "SELECT * FROM publicadores WHERE genero='Mujer' AND inhabilitar = 0 ORDER BY anualayudante ASC, mesayudante ASC, diaayudante ASC";
         }
 
         Cursor cursor = db.rawQuery(elegirGenero, null);
@@ -663,7 +702,7 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
         SQLiteDatabase db = conect.getReadableDatabase();
         listAsignacion3 = new ArrayList<>();
 
-        Cursor cursor =db.rawQuery("SELECT * FROM publicadores ORDER BY anualasignacion ASC, mesasignacion ASC, diaasignacion ASC", null);
+        Cursor cursor =db.rawQuery("SELECT * FROM publicadores WHERE inhabilitar = 0 ORDER BY anualasignacion ASC, mesasignacion ASC, diaasignacion ASC", null);
 
         while (cursor.moveToNext()) {
             ConstructorPublicadores publi = new ConstructorPublicadores();
@@ -716,9 +755,9 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
                     dialog.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            idEncargado3 = 1000;
-                            idAyudante3 = 1000;
-                            llenarSala1();
+                            idEncargado3 = UtilidadesStatic.ID_VACIOS;
+                            idAyudante3 = UtilidadesStatic.ID_VACIOS;
+                            llenarSala();
                             dialog.dismiss();
 
                         }
@@ -757,8 +796,8 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
                         if (seleccion3.equals("Discurso")) {
                             if (listAsignacion3.get(recyclerSeleccionar.getChildAdapterPosition(view)).getGenero().equals("Hombre")) {
                                 idEncargado3 = listAsignacion3.get(recyclerSeleccionar.getChildAdapterPosition(view)).getIdPublicador();
-                                idAyudante3 = 1000;
-                                llenarSala1();
+                                idAyudante3 = UtilidadesStatic.ID_VACIOS;
+                                llenarSala();
                             } else if (listAsignacion3.get(recyclerSeleccionar.getChildAdapterPosition(view)).getGenero().equals("Mujer")) {
                                 Toast.makeText(getApplicationContext(), "Debe escoger publicador masculino", Toast.LENGTH_SHORT).show();
                             }
@@ -790,9 +829,9 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
         String elegirGenero = "";
 
         if (genero.equals("Hombre")) {
-            elegirGenero = "SELECT * FROM publicadores WHERE genero='Hombre' ORDER BY anualayudante ASC, mesayudante ASC, diaayudante ASC";
+            elegirGenero = "SELECT * FROM publicadores WHERE genero='Hombre' AND inhabilitar = 0 ORDER BY anualayudante ASC, mesayudante ASC, diaayudante ASC";
         } else if (genero.equals("Mujer")) {
-            elegirGenero = "SELECT * FROM publicadores WHERE genero='Mujer' ORDER BY anualayudante ASC, mesayudante ASC, diaayudante ASC";
+            elegirGenero = "SELECT * FROM publicadores WHERE genero='Mujer' AND inhabilitar = 0 ORDER BY anualayudante ASC, mesayudante ASC, diaayudante ASC";
         }
 
         Cursor cursor = db.rawQuery(elegirGenero, null);
@@ -846,70 +885,117 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
                     Toast.makeText(getApplicationContext(), "Este publicador ya tiene asignación en esta Sala", Toast.LENGTH_SHORT).show();
                 } else {
                     idAyudante3 = listAyudante3.get(recyclerSeleccionar.getChildAdapterPosition(v)).getIdPublicador();
-                    llenarSala1();
+                    llenarSala();
                 }
             }
         });
         db.close();
     }
-    private void llenarSala1 () {
-        Intent myintent = new Intent(getApplicationContext(), Sala1Activity.class);
-        Bundle myBundle = new Bundle();
-        myBundle.putInt("llenarSala1", 1);
-        myBundle.putInt("idLector", idLector);
-        myBundle.putInt("idEncargado1", idEncargado1);
-        myBundle.putInt("idAyudante1", idAyudante1);
-        myBundle.putInt("idEncargado2", idEncargado2);
-        myBundle.putInt("idAyudante2", idAyudante2);
-        myBundle.putInt("idEncargado3", idEncargado3);
-        myBundle.putInt("idAyudante3", idAyudante3);
-        myBundle.putInt("dia", dia);
-        myBundle.putInt("mes", mes);
-        myBundle.putInt("anual", anual);
-        myBundle.putString("asignacion1", seleccion1);
-        myBundle.putString("asignacion2", seleccion2);
-        myBundle.putString("asignacion3", seleccion3);
-        myBundle.putString("evento", evento);
+    private void llenarSala () {
+        if (salaRecibir == 1) {
+            Intent myintent = new Intent(getApplicationContext(), Sala1Activity.class);
+            Bundle myBundle = new Bundle();
+            myBundle.putInt("llenarSala1", 1);
+            myBundle.putInt("idLector", idLector);
+            myBundle.putInt("idEncargado1", idEncargado1);
+            myBundle.putInt("idAyudante1", idAyudante1);
+            myBundle.putInt("idEncargado2", idEncargado2);
+            myBundle.putInt("idAyudante2", idAyudante2);
+            myBundle.putInt("idEncargado3", idEncargado3);
+            myBundle.putInt("idAyudante3", idAyudante3);
+            myBundle.putInt("dia", dia);
+            myBundle.putInt("mes", mes);
+            myBundle.putInt("anual", anual);
+            myBundle.putString("asignacion1", seleccion1);
+            myBundle.putString("asignacion2", seleccion2);
+            myBundle.putString("asignacion3", seleccion3);
+            myBundle.putString("evento", evento);
 
-        myintent.putExtras(myBundle);
-        startActivity(myintent);
-        finish();
+            myintent.putExtras(myBundle);
+            startActivity(myintent);
+            finish();
+        } else if (salaRecibir == 2) {
+            Intent myintent = new Intent(getApplicationContext(), Sala2Activity.class);
+            Bundle myBundle = new Bundle();
+            myBundle.putInt("llenarSala2", 1);
+            myBundle.putInt("idLector", idLector);
+            myBundle.putInt("idEncargado1", idEncargado1);
+            myBundle.putInt("idAyudante1", idAyudante1);
+            myBundle.putInt("idEncargado2", idEncargado2);
+            myBundle.putInt("idAyudante2", idAyudante2);
+            myBundle.putInt("idEncargado3", idEncargado3);
+            myBundle.putInt("idAyudante3", idAyudante3);
+            myBundle.putInt("dia", dia);
+            myBundle.putInt("mes", mes);
+            myBundle.putInt("anual", anual);
+            myBundle.putString("asignacion1", seleccion1);
+            myBundle.putString("asignacion2", seleccion2);
+            myBundle.putString("asignacion3", seleccion3);
+            myBundle.putString("evento", evento);
+
+            myintent.putExtras(myBundle);
+            startActivity(myintent);
+            finish();
+        }
 }
 
-    private void llenarSala1Asamblea() {
-        idLector = 1000;
-        idEncargado1 = 1000;
-        idAyudante1 = 1000;
-        idEncargado2 = 1000;
-        idAyudante2 = 1000;
-        idEncargado3 = 1000;
-        idAyudante3 = 1000;
+    private void llenarSalaAsamblea() {
+        idLector = UtilidadesStatic.ID_VACIOS;
+        idEncargado1 = UtilidadesStatic.ID_VACIOS;
+        idAyudante1 = UtilidadesStatic.ID_VACIOS;
+        idEncargado2 = UtilidadesStatic.ID_VACIOS;
+        idAyudante2 = UtilidadesStatic.ID_VACIOS;
+        idEncargado3 = UtilidadesStatic.ID_VACIOS;
+        idAyudante3 = UtilidadesStatic.ID_VACIOS;
         seleccion1 = "Sin asignación";
         seleccion2 = "Sin asignación";
         seleccion3 = "Sin asignación";
 
+        if (salaRecibir == 1) {
+            Intent myintent = new Intent(getApplicationContext(), Sala1Activity.class);
+            Bundle myBundle = new Bundle();
+            myBundle.putInt("llenarSala1", 1);
+            myBundle.putInt("idLector", idLector);
+            myBundle.putInt("idEncargado1", idEncargado1);
+            myBundle.putInt("idAyudante1", idAyudante1);
+            myBundle.putInt("idEncargado2", idEncargado2);
+            myBundle.putInt("idAyudante2", idAyudante2);
+            myBundle.putInt("idEncargado3", idEncargado3);
+            myBundle.putInt("idAyudante3", idAyudante3);
+            myBundle.putInt("dia", dia);
+            myBundle.putInt("mes", mes);
+            myBundle.putInt("anual", anual);
+            myBundle.putString("asignacion1", seleccion1);
+            myBundle.putString("asignacion2", seleccion2);
+            myBundle.putString("asignacion3", seleccion3);
+            myBundle.putString("evento", evento);
 
-        Intent myintent = new Intent(getApplicationContext(), Sala1Activity.class);
-        Bundle myBundle = new Bundle();
-        myBundle.putInt("llenarSala1", 1);
-        myBundle.putInt("idLector", idLector);
-        myBundle.putInt("idEncargado1", idEncargado1);
-        myBundle.putInt("idAyudante1", idAyudante1);
-        myBundle.putInt("idEncargado2", idEncargado2);
-        myBundle.putInt("idAyudante2", idAyudante2);
-        myBundle.putInt("idEncargado3", idEncargado3);
-        myBundle.putInt("idAyudante3", idAyudante3);
-        myBundle.putInt("dia", dia);
-        myBundle.putInt("mes", mes);
-        myBundle.putInt("anual", anual);
-        myBundle.putString("asignacion1", seleccion1);
-        myBundle.putString("asignacion2", seleccion2);
-        myBundle.putString("asignacion3", seleccion3);
-        myBundle.putString("evento", evento);
+            myintent.putExtras(myBundle);
+            startActivity(myintent);
+            finish();
+        } else if (salaRecibir == 2) {
+            Intent myintent = new Intent(getApplicationContext(), Sala2Activity.class);
+            Bundle myBundle = new Bundle();
+            myBundle.putInt("llenarSala2", 1);
+            myBundle.putInt("idLector", idLector);
+            myBundle.putInt("idEncargado1", idEncargado1);
+            myBundle.putInt("idAyudante1", idAyudante1);
+            myBundle.putInt("idEncargado2", idEncargado2);
+            myBundle.putInt("idAyudante2", idAyudante2);
+            myBundle.putInt("idEncargado3", idEncargado3);
+            myBundle.putInt("idAyudante3", idAyudante3);
+            myBundle.putInt("dia", dia);
+            myBundle.putInt("mes", mes);
+            myBundle.putInt("anual", anual);
+            myBundle.putString("asignacion1", seleccion1);
+            myBundle.putString("asignacion2", seleccion2);
+            myBundle.putString("asignacion3", seleccion3);
+            myBundle.putString("evento", evento);
 
-        myintent.putExtras(myBundle);
-        startActivity(myintent);
-        finish();
+            myintent.putExtras(myBundle);
+            startActivity(myintent);
+            finish();
+        }
     }
 
     @Override

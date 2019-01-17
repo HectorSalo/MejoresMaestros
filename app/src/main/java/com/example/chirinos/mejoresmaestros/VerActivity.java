@@ -19,7 +19,7 @@ import java.util.Date;
 public class VerActivity extends AppCompatActivity {
 
     private ImageView imagenPublicador;
-    private TextView tvNombre, tvApellido, tvTelefono, tvCorreo, tvfAsignacion, tvfAyudante, tvfSustitucion;
+    private TextView tvNombre, tvApellido, tvTelefono, tvCorreo, tvfAsignacion, tvfAyudante, tvfSustitucion, tvHabilitar;
     private Integer idPublicador;
     private String sidPub;
     private FloatingActionButton fabClose;
@@ -38,6 +38,7 @@ public class VerActivity extends AppCompatActivity {
         tvfAsignacion = (TextView) findViewById(R.id.textViewfdiscurso);
         tvfAyudante = (TextView) findViewById(R.id.textViewfayudante);
         tvfSustitucion = (TextView) findViewById(R.id.textViewfsustitucion);
+        tvHabilitar = (TextView) findViewById(R.id.tvHabilitar);
         fabClose = (FloatingActionButton) findViewById(R.id.fabClose);
 
 
@@ -94,10 +95,14 @@ public class VerActivity extends AppCompatActivity {
                 imagenPublicador.setImageResource(R.mipmap.ic_dama);
             }
 
+            if (fila.getInt(16) == 1) {
+                tvHabilitar.setText("Inhabilitado");
+            } else if (fila.getInt(16) == 0) {
+                tvHabilitar.setText("");
+            }
+
             db.close();
 
-        } else {
-            Toast.makeText(this, "No existe", Toast.LENGTH_SHORT).show();
         }
 
 

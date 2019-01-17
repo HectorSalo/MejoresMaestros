@@ -39,8 +39,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".EditAsignacionesActivity"
-            android:label="@string/nameEditar"
-            android:theme="@style/Theme.Dialog.Publicador" />
+            android:label="@string/nameSust"
+            android:theme="@style/Theme.Dialog.Sustutuir" />
         <activity
             android:name=".VerActivity"
             android:label="@string/nameVer"

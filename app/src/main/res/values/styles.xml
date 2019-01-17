@@ -21,6 +21,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
     </style>
 
+    <style name="Theme.Dialog.Sustutuir" parent="@style/Base.Theme.MaterialComponents.Light.Dialog.FixedSize" >
+        <item name="colorPrimary">@color/colorPrimary</item>
+    </style>
+
     <style name="etiqueta">
         <item name="android:background">@drawable/etiqueta_fab</item>
         <item name="android:textColor">#ffffff</item>
