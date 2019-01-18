@@ -110,6 +110,7 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
 
     @SuppressLint("RestrictedApi")
     private void selecFecha (final int f) {
+
         etBuscar.setVisibility(View.INVISIBLE);
         fabBack.setVisibility(View.INVISIBLE);
         spinnerSeleccionar.setVisibility(View.INVISIBLE);
@@ -118,6 +119,7 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
         tvselecFecha.setVisibility(View.VISIBLE);
         grupocb.setVisibility(View.VISIBLE);
         calendar.setVisibility(View.VISIBLE);
+
 
         diaActual = almanaque.get(Calendar.DAY_OF_MONTH);
         mesActual = almanaque.get(Calendar.MONTH);

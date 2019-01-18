@@ -130,6 +130,7 @@ public class AsignacionesFragment extends Fragment {
         imbEditSala1 = (ImageButton) vista.findViewById(R.id.imageSala1);
         imbEditSala2 = (ImageButton) vista.findViewById(R.id.imageSala2);
         calendar = Calendar.getInstance();
+        semanaSelec=0;
 
 
         fabSala1 = (FloatingActionButton) vista.findViewById(R.id.fabSala1);
@@ -287,7 +288,17 @@ public class AsignacionesFragment extends Fragment {
         Intent myIntent = new Intent(getContext(), EditAsignacionesActivity.class);
         Bundle myBundle = new Bundle();
         myBundle.putInt("sala", 1);
-        myBundle.putInt("semana", semanaSelec);
+        if(semanaSelec == 0) {
+            myBundle.putInt("semana", semanaActual);
+            myBundle.putInt("dia", dia);
+            myBundle.putInt("mes", mes);
+            myBundle.putInt("anual", anual);
+        } else {
+            myBundle.putInt("semana", semanaSelec);
+            myBundle.putInt("dia", diaSelec);
+            myBundle.putInt("mes", mesSelec);
+            myBundle.putInt("anual", anualSelec);
+        }
         myIntent.putExtras(myBundle);
         startActivity(myIntent);
     }
@@ -296,7 +307,17 @@ public class AsignacionesFragment extends Fragment {
         Intent myIntent = new Intent(getContext(), EditAsignacionesActivity.class);
         Bundle myBundle = new Bundle();
         myBundle.putInt("sala", 2);
-        myBundle.putInt("semana", semanaSelec);
+        if (semanaSelec == 0) {
+            myBundle.putInt("semana", semanaActual);
+            myBundle.putInt("dia", dia);
+            myBundle.putInt("mes", mes);
+            myBundle.putInt("anual", anual);
+        } else {
+            myBundle.putInt("semana", semanaSelec);
+            myBundle.putInt("dia", diaSelec);
+            myBundle.putInt("mes", mesSelec);
+            myBundle.putInt("anual", anualSelec);
+        }
         myIntent.putExtras(myBundle);
         startActivity(myIntent);
     }

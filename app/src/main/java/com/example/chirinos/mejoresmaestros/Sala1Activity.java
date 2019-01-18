@@ -242,6 +242,8 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
                 Toast.makeText(getApplicationContext(), "Información guardada", Toast.LENGTH_SHORT).show();
                 Intent myIntent = new Intent(this, PrincipalActivity.class);
                 startActivity(myIntent);
+                finish();
+
                 return true;
             } else if (id == R.id.menu_cancel) {
                 Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();

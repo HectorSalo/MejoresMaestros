@@ -246,15 +246,33 @@ public class EditarPub extends AppCompatActivity {
                 registro.put("apellido", ApellidoPub);
                 registro.put("telefono", Telefono);
                 registro.put("correo", Correo);
-                registro.put("diaasignacion", diaDiscurso);
-                registro.put("mesasignacion", mesDiscurso);
-                registro.put("anualasignacion", anualDiscurso);
-                registro.put("diaayudante", diaAyuda);
-                registro.put("mesayudante", mesAyuda);
-                registro.put("anualayudante", anualAyuda);
-                registro.put("diasust", diaSustitucion);
-                registro.put("messust", mesSustitucion);
-                registro.put("anualsust", anualSustitucion);
+                if (diaAsignacion != null) {
+                    registro.put("diaasignacion", diaDiscurso);
+                }
+                if (mesAsignacion != null) {
+                    registro.put("mesasignacion", mesDiscurso);
+                }
+                if (anualAsignacion != null) {
+                    registro.put("anualasignacion", anualDiscurso);
+                }
+                if (diaAyudante != null) {
+                    registro.put("diaayudante", diaAyuda);
+                }
+                if (mesAyudante != null) {
+                    registro.put("mesayudante", mesAyuda);
+                }
+                if (anualAyudante != null) {
+                    registro.put("anualayudante", anualAyuda);
+                }
+                if (diaSust != null) {
+                    registro.put("diasust", diaSustitucion);
+                }
+                if (mesSust != null) {
+                    registro.put("messust", mesSustitucion);
+                }
+                if (anualSust != null) {
+                    registro.put("anualsust", anualSustitucion);
+                }
 
                 if (cbHabilitar.isChecked()) {
                     registro.put("inhabilitar", 1);

@@ -1,9 +1,11 @@
 package com.example.chirinos.mejoresmaestros;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -29,6 +31,8 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import java.util.Calendar;
+
 public class PrincipalActivity extends AppCompatActivity implements AsignacionesFragment.OnFragmentInteractionListener, InicioFragment.OnFragmentInteractionListener, PublicadoresFragment.OnFragmentInteractionListener{
 
     /**
@@ -47,9 +51,8 @@ public class PrincipalActivity extends AppCompatActivity implements Asignaciones
     private ViewPager mViewPager;
 
 
-    private PendingIntent pendingIntent;
-    private PendingIntent pendingIntentProgramar;
-    private final static String CHANNEL_ID = "NOTIFICACION";
+
+
 
 
     @Override
@@ -57,7 +60,8 @@ public class PrincipalActivity extends AppCompatActivity implements Asignaciones
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
 
-
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
+        notificationManagerCompat.cancel(UtilidadesStatic.NOTIFICACION_ID);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,8 +79,15 @@ public class PrincipalActivity extends AppCompatActivity implements Asignaciones
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
+        alarmNotif();
+    }
 
-
+    private void alarmNotif () {
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent myIntent = new Intent(PrincipalActivity.this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(PrincipalActivity.this, 0, myIntent, 0);
+        long updateInterval = AlarmManager.INTERVAL_DAY;
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + updateInterval, updateInterval, pendingIntent);
     }
 
 
@@ -98,10 +109,6 @@ public class PrincipalActivity extends AppCompatActivity implements Asignaciones
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_share) {
-            setPendingIntent();
-            pendingIntentProgramar();
-            createNotfChannel();
-            enviarNotf();
 
             return true;
         }
@@ -109,43 +116,7 @@ public class PrincipalActivity extends AppCompatActivity implements Asignaciones
         return super.onOptionsItemSelected(item);
     }
 
-    private void enviarNotf() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID);
-        builder.setSmallIcon(R.drawable.ic_action_asignacion);
-        builder.setContentTitle("¡Recordatorio!");
-        builder.setContentText("Debes programar las Asignaciones de esta semana");
-        builder.setColor(Color.GREEN);
-        builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-        builder.setContentIntent(pendingIntent);
-        builder.addAction(R.drawable.ic_action_publicador, "Programar", pendingIntentProgramar);
-
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
-        notificationManagerCompat.notify(UtilidadesStatic.NOTIFICACION_ID, builder.build());
-    }
-
-    private void createNotfChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Notificacion";
-            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(notificationChannel);
-        }
-    }
-
-    private void setPendingIntent() {
-        Intent intent = new Intent(this, PrincipalActivity.class);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addNextIntent(intent);
-        pendingIntent = stackBuilder.getPendingIntent(1, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    private void pendingIntentProgramar () {
-        Intent intent = new Intent(this, Sala2Activity.class);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addNextIntent(intent);
-        pendingIntentProgramar = stackBuilder.getPendingIntent(1, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
 
     @Override
     public void onFragmentInteraction(Uri uri) {

@@ -39,8 +39,6 @@ public class Sala2Activity extends AppCompatActivity implements AdapterView.OnIt
         setSupportActionBar(toolbar);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
-        notificationManagerCompat.cancel(UtilidadesStatic.NOTIFICACION_ID);
 
         tvLectura = (TextView)findViewById(R.id.lecturaSala2);
         tvEncargado1 = (TextView) findViewById(R.id.encargado1Sala2);
@@ -239,6 +237,7 @@ public class Sala2Activity extends AppCompatActivity implements AdapterView.OnIt
             Toast.makeText(getApplicationContext(), "Información guardada", Toast.LENGTH_SHORT).show();
             Intent myIntent = new Intent(this, PrincipalActivity.class);
             startActivity(myIntent);
+            finish();
             return true;
         } else if (id == R.id.menu_cancel) {
             Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();
