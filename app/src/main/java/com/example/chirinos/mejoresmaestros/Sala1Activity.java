@@ -2,9 +2,11 @@ package com.example.chirinos.mejoresmaestros;
 
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -237,12 +239,8 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
 
             //noinspection SimplifiableIfStatement
             if (id == R.id.menu_save) {
-                guardarInformacion ();
                 guradarSala1();
-                Toast.makeText(getApplicationContext(), "Información guardada", Toast.LENGTH_SHORT).show();
-                Intent myIntent = new Intent(this, PrincipalActivity.class);
-                startActivity(myIntent);
-                finish();
+
 
                 return true;
             } else if (id == R.id.menu_cancel) {
@@ -423,12 +421,12 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
 
     public void guradarSala1() {
         AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
-        SQLiteDatabase dbGuardar = conect.getWritableDatabase();
+        final SQLiteDatabase db = conect.getWritableDatabase();
 
         calendar.set(anualAsignacion, (mesAsignacion-1), diaAsignacion);
         numSemana = calendar.get(Calendar.WEEK_OF_YEAR);
 
-        String semana = String.valueOf(numSemana);
+        final String semana = String.valueOf(numSemana);
         String lectura = lector;
         String enc1 = encargado1;
         String ayu1 = ayudante1;
@@ -444,7 +442,7 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         String tipo2 = asignacion2;
         String tipo3 = asignacion3;
 
-        ContentValues registro = new ContentValues();
+        final ContentValues registro = new ContentValues();
         registro.put("semana", semana);
         registro.put("lector", lectura);
         registro.put("encargado1", enc1);
@@ -461,7 +459,41 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
         registro.put("tipo2", tipo2);
         registro.put("tipo3", tipo3);
 
-        dbGuardar.insert("sala1", null, registro);
-        dbGuardar.close();
+        Cursor fila = db.rawQuery("SELECT * FROM sala1 WHERE semana =" + semana, null);
+        if (fila.moveToFirst()) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(Sala1Activity.this, R.style.Theme_Dialog_Publicador);
+            dialog.setTitle("Aviso");
+            dialog.setMessage("Esta semana había sido programada, ¿desea sobrescribir?");
+
+            dialog.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    db.update("sala1", registro, "semana=" + semana, null);
+                    guardarInformacion ();
+                    Toast.makeText(getApplicationContext(), "Información guardada", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    Intent myIntent = new Intent(getApplicationContext(), PrincipalActivity.class);
+                    startActivity(myIntent);
+                    finish();
+                }
+            });
+            dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                   dialog.dismiss();
+                   finish();
+                }
+            });
+            dialog.show();
+        } else {
+
+            db.insert("sala1", null, registro);
+            Toast.makeText(getApplicationContext(), "Información guardada", Toast.LENGTH_SHORT).show();
+            Intent myIntent = new Intent(getApplicationContext(), PrincipalActivity.class);
+            startActivity(myIntent);
+            finish();
+            db.close();
+        }
+
     }
 }

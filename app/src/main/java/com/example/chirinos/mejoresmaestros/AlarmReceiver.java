@@ -36,7 +36,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         builder.setColor(Color.GREEN);
         builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-        //builder.setContentIntent(pendingIntent);
+        builder.setContentIntent(pendingIntent);
         //builder.addAction(R.drawable.ic_action_publicador, "VER", pendingIntentProgramar);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);

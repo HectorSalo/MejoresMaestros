@@ -343,8 +343,7 @@
         app:fab_addButtonColorPressed="#ffff"
         app:fab_addButtonSize="normal"
         app:fab_labelStyle="@style/etiqueta"
-        app:fab_labelsPosition="left"
-        >
+        app:fab_labelsPosition="left">
 
 
         <com.getbase.floatingactionbutton.FloatingActionButton

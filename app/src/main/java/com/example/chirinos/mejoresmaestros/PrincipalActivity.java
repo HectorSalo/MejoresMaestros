@@ -86,7 +86,7 @@ public class PrincipalActivity extends AppCompatActivity implements Asignaciones
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent myIntent = new Intent(PrincipalActivity.this, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(PrincipalActivity.this, 0, myIntent, 0);
-        long updateInterval = AlarmManager.INTERVAL_DAY;
+        long updateInterval = AlarmManager.INTERVAL_HALF_DAY;
         manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + updateInterval, updateInterval, pendingIntent);
     }
 
@@ -109,7 +109,10 @@ public class PrincipalActivity extends AppCompatActivity implements Asignaciones
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_share) {
-
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT, "¡Hola querido hermano! Le recordamos la asignación que tendrá próximamente. Saludos");
+            startActivity(Intent.createChooser(intent, "Compartir con"));
             return true;
         }
 

@@ -197,7 +197,7 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
                                     } else if (f == 0) {
                                         llenarListaLectura(0);
                                     }
-                                    evento = "";
+                                    evento = " ";
                                     Snackbar.make(v, "Seleccione al Lector", Snackbar.LENGTH_INDEFINITE).show();
                                 }
                             }

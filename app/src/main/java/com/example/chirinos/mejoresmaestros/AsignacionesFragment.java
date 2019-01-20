@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,6 +16,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -168,13 +170,45 @@ public class AsignacionesFragment extends Fragment {
         imbEditSala1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editSala1();
+                final CharSequence [] opciones = {"Sustituir Publicador", "Eliminar semana programada", "Cancelar"};
+                android.support.v7.app.AlertDialog.Builder dialog = new AlertDialog.Builder(getContext(), R.style.Theme_Dialog_Publicador);
+                dialog.setTitle("Seleccione una opción");
+                dialog.setItems(opciones, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (opciones[which].equals("Sustituir Publicador")) {
+                            editSala1();
+                        } else if (opciones[which].equals("Eliminar semana programada")) {
+                            eliminarSala1();
+                            dialog.dismiss();
+                        } else if (opciones[which].equals("Cancelar")) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                dialog.show();
             }
         });
         imbEditSala2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editSala2();
+                final CharSequence [] opciones = {"Sustituir Publicador", "Eliminar semana programada", "Cancelar"};
+                android.support.v7.app.AlertDialog.Builder dialog = new AlertDialog.Builder(getContext(), R.style.Theme_Dialog_Publicador);
+                dialog.setTitle("Seleccione una opción");
+                dialog.setItems(opciones, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (opciones[which].equals("Sustituir Publicador")) {
+                            editSala2();
+                        } else if (opciones[which].equals("Eliminar semana programada")) {
+                            eliminarSala2();
+                            dialog.dismiss();
+                        } else if (opciones[which].equals("Cancelar")) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                dialog.show();
             }
         });
 
@@ -187,8 +221,9 @@ public class AsignacionesFragment extends Fragment {
         mes = calendar.get(Calendar.MONTH);
         anual = calendar.get(Calendar.YEAR);
         semanaActual = calendar.get(Calendar.WEEK_OF_YEAR);
-        cargarSala1(semanaActual);
         cargarSala2(semanaActual);
+        cargarSala1(semanaActual);
+
     }
 
     private void cargarFechaSelec () {
@@ -204,8 +239,9 @@ public class AsignacionesFragment extends Fragment {
                 anualSelec = year;
                 calendar.set(anualSelec, mesSelec, diaSelec);
                 semanaSelec = calendar.get(Calendar.WEEK_OF_YEAR);
-                cargarSala1(semanaSelec);
                 cargarSala2(semanaSelec);
+                cargarSala1(semanaSelec);
+
 
             }
         }, anual, mes , dia);
@@ -279,7 +315,16 @@ public class AsignacionesFragment extends Fragment {
                 db.close();
 
         } else {
-
+            tvLecturaSala2.setText("Sin programar");
+            tvEncargado1Sala2.setText("");
+            tvAyudante1Sala2.setText("");
+            tvEncargado2Sala2.setText("");
+            tvAyudante2Sala2.setText("");
+            tvEncargado3Sala2.setText("");
+            tvAyudante3Sala2.setText("");
+            tvAsignacion1Sala2.setText("");
+            tvAsignacion2Sala2.setText("");
+            tvAsignacion3Sala2.setText("");
             db.close();
         }
     }
@@ -320,6 +365,78 @@ public class AsignacionesFragment extends Fragment {
         }
         myIntent.putExtras(myBundle);
         startActivity(myIntent);
+    }
+
+    private void eliminarSala1 () {
+        final String strSemanaActual = String.valueOf(semanaActual);
+        final String strSemanaSelec = String.valueOf(semanaSelec);
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(getContext(), "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        final SQLiteDatabase dbEliminar = conect.getWritableDatabase();
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext(), R.style.Theme_Dialog_Publicador);
+        dialog.setTitle("Confirmar");
+        dialog.setMessage("¿Eliminar la programación de esta semana?");
+
+        dialog.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (semanaSelec == 0) {
+                    dbEliminar.delete("sala1", "semana=" + strSemanaActual, null);
+                } else {
+                    dbEliminar.delete("sala1", "semana=" + strSemanaSelec, null);
+                }
+
+                dbEliminar.close();
+                Toast.makeText(getContext(), "Eliminado", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                Intent myIntent = new Intent(getContext(), PrincipalActivity.class);
+                startActivity(myIntent);
+            }
+        });
+        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        });
+        dialog.show();
+    }
+
+    private void eliminarSala2 () {
+        final String strSemanaActual = String.valueOf(semanaActual);
+        final String strSemanaSelec = String.valueOf(semanaSelec);
+        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(getContext(), "VMC", null, AdminSQLiteOpenHelper.VERSION);
+        final SQLiteDatabase dbEliminar = conect.getWritableDatabase();
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext(), R.style.Theme_Dialog_Publicador);
+        dialog.setTitle("Confirmar");
+        dialog.setMessage("¿Eliminar la programación de esta semana?");
+
+        dialog.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (semanaSelec == 0) {
+                    dbEliminar.delete("sala2", "semana=" + strSemanaActual, null);
+                } else {
+                    dbEliminar.delete("sala2", "semana=" + strSemanaSelec, null);
+                }
+
+                dbEliminar.close();
+                Toast.makeText(getContext(), "Eliminado", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                Intent myIntent = new Intent(getContext(), PrincipalActivity.class);
+                startActivity(myIntent);
+            }
+        });
+        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        });
+        dialog.show();
     }
 
 
