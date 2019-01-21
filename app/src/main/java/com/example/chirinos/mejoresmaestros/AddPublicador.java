@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -17,7 +19,14 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddPublicador extends AppCompatActivity {
 
@@ -45,8 +54,8 @@ public class AddPublicador extends AppCompatActivity {
     buttonAgregar.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            GuardarPublicador();
-
+            //GuardarPublicador();
+            guardarFirebase();
         }
     });
 
@@ -108,6 +117,38 @@ public class AddPublicador extends AppCompatActivity {
 
         }
 
+    }
+
+    //Metodo prueba firebase
+    private void guardarFirebase() {
+        // Access a Cloud Firestore instance from your Activity
+        NombrePub = editNombrePub.getText().toString();
+        ApellidoPub = editApellidoPub.getText().toString();
+        Telefono = editTelefonoPub.getText().toString();
+        Correo = editCorreoPub.getText().toString();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        Map<String, Object> publicador = new HashMap<>();
+        publicador.put("nombre", NombrePub);
+        publicador.put("apellido", ApellidoPub);
+        publicador.put("telefono", Telefono);
+        publicador.put("correo", Correo);
+
+        db.collection("publicadores")
+                .add(publicador)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("Mensaje", "DocumentSnapshot written with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //Log.w(TAG, "Error adding document", e);
+                    }
+                });
     }
 
 

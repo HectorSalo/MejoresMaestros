@@ -148,6 +148,7 @@ public class AsignacionesFragment extends Fragment {
             }
         });
 
+
         fabSala2 = (FloatingActionButton) vista.findViewById(R.id.fabSala2);
         fabSala2.setOnClickListener(new View.OnClickListener() {
             @Override
