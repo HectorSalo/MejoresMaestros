@@ -27,9 +27,9 @@ import java.util.Calendar;
 public class Sala1Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private TextView tvLectura, tvFecha, tvEncargado1, tvAyudante1, tvEncargado2, tvAyudante2, tvEncargado3, tvAyudante3, tvAsigLectura, tvAsignacion1, tvAsignacion2, tvAsignacion3;
-    private Integer llenarSala1, idLector, idEncargado1, idAyudante1, idEncargado2, idAyudante2, idEncargado3, idAyudante3, diaAsignacion, mesAsignacion, anualAsignacion, numSemana;
+    private Integer llenarSala1, diaAsignacion, mesAsignacion, anualAsignacion, numSemana;
     private Bundle bundleRecibir;
-    private String lector, encargado1, ayudante1, encargado2, ayudante2, encargado3, ayudante3, asignacion1, asignacion2, asignacion3, tipoEvento;
+    private String lector, encargado1, ayudante1, encargado2, ayudante2, encargado3, ayudante3, asignacion1, asignacion2, asignacion3, tipoEvento, idLector, idEncargado1, idAyudante1, idEncargado2, idAyudante2, idEncargado3, idAyudante3;
     private Calendar calendar;
 
     @Override
@@ -58,13 +58,13 @@ public class Sala1Activity extends AppCompatActivity implements AdapterView.OnIt
 
         bundleRecibir = this.getIntent().getExtras();
         llenarSala1 = bundleRecibir.getInt("llenarSala1");
-        idLector = bundleRecibir.getInt("idLector");
-        idEncargado1 = bundleRecibir.getInt("idEncargado1");
-        idAyudante1 = bundleRecibir.getInt("idAyudante1");
-        idEncargado2 = bundleRecibir.getInt("idEncargado2");
-        idAyudante2 = bundleRecibir.getInt("idAyudante2");
-        idEncargado3 = bundleRecibir.getInt("idEncargado3");
-        idAyudante3 = bundleRecibir.getInt("idAyudante3");
+        idLector = bundleRecibir.getString("idLector");
+        idEncargado1 = bundleRecibir.getString("idEncargado1");
+        idAyudante1 = bundleRecibir.getString("idAyudante1");
+        idEncargado2 = bundleRecibir.getString("idEncargado2");
+        idAyudante2 = bundleRecibir.getString("idAyudante2");
+        idEncargado3 = bundleRecibir.getString("idEncargado3");
+        idAyudante3 = bundleRecibir.getString("idAyudante3");
         diaAsignacion = bundleRecibir.getInt("dia");
         mesAsignacion = bundleRecibir.getInt("mes");
         anualAsignacion = bundleRecibir.getInt("anual");

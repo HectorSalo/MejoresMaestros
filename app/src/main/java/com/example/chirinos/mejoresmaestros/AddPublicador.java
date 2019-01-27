@@ -1,5 +1,6 @@
 package com.example.chirinos.mejoresmaestros;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -34,6 +35,7 @@ public class AddPublicador extends AppCompatActivity {
     private RadioButton radioMasculino, radioFemenino;
     private Button buttonAgregar, buttonCancelar;
     private String NombrePub, ApellidoPub, Telefono, Correo;
+    private ProgressDialog progress;
 
 
     @Override
@@ -55,6 +57,9 @@ public class AddPublicador extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             //GuardarPublicador();
+            progress = new ProgressDialog(AddPublicador.this);
+            progress.setMessage("Guardando...");
+            progress.show();
             guardarFirebase();
         }
     });
@@ -69,56 +74,6 @@ public class AddPublicador extends AppCompatActivity {
 
     }
 
-
-    public void GuardarPublicador () {
-
-        AdminSQLiteOpenHelper conectDB = new AdminSQLiteOpenHelper(getApplicationContext(), "VMC", null, AdminSQLiteOpenHelper.VERSION);
-
-        SQLiteDatabase db = conectDB.getWritableDatabase();
-
-        NombrePub = editNombrePub.getText().toString();
-        ApellidoPub = editApellidoPub.getText().toString();
-        Telefono = editTelefonoPub.getText().toString();
-        Correo = editCorreoPub.getText().toString();
-
-
-        if (!NombrePub.isEmpty() && !ApellidoPub.isEmpty()) {
-            if (radioMasculino.isChecked() || radioFemenino.isChecked()) {
-
-
-                ContentValues registro = new ContentValues();
-                registro.put("nombre", NombrePub);
-                registro.put("apellido", ApellidoPub);
-                registro.put("telefono", Telefono);
-                registro.put("correo", Correo);
-                registro.put("inhabilitar", 0);
-
-
-                if (radioMasculino.isChecked()) {
-                    registro.put("genero", "Hombre");
-                } else if (radioFemenino.isChecked()) {
-                    registro.put("genero", "Mujer");
-                }
-
-                db.insert("publicadores", null, registro);
-                db.close();
-
-                Toast.makeText(getApplicationContext(), "Guardado correctamente", Toast.LENGTH_SHORT).show();
-
-                finish();
-                Intent intent = new Intent(this, PrincipalActivity.class);
-                startActivity(intent);
-
-            } else {
-                Toast.makeText(getApplicationContext(), "Hay campos obligatorios vacíos", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(getApplicationContext(), "Hay campos obligatorios vacíos", Toast.LENGTH_SHORT).show();
-
-        }
-
-    }
-
     //Metodo prueba firebase
     private void guardarFirebase() {
         // Access a Cloud Firestore instance from your Activity
@@ -129,26 +84,51 @@ public class AddPublicador extends AppCompatActivity {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        Map<String, Object> publicador = new HashMap<>();
-        publicador.put("nombre", NombrePub);
-        publicador.put("apellido", ApellidoPub);
-        publicador.put("telefono", Telefono);
-        publicador.put("correo", Correo);
+        if (!NombrePub.isEmpty() && !ApellidoPub.isEmpty()) {
+            if (radioMasculino.isChecked() || radioFemenino.isChecked()) {
 
-        db.collection("publicadores")
-                .add(publicador)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("Mensaje", "DocumentSnapshot written with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        //Log.w(TAG, "Error adding document", e);
-                    }
-                });
+
+                Map<String, Object> publicador = new HashMap<>();
+                publicador.put("nombre", NombrePub);
+                publicador.put("apellido", ApellidoPub);
+                publicador.put("telefono", Telefono);
+                publicador.put("correo", Correo);
+                publicador.put("habilitado", true);
+
+
+                if (radioMasculino.isChecked()) {
+                    publicador.put("genero", "Hombre");
+                } else if (radioFemenino.isChecked()) {
+                    publicador.put("genero", "Mujer");
+                }
+
+                db.collection("publicadores").add(publicador).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                progress.dismiss();
+                                Toast.makeText(getApplicationContext(), "Guardado exitosamente", Toast.LENGTH_SHORT).show();
+                                finish();
+                                Intent intent = new Intent(getApplicationContext(), PrincipalActivity.class);
+                                startActivity(intent);
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progress.dismiss();
+                                Toast.makeText(getApplicationContext(), "Error al guadar. Intente nuevamente", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        });
+
+            } else {
+                progress.dismiss();
+                Toast.makeText(getApplicationContext(), "Hay campos obligatorios vacíos", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            progress.dismiss();
+            Toast.makeText(getApplicationContext(), "Hay campos obligatorios vacíos", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

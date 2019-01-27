@@ -4,8 +4,7 @@ import java.util.Date;
 
 public class ConstructorPublicadores {
 
-    private Integer idPublicador, imagen;
-    private String NombrePublicador, ApellidoPublicador, telefono, correo, genero;
+    private String NombrePublicador, ApellidoPublicador, telefono, correo, genero,idPublicador, imagen;
     private String ultAsignacion, ultAyudante, ultSustitucion;
 
     public ConstructorPublicadores () {}
@@ -20,7 +19,7 @@ public class ConstructorPublicadores {
         return telefono;
     }
 
-    public Integer getIdPublicador() {
+    public String getIdPublicador() {
         return idPublicador;
     }
 
@@ -32,7 +31,7 @@ public class ConstructorPublicadores {
         return ApellidoPublicador;
     }
 
-    public Integer getImagen() {
+    public String getImagen() {
         return imagen;
     }
 
@@ -53,7 +52,7 @@ public class ConstructorPublicadores {
     }
 
 
-    public void setIdPublicador(Integer idPublicador) {
+    public void setIdPublicador(String idPublicador) {
         this.idPublicador = idPublicador;
     }
 
@@ -65,7 +64,7 @@ public class ConstructorPublicadores {
         ApellidoPublicador = apellidoPublicador;
     }
 
-    public void setImagen(Integer imagen) {
+    public void setImagen(String imagen) {
         this.imagen = imagen;
     }
 

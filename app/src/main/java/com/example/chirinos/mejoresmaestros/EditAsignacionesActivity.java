@@ -195,7 +195,7 @@ public class EditAsignacionesActivity extends AppCompatActivity implements Adapt
 
         while (cursor.moveToNext()) {
             ConstructorPublicadores publi = new ConstructorPublicadores();
-            publi.setIdPublicador(cursor.getInt(0));
+            publi.setIdPublicador(cursor.getString(0));
             publi.setNombrePublicador(cursor.getString(1));
             publi.setApellidoPublicador(cursor.getString(2));
             publi.setGenero(cursor.getString(5));
@@ -295,7 +295,7 @@ public class EditAsignacionesActivity extends AppCompatActivity implements Adapt
         }
     }
 
-    private void cambiarfechaSustitucion (int i) {
+    private void cambiarfechaSustitucion (String i) {
         String sidPub = String.valueOf(i);
         AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
         SQLiteDatabase dbEditar = conect.getWritableDatabase();

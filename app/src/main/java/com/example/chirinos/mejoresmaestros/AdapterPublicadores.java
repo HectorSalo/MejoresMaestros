@@ -22,9 +22,9 @@ import java.util.ArrayList;
 
 public class AdapterPublicadores extends RecyclerView.Adapter<AdapterPublicadores.ViewHolderPublicadores> implements View.OnClickListener{
 
-    ArrayList<ConstructorPublicadores> listPublicadores;
+    private ArrayList<ConstructorPublicadores> listPublicadores;
     private View.OnClickListener listener;
-    Context mctx;
+    private Context mctx;
 
     public AdapterPublicadores (ArrayList<ConstructorPublicadores> listPublicadores, Context mctx) {
         this.listPublicadores = listPublicadores;
@@ -45,8 +45,8 @@ public class AdapterPublicadores extends RecyclerView.Adapter<AdapterPublicadore
         viewHolderPublicadores.nombrePub.setText(listPublicadores.get(i).getNombrePublicador());
         viewHolderPublicadores.apellidoPub.setText(listPublicadores.get(i).getApellidoPublicador());
 
-        if (listPublicadores.get(i).getUltAsignacion().equals("0/0/0")){
-            viewHolderPublicadores.ultiDiscurso.setText("");
+        if (listPublicadores.get(i).getUltAsignacion() == null){
+            viewHolderPublicadores.ultiDiscurso.setText("Prueba");
         } else {
             viewHolderPublicadores.ultiDiscurso.setText(listPublicadores.get(i).getUltAsignacion());
         }
@@ -69,7 +69,7 @@ public class AdapterPublicadores extends RecyclerView.Adapter<AdapterPublicadore
                             case R.id.option_edit:
                                 Intent myintent = new Intent(mctx, EditarPub.class);
                                 Bundle miBundle = new Bundle();
-                                miBundle.putInt("idEditar", listPublicadores.get(i).getIdPublicador());
+                                miBundle.putString("idEditar", listPublicadores.get(i).getIdPublicador());
                                 myintent.putExtras(miBundle);
                                 mctx.startActivity(myintent);
 
@@ -146,7 +146,7 @@ public class AdapterPublicadores extends RecyclerView.Adapter<AdapterPublicadore
         }
     }
 
-    public void eliminarPublicador(int idPubr) {
+    public void eliminarPublicador(String idPubr) {
         AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(mctx, "VMC", null, AdminSQLiteOpenHelper.VERSION);
         SQLiteDatabase db = conect.getWritableDatabase();
 

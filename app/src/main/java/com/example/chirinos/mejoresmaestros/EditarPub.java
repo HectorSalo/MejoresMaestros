@@ -2,6 +2,7 @@ package com.example.chirinos.mejoresmaestros;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -42,12 +43,21 @@ import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.File;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -59,9 +69,10 @@ public class EditarPub extends AppCompatActivity {
     private TextView fdiscurso, fayudante, fsustitucion;
     private RadioButton radioHombre, radioMujer;
     private CheckBox cbHabilitar;
-    private String sidPub;
-    private Integer idPb, dia, mes, anual, diaAsignacion, mesAsignacion, anualAsignacion, diaAyudante, mesAyudante, anualAyudante, diaSust, mesSust, anualSust;
+    private String idPb;
+    private Integer dia, mes, anual, diaAsignacion, mesAsignacion, anualAsignacion, diaAyudante, mesAyudante, anualAyudante, diaSust, mesSust, anualSust;
     private FloatingActionButton fab_EditImage;
+    private ProgressDialog progress;
 
 
     @Override
@@ -123,9 +134,11 @@ public class EditarPub extends AppCompatActivity {
         });
 
         Bundle myBundle = this.getIntent().getExtras();
-        idPb = myBundle.getInt("idEditar");
-        sidPub = String.valueOf(idPb);
+        idPb = myBundle.getString("idEditar");
 
+        progress = new ProgressDialog(EditarPub.this);
+        progress.setMessage("Cargando...");
+        progress.show();
         cargarDetalles ();
     }
 
@@ -217,8 +230,10 @@ public class EditarPub extends AppCompatActivity {
 
     @SuppressLint("ResourceType")
     private void editarpublicador() {
-        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
-        SQLiteDatabase dbEditar = conect.getWritableDatabase();
+        progress = new ProgressDialog(EditarPub.this);
+        progress.setMessage("Guardando...");
+        progress.show();
+        FirebaseFirestore dbEditar = FirebaseFirestore.getInstance();
 
         String NombrePub = nombrePub.getText().toString();
         String ApellidoPub = apellidoPub.getText().toString();
@@ -240,59 +255,43 @@ public class EditarPub extends AppCompatActivity {
         if (!NombrePub.isEmpty() && !ApellidoPub.isEmpty()) {
             if (radioHombre.isChecked() || radioMujer.isChecked()) {
 
+                Map<String, Object> publicador = new HashMap<>();
+                publicador.put("nombre", NombrePub);
+                publicador.put("apellido", ApellidoPub);
+                publicador.put("telefono", Telefono);
+                publicador.put("correo", Correo);
 
-                ContentValues registro = new ContentValues();
-                registro.put("nombre", NombrePub);
-                registro.put("apellido", ApellidoPub);
-                registro.put("telefono", Telefono);
-                registro.put("correo", Correo);
-                if (diaAsignacion != null) {
-                    registro.put("diaasignacion", diaDiscurso);
-                }
-                if (mesAsignacion != null) {
-                    registro.put("mesasignacion", mesDiscurso);
-                }
-                if (anualAsignacion != null) {
-                    registro.put("anualasignacion", anualDiscurso);
-                }
-                if (diaAyudante != null) {
-                    registro.put("diaayudante", diaAyuda);
-                }
-                if (mesAyudante != null) {
-                    registro.put("mesayudante", mesAyuda);
-                }
-                if (anualAyudante != null) {
-                    registro.put("anualayudante", anualAyuda);
-                }
-                if (diaSust != null) {
-                    registro.put("diasust", diaSustitucion);
-                }
-                if (mesSust != null) {
-                    registro.put("messust", mesSustitucion);
-                }
-                if (anualSust != null) {
-                    registro.put("anualsust", anualSustitucion);
+
+                if (radioHombre.isChecked()) {
+                    publicador.put("genero", "Hombre");
+                } else if (radioMujer.isChecked()) {
+                    publicador.put("genero", "Mujer");
                 }
 
                 if (cbHabilitar.isChecked()) {
-                    registro.put("inhabilitar", 1);
+                    publicador.put("habilitado", false);
                 } else {
-                    registro.put("inhabilitar", 0);
+                    publicador.put("habilitado", true);
                 }
 
-                if (radioHombre.isChecked()) {
-                    registro.put("genero", "Hombre");
-                } else if (radioMujer.isChecked()) {
-                    registro.put("genero", "Mujer");
-                }
+                dbEditar.collection("publicadores").document(idPb).set(publicador).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        progress.dismiss();
+                        Toast.makeText(getApplicationContext(), "Publicador modificado ", Toast.LENGTH_SHORT).show();
+                        Intent myintent = new Intent(getApplicationContext(), PrincipalActivity.class);
+                        startActivity(myintent);
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progress.dismiss();
+                        Toast.makeText(getApplicationContext(), "Error al guardar. Intente nuevamente", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-                dbEditar.update("publicadores", registro, "idPublicador=" + sidPub, null);
-                dbEditar.close();
 
-                Toast.makeText(this, "Publicador modificado ", Toast.LENGTH_SHORT).show();
-                Intent myintent = new Intent(this, PrincipalActivity.class);
-                startActivity(myintent);
-                finish();
     } else {
                 Toast.makeText(getApplicationContext(), "Hay campos obligatorios vacíos", Toast.LENGTH_SHORT).show();
             }
@@ -305,50 +304,42 @@ public class EditarPub extends AppCompatActivity {
 
     private void cargarDetalles () {
 
-        AdminSQLiteOpenHelper conect = new AdminSQLiteOpenHelper(this, "VMC", null, AdminSQLiteOpenHelper.VERSION);
-        SQLiteDatabase db = conect.getWritableDatabase();
+        FirebaseFirestore dbFirestore = FirebaseFirestore.getInstance();
+        CollectionReference reference = dbFirestore.collection("publicadores");
 
-        Cursor fila = db.rawQuery("SELECT * FROM publicadores WHERE idPublicador =" + sidPub, null);
+        reference.document(idPb).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    nombrePub.setText(doc.getString("nombre"));
+                    apellidoPub.setText(doc.getString("apellido"));
+                    correo.setText(doc.getString("correo"));
+                    telefono.setText(doc.getString("telefono"));
 
-        if (fila.moveToFirst()) {
-            nombrePub.setText(fila.getString(1));
-            apellidoPub.setText(fila.getString(2));
-            correo.setText(fila.getString(4));
-            telefono.setText(fila.getString(3));
+                    if (doc.getString("genero").equals("Hombre")) {
+                        radioHombre.setChecked(true);
+                        imagePub.setImageResource(R.mipmap.ic_caballero);
+                    } else if (doc.getString("genero").equals("Mujer")) {
+                        imagePub.setImageResource(R.mipmap.ic_dama);
+                        radioMujer.setChecked(true);
+                    }
 
-            if (fila.getInt(7) == 0 || fila.getInt(8) == 0 || fila.getInt(9) == 0) {
-                fdiscurso.setText("Seleccione Fecha");
-            } else {
-                fdiscurso.setText(fila.getString(7) + "/" + fila.getString(8) + "/" + fila.getString(9));
+                    if (doc.getBoolean("habilitado") == false) {
+                        cbHabilitar.setChecked(true);
+                    }
+
+                    progress.dismiss();
+
+                } else {
+                    progress.dismiss();
+                    Toast.makeText(getApplicationContext(), "Error al cargar. Intente nuevamente", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
             }
+        });
 
-            if (fila.getInt(10) == 0 || fila.getInt(11) == 0 || fila.getInt(12) == 0) {
-                fayudante.setText("Seleccione Fecha");
-            } else {
-                fayudante.setText(fila.getString(10) + "/" + fila.getString(11) + "/" + fila.getString(12));
-            }
 
-            if (fila.getInt(13) == 0 || fila.getInt(14) == 0 || fila.getInt(15) == 0) {
-                fsustitucion.setText("Seleccione Fecha");
-            } else {
-                fsustitucion.setText(fila.getString(13) + "/" + fila.getString(14) + "/" + fila.getString(15));
-            }
-
-            if (fila.getString(5).equals("Hombre")) {
-                imagePub.setImageResource(R.mipmap.ic_caballero);
-                radioHombre.setChecked(true);
-            } else if (fila.getString(5).equals("Mujer")) {
-                imagePub.setImageResource(R.mipmap.ic_dama);
-                radioMujer.setChecked(true);
-            }
-
-            if (fila.getInt(16) == 1) {
-                cbHabilitar.setChecked(true);
-            }
-
-            db.close();
-
-        }
     }
 
     private void cargarImagen () {

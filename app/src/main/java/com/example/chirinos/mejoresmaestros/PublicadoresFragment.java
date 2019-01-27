@@ -1,6 +1,7 @@
 package com.example.chirinos.mejoresmaestros;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -25,8 +26,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,6 +73,7 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
     private AdapterPublicadores adapterPublicadores;
     private AdminSQLiteOpenHelper conect;
     private String seleccionSpinner;
+    private ProgressDialog progress;
 
     public PublicadoresFragment() {
         // Required empty public constructor
@@ -148,7 +159,13 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
         });
 
 
+        progress = new ProgressDialog(getContext());
+        progress.setMessage("Cargando...");
+        progress.show();
+        adapterPublicadores = new AdapterPublicadores(listPublicadores, getContext());
+        recyclerPublicadores.setAdapter(adapterPublicadores);
         llenarlistPub ();
+
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), gM.getOrientation());
         recyclerPublicadores.addItemDecoration(dividerItemDecoration);
@@ -159,53 +176,87 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
 
     public void llenarlistPub() {
 
-        SQLiteDatabase db = conect.getReadableDatabase();
+        listPublicadores = new ArrayList<>();
 
-            Cursor cursor =db.rawQuery("SELECT * FROM publicadores ORDER BY anualasignacion ASC, mesasignacion ASC, diaasignacion ASC", null);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference reference = db.collection("publicadores");
 
-            while (cursor.moveToNext()) {
-                ConstructorPublicadores publi = new ConstructorPublicadores();
-                publi.setIdPublicador(cursor.getInt(0));
-                publi.setNombrePublicador(cursor.getString(1));
-                publi.setApellidoPublicador(cursor.getString(2));
-                publi.setGenero(cursor.getString(5));
-                publi.setUltAsignacion(String.valueOf(cursor.getInt(7)) + "/" + String.valueOf(cursor.getInt(8)) + "/" + String.valueOf(cursor.getInt(9)));
+        Query query = reference.orderBy("apellido", Query.Direction.ASCENDING);
 
-                listPublicadores.add(publi);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        ConstructorPublicadores publi = new ConstructorPublicadores();
+                        publi.setIdPublicador(doc.getId());
+                        publi.setNombrePublicador(doc.getString("nombre"));
+                        publi.setApellidoPublicador(doc.getString("apellido"));
+                        publi.setCorreo(doc.getString("correo"));
+                        publi.setTelefono(doc.getString("telefono"));
+                        publi.setGenero(doc.getString("genero"));
+
+                        listPublicadores.add(publi);
+
+                    }
+                    adapterPublicadores.updateList(listPublicadores);
+                    progress.dismiss();
+                } else {
+                    progress.dismiss();
+                    Toast.makeText(getContext(), "Error al cargar lista. Intente nuevamente", Toast.LENGTH_SHORT).show();
+                }
             }
-        adapterPublicadores = new AdapterPublicadores(listPublicadores, getContext());
-        recyclerPublicadores.setAdapter(adapterPublicadores);
+        });
+
+
 
         adapterPublicadores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), VerActivity.class);
                 Bundle miBundle = new Bundle();
-                miBundle.putInt("id", listPublicadores.get(recyclerPublicadores.getChildAdapterPosition(v)).getIdPublicador());
+                miBundle.putString("id", listPublicadores.get(recyclerPublicadores.getChildAdapterPosition(v)).getIdPublicador());
                 intent.putExtras(miBundle);
                 startActivity(intent);
             }
         });
-        db.close();
+
 
     }
 
     private void llenarListNombres() {
-        SQLiteDatabase db = conect.getReadableDatabase();
+        listPublicadores = new ArrayList<>();
 
-        Cursor cursor =db.rawQuery("SELECT * FROM publicadores ORDER BY nombre ASC", null);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference reference = db.collection("publicadores");
 
-        while (cursor.moveToNext()) {
-            ConstructorPublicadores publi = new ConstructorPublicadores();
-            publi.setIdPublicador(cursor.getInt(0));
-            publi.setNombrePublicador(cursor.getString(1));
-            publi.setApellidoPublicador(cursor.getString(2));
-            publi.setGenero(cursor.getString(5));
-            publi.setUltAsignacion(String.valueOf(cursor.getInt(7)) + "/" + String.valueOf(cursor.getInt(8)) + "/" + String.valueOf(cursor.getInt(9)));
+        Query query = reference.orderBy("nombre", Query.Direction.ASCENDING);
 
-            listNombres.add(publi);
-        }
-        adapterPublicadores.updateList(listNombres);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        ConstructorPublicadores publi = new ConstructorPublicadores();
+                        publi.setIdPublicador(doc.getId());
+                        publi.setNombrePublicador(doc.getString("nombre"));
+                        publi.setApellidoPublicador(doc.getString("apellido"));
+                        publi.setCorreo(doc.getString("correo"));
+                        publi.setTelefono(doc.getString("telefono"));
+                        publi.setGenero(doc.getString("genero"));
+
+                        listPublicadores.add(publi);
+
+                    }
+                    adapterPublicadores.updateList(listPublicadores);
+                    progress.dismiss();
+                } else {
+                    progress.dismiss();
+                    Toast.makeText(getContext(), "Error al cargar lista. Intente nuevamente", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
 
         adapterPublicadores.setOnClickListener(new View.OnClickListener() {
@@ -213,30 +264,46 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), VerActivity.class);
                 Bundle miBundle = new Bundle();
-                miBundle.putInt("id", listNombres.get(recyclerPublicadores.getChildAdapterPosition(v)).getIdPublicador());
+                miBundle.putString("id", listPublicadores.get(recyclerPublicadores.getChildAdapterPosition(v)).getIdPublicador());
                 intent.putExtras(miBundle);
                 startActivity(intent);
             }
         });
-        db.close();
     }
 
     private void llenarListApellidos () {
-        SQLiteDatabase db = conect.getReadableDatabase();
+        listPublicadores = new ArrayList<>();
 
-        Cursor cursor =db.rawQuery("SELECT * FROM publicadores ORDER BY apellido ASC", null);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference reference = db.collection("publicadores");
 
-        while (cursor.moveToNext()) {
-            ConstructorPublicadores publi = new ConstructorPublicadores();
-            publi.setIdPublicador(cursor.getInt(0));
-            publi.setNombrePublicador(cursor.getString(1));
-            publi.setApellidoPublicador(cursor.getString(2));
-            publi.setGenero(cursor.getString(5));
-            publi.setUltAsignacion(String.valueOf(cursor.getInt(7)) + "/" + String.valueOf(cursor.getInt(8)) + "/" + String.valueOf(cursor.getInt(9)));
+        Query query = reference.orderBy("apellido", Query.Direction.ASCENDING);
 
-            listApellidos.add(publi);
-        }
-        adapterPublicadores.updateList(listApellidos);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        ConstructorPublicadores publi = new ConstructorPublicadores();
+                        publi.setIdPublicador(doc.getId());
+                        publi.setNombrePublicador(doc.getString("nombre"));
+                        publi.setApellidoPublicador(doc.getString("apellido"));
+                        publi.setCorreo(doc.getString("correo"));
+                        publi.setTelefono(doc.getString("telefono"));
+                        publi.setGenero(doc.getString("genero"));
+
+                        listPublicadores.add(publi);
+
+                    }
+                    adapterPublicadores.updateList(listPublicadores);
+                    progress.dismiss();
+                } else {
+                    progress.dismiss();
+                    Toast.makeText(getContext(), "Error al cargar lista. Intente nuevamente", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
 
         adapterPublicadores.setOnClickListener(new View.OnClickListener() {
@@ -244,12 +311,11 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), VerActivity.class);
                 Bundle miBundle = new Bundle();
-                miBundle.putInt("id", listApellidos.get(recyclerPublicadores.getChildAdapterPosition(v)).getIdPublicador());
+                miBundle.putString("id", listPublicadores.get(recyclerPublicadores.getChildAdapterPosition(v)).getIdPublicador());
                 intent.putExtras(miBundle);
                 startActivity(intent);
             }
         });
-        db.close();
     }
 
     private void llenarListFecha () {
@@ -259,7 +325,7 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
 
         while (cursor.moveToNext()) {
             ConstructorPublicadores publi = new ConstructorPublicadores();
-            publi.setIdPublicador(cursor.getInt(0));
+            publi.setIdPublicador(cursor.getString(0));
             publi.setNombrePublicador(cursor.getString(1));
             publi.setApellidoPublicador(cursor.getString(2));
             publi.setGenero(cursor.getString(5));
@@ -275,7 +341,7 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), VerActivity.class);
                 Bundle miBundle = new Bundle();
-                miBundle.putInt("id", listFecha.get(recyclerPublicadores.getChildAdapterPosition(v)).getIdPublicador());
+                miBundle.putString("id", listFecha.get(recyclerPublicadores.getChildAdapterPosition(v)).getIdPublicador());
                 intent.putExtras(miBundle);
                 startActivity(intent);
             }
@@ -287,18 +353,23 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
 
     private void listafiltrada (String text) {
 
-        String userInput = text.toLowerCase();
-        ArrayList<ConstructorPublicadores> newList = new ArrayList<>();
+        if (listPublicadores.isEmpty()) {
+            Toast.makeText(getContext(), "No hay lista cargada", Toast.LENGTH_SHORT).show();
+        } else {
+            String userInput = text.toLowerCase();
+            ArrayList<ConstructorPublicadores> newList = new ArrayList<>();
 
-        for (ConstructorPublicadores name : listPublicadores) {
+            for (ConstructorPublicadores name : listPublicadores) {
 
-            if (name.getNombrePublicador().toLowerCase().contains(userInput) || name.getApellidoPublicador().toLowerCase().contains(userInput)) {
+                if (name.getNombrePublicador().toLowerCase().contains(userInput) || name.getApellidoPublicador().toLowerCase().contains(userInput)) {
 
-                newList.add(name);
+                    newList.add(name);
+                }
             }
-        }
 
-        adapterPublicadores.updateList(newList);
+            adapterPublicadores.updateList(newList);
+
+        }
     }
 
 
@@ -336,7 +407,7 @@ public class PublicadoresFragment extends Fragment implements AdapterView.OnItem
         } else if (seleccionSpinner.equals("A-Z (Apellidos)")) {
             llenarListApellidos();
         } else if (seleccionSpinner.equals("Última Fecha")) {
-            llenarListFecha();
+            //llenarListFecha();
         }
 
     }

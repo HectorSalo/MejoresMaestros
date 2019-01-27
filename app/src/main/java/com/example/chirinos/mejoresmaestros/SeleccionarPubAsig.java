@@ -53,8 +53,8 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
     private CheckBox cbVisita, cbAsamblea;
     private Button btAsignar;
     private RadioGroup grupocb;
-    private String genero, seleccion1, seleccion2, seleccion3, evento;
-    private Integer idLector, idEncargado1, idAyudante1, idEncargado2, idAyudante2, idEncargado3, idAyudante3, dia, mes, anual, diaActual, mesActual, anualActual, salaRecibir;
+    private String genero, seleccion1, seleccion2, seleccion3, evento, idLector, idEncargado1, idAyudante1, idEncargado2, idAyudante2, idEncargado3, idAyudante3;
+    private Integer  dia, mes, anual, diaActual, mesActual, anualActual, salaRecibir;
     private ArrayAdapter<String> adapterSpSeleccionar;
     private Bundle bundleRecibir;
 
@@ -233,7 +233,7 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
 
             while (cursor.moveToNext()) {
                 ConstructorPublicadores publi = new ConstructorPublicadores();
-                publi.setIdPublicador(cursor.getInt(0));
+                publi.setIdPublicador(cursor.getString(0));
                 publi.setNombrePublicador(cursor.getString(1));
                 publi.setApellidoPublicador(cursor.getString(2));
                 publi.setGenero(cursor.getString(5));
@@ -302,7 +302,7 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
 
             while (cursor.moveToNext()) {
                 ConstructorPublicadores publi = new ConstructorPublicadores();
-                publi.setIdPublicador(cursor.getInt(0));
+                publi.setIdPublicador(cursor.getString(0));
                 publi.setNombrePublicador(cursor.getString(1));
                 publi.setApellidoPublicador(cursor.getString(2));
                 publi.setGenero(cursor.getString(5));
@@ -436,7 +436,7 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
 
         while (cursor.moveToNext()) {
             ConstructorPublicadores publi = new ConstructorPublicadores();
-            publi.setIdPublicador(cursor.getInt(0));
+            publi.setIdPublicador(cursor.getString(0));
             publi.setNombrePublicador(cursor.getString(1));
             publi.setApellidoPublicador(cursor.getString(2));
             publi.setGenero(cursor.getString(5));
@@ -505,7 +505,7 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
 
         while (cursor.moveToNext()) {
             ConstructorPublicadores publi = new ConstructorPublicadores();
-            publi.setIdPublicador(cursor.getInt(0));
+            publi.setIdPublicador(cursor.getString(0));
             publi.setNombrePublicador(cursor.getString(1));
             publi.setApellidoPublicador(cursor.getString(2));
             publi.setGenero(cursor.getString(5));
@@ -637,7 +637,7 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
 
         while (cursor.moveToNext()) {
             ConstructorPublicadores publi = new ConstructorPublicadores();
-            publi.setIdPublicador(cursor.getInt(0));
+            publi.setIdPublicador(cursor.getString(0));
             publi.setNombrePublicador(cursor.getString(1));
             publi.setApellidoPublicador(cursor.getString(2));
             publi.setGenero(cursor.getString(5));
@@ -708,7 +708,7 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
 
         while (cursor.moveToNext()) {
             ConstructorPublicadores publi = new ConstructorPublicadores();
-            publi.setIdPublicador(cursor.getInt(0));
+            publi.setIdPublicador(cursor.getString(0));
             publi.setNombrePublicador(cursor.getString(1));
             publi.setApellidoPublicador(cursor.getString(2));
             publi.setGenero(cursor.getString(5));
@@ -840,7 +840,7 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
 
         while (cursor.moveToNext()) {
             ConstructorPublicadores publi = new ConstructorPublicadores();
-            publi.setIdPublicador(cursor.getInt(0));
+            publi.setIdPublicador(cursor.getString(0));
             publi.setNombrePublicador(cursor.getString(1));
             publi.setApellidoPublicador(cursor.getString(2));
             publi.setGenero(cursor.getString(5));
@@ -898,13 +898,13 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
             Intent myintent = new Intent(getApplicationContext(), Sala1Activity.class);
             Bundle myBundle = new Bundle();
             myBundle.putInt("llenarSala1", 1);
-            myBundle.putInt("idLector", idLector);
-            myBundle.putInt("idEncargado1", idEncargado1);
-            myBundle.putInt("idAyudante1", idAyudante1);
-            myBundle.putInt("idEncargado2", idEncargado2);
-            myBundle.putInt("idAyudante2", idAyudante2);
-            myBundle.putInt("idEncargado3", idEncargado3);
-            myBundle.putInt("idAyudante3", idAyudante3);
+            myBundle.putString("idLector", idLector);
+            myBundle.putString("idEncargado1", idEncargado1);
+            myBundle.putString("idAyudante1", idAyudante1);
+            myBundle.putString("idEncargado2", idEncargado2);
+            myBundle.putString("idAyudante2", idAyudante2);
+            myBundle.putString("idEncargado3", idEncargado3);
+            myBundle.putString("idAyudante3", idAyudante3);
             myBundle.putInt("dia", dia);
             myBundle.putInt("mes", mes);
             myBundle.putInt("anual", anual);
@@ -920,13 +920,13 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
             Intent myintent = new Intent(getApplicationContext(), Sala2Activity.class);
             Bundle myBundle = new Bundle();
             myBundle.putInt("llenarSala2", 1);
-            myBundle.putInt("idLector", idLector);
-            myBundle.putInt("idEncargado1", idEncargado1);
-            myBundle.putInt("idAyudante1", idAyudante1);
-            myBundle.putInt("idEncargado2", idEncargado2);
-            myBundle.putInt("idAyudante2", idAyudante2);
-            myBundle.putInt("idEncargado3", idEncargado3);
-            myBundle.putInt("idAyudante3", idAyudante3);
+            myBundle.putString("idLector", idLector);
+            myBundle.putString("idEncargado1", idEncargado1);
+            myBundle.putString("idAyudante1", idAyudante1);
+            myBundle.putString("idEncargado2", idEncargado2);
+            myBundle.putString("idAyudante2", idAyudante2);
+            myBundle.putString("idEncargado3", idEncargado3);
+            myBundle.putString("idAyudante3", idAyudante3);
             myBundle.putInt("dia", dia);
             myBundle.putInt("mes", mes);
             myBundle.putInt("anual", anual);
@@ -957,13 +957,13 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
             Intent myintent = new Intent(getApplicationContext(), Sala1Activity.class);
             Bundle myBundle = new Bundle();
             myBundle.putInt("llenarSala1", 1);
-            myBundle.putInt("idLector", idLector);
-            myBundle.putInt("idEncargado1", idEncargado1);
-            myBundle.putInt("idAyudante1", idAyudante1);
-            myBundle.putInt("idEncargado2", idEncargado2);
-            myBundle.putInt("idAyudante2", idAyudante2);
-            myBundle.putInt("idEncargado3", idEncargado3);
-            myBundle.putInt("idAyudante3", idAyudante3);
+            myBundle.putString("idLector", idLector);
+            myBundle.putString("idEncargado1", idEncargado1);
+            myBundle.putString("idAyudante1", idAyudante1);
+            myBundle.putString("idEncargado2", idEncargado2);
+            myBundle.putString("idAyudante2", idAyudante2);
+            myBundle.putString("idEncargado3", idEncargado3);
+            myBundle.putString("idAyudante3", idAyudante3);
             myBundle.putInt("dia", dia);
             myBundle.putInt("mes", mes);
             myBundle.putInt("anual", anual);
@@ -979,13 +979,13 @@ public class SeleccionarPubAsig extends AppCompatActivity implements AdapterView
             Intent myintent = new Intent(getApplicationContext(), Sala2Activity.class);
             Bundle myBundle = new Bundle();
             myBundle.putInt("llenarSala2", 1);
-            myBundle.putInt("idLector", idLector);
-            myBundle.putInt("idEncargado1", idEncargado1);
-            myBundle.putInt("idAyudante1", idAyudante1);
-            myBundle.putInt("idEncargado2", idEncargado2);
-            myBundle.putInt("idAyudante2", idAyudante2);
-            myBundle.putInt("idEncargado3", idEncargado3);
-            myBundle.putInt("idAyudante3", idAyudante3);
+            myBundle.putString("idLector", idLector);
+            myBundle.putString("idEncargado1", idEncargado1);
+            myBundle.putString("idAyudante1", idAyudante1);
+            myBundle.putString("idEncargado2", idEncargado2);
+            myBundle.putString("idAyudante2", idAyudante2);
+            myBundle.putString("idEncargado3", idEncargado3);
+            myBundle.putString("idAyudante3", idAyudante3);
             myBundle.putInt("dia", dia);
             myBundle.putInt("mes", mes);
             myBundle.putInt("anual", anual);
